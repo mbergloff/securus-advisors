@@ -1028,7 +1028,7 @@ function showR(d){
   az.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-async async function doAnalyze(){
+async function doAnalyze(){
   const raw=(document.getElementById('waddr')?.value||'').trim();
   if(!raw){setSt('Please enter a wallet address or ENS name.',true);return;}
   const btn=document.getElementById('az-btn');
