@@ -1028,7 +1028,7 @@ function showR(d){
   az.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-async function doAnalyze(){
+async async function doAnalyze(){
   const raw=(document.getElementById('waddr')?.value||'').trim();
   if(!raw){setSt('Please enter a wallet address or ENS name.',true);return;}
   const btn=document.getElementById('az-btn');
@@ -1063,23 +1063,32 @@ async function doAnalyze(){
   }
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  const inp=document.getElementById('waddr');
-  if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')doAnalyze();});
-});
+(function(){
+  function initCalc(){
+    var inp=document.getElementById('waddr');
+    if(inp) inp.addEventListener('keydown',function(e){if(e.key==='Enter')doAnalyze();});
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initCalc);}
+  else{initCalc();}
+})();
 
 /* ── FAQ Accordion ── */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.faq-item').forEach(item => {
-    const q = item.querySelector('.faq-q');
+function initFAQ() {
+  document.querySelectorAll('.faq-item').forEach(function(item) {
+    var q = item.querySelector('.faq-q');
     if (!q) return;
-    q.addEventListener('click', () => {
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    q.addEventListener('click', function() {
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
       if (!isOpen) item.classList.add('open');
     });
   });
-});
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFAQ);
+} else {
+  initFAQ();
+}
 
 /* ── Stats counter animation ── */
 let statsTriggered=false;
