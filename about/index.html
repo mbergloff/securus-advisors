@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About Us | Securus Advisors</title>
+<meta name="description" content="Big 4 CPAs and Harvard/NYU-trained tax attorneys serving crypto investors, HNW individuals, and business owners across all 50 states."/>
+<link rel="canonical" href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about"/>
+<meta property="og:title" content="About Us | Securus Advisors"/>
+<meta property="og:description" content="Big 4 CPAs and Harvard/NYU-trained tax attorneys serving crypto investors, HNW individuals, and business owners across all 50 states."/>
+<meta property="og:type" content="website"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --or:#F07814;--or2:#D4640E;--or3:#F59340;
+  --ink:#181410;--ink2:#1C1814;
+  --hero-bg:#FAF8F5;
+  --white:#fff;--snow:#FAFAF8;--cloud:#F5F2ED;--fog:#E8E2D8;--muted:#78716A;
+  --max:1240px;--pill:999px;--card:16px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+::selection{background:var(--or);color:#fff;}
+
+/* ═══ NAV ═══ */
+.nav{background:var(--white);border-bottom:1px solid var(--fog);position:sticky;top:0;z-index:900;transition:box-shadow .2s;}
+.nav.up{box-shadow:0 2px 20px rgba(0,0,0,.06);}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.nav-logo img{height:20px;width:auto;display:block;flex-shrink:0;}
+.nav-links{display:flex;align-items:stretch;height:60px;margin-left:36px;flex:1;}
+.nav-links a{font-size:13px;font-weight:500;color:#5A5450;padding:0 14px;display:flex;align-items:center;position:relative;transition:color .15s;white-space:nowrap;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:2px;background:var(--or);transform:scaleX(0);transition:transform .2s;}
+.nav-links a:hover{color:var(--or);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-login{font-size:12px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:5px;transition:color .15s;flex-shrink:0;padding:6px 0 6px 16px;border-left:1px solid var(--fog);margin-left:8px;white-space:nowrap;}
+.nav-login:hover{color:var(--ink);}
+.nav-login svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;}
+/* Hamburger — mobile only */
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;margin-left:auto;}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .2s;}
+/* Mobile menu */
+.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;background:var(--white);border-bottom:1px solid var(--fog);z-index:899;padding:16px 24px 20px;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.nav-mobile.open{display:block;}
+.nav-mobile a{display:block;font-size:14px;font-weight:500;color:var(--ink);padding:11px 0;border-bottom:1px solid var(--fog);}
+.nav-mobile a:last-child{border-bottom:none;}
+.nav-mobile a:hover{color:var(--or);}
+.nav-mobile .nm-cta{background:var(--or);color:#fff;text-align:center;border-radius:var(--pill);border-bottom:none;margin-top:12px;padding:12px;font-weight:700;}
+
+/* ═══ HERO ═══ */
+.hero{background:var(--hero-bg);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+
+/* ══════════════════════════════════════
+   ANIMATED HERO BACKGROUND
+   Three large blobs travel ACROSS the full width of the hero
+   using translateX — left edge → right edge and back.
+   Each blob is wide enough to cover the full hero at peak.
+══════════════════════════════════════ */
+
+/* ── Hero background orbs — GPU only, 2 blobs, paused off-screen ── */
+.hero-canvas{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+  contain:strict;  /* layout isolation — no impact on LCP */
+}
+/* Only 2 blobs, reduced opacity, GPU-accelerated via transform only */
+.hblob-1{
+  position:absolute;top:-15%;left:-20%;
+  width:70%;height:130%;border-radius:50%;
+  background:radial-gradient(ellipse 50% 55% at 50% 50%,
+    rgba(240,130,30,.13) 0%,rgba(245,148,64,.07) 42%,transparent 65%);
+  animation:orb1 16s ease-in-out infinite;
+  will-change:transform;transform:translateZ(0);
+}
+.hblob-2{
+  position:absolute;top:20%;right:-20%;
+  width:55%;height:100%;border-radius:50%;
+  background:radial-gradient(ellipse 45% 50% at 50% 50%,
+    rgba(240,120,20,.10) 0%,rgba(250,150,50,.05) 38%,transparent 62%);
+  animation:orb2 20s ease-in-out infinite 4s;
+  will-change:transform;transform:translateZ(0);
+}
+/* hblob-3 & hblob-4 removed on all viewports */
+.hblob-3,.hblob-4{display:none;}
+/* Pause animations when user prefers reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .hblob-1,.hblob-2{animation:none;}
+}
+/* Remove blobs entirely on mobile to protect INP/LCP */
+@media(max-width:768px){
+  .hblob-1,.hblob-2{display:none;}
+}
+@keyframes orb1{
+  0%,100%{transform:translate(0,0) scale(1);}
+  40%{transform:translate(40%,-6%) scale(1.06);}
+  70%{transform:translate(70%,8%) scale(.97);}
+}
+@keyframes orb2{
+  0%,100%{transform:translate(0,0) scale(1);}
+  45%{transform:translate(-55%,10%) scale(1.08);}
+  75%{transform:translate(-80%,-4%) scale(.95);}
+}
+
+}
+
+/* Hero body */
+.hero-body{position:relative;z-index:2;flex:1;display:flex;align-items:center;}
+.hero-inner{
+  max-width:var(--max);margin:0 auto;
+  padding:88px 48px 60px;width:100%;
+  display:grid;grid-template-columns:1fr 460px;gap:52px;align-items:center;
+}
+
+/* LEFT */
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--or);}
+.hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;}
+.hero-h1 em{font-style:normal;color:var(--or);}
+.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:480px;margin-bottom:32px;}
+.hero-sub strong{color:var(--ink);font-weight:600;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.hbtn-solid{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);color:#fff;padding:14px 30px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all .18s;box-shadow:0 6px 22px rgba(0,0,0,.22);}
+.hbtn-solid:hover{background:linear-gradient(135deg,#2C2420 0%,var(--ink) 100%);transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
+.hbtn-solid svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;}
+.hbtn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--fog);padding:13px 24px;border-radius:var(--pill);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:all .18s;}
+.hbtn-outline:hover{border-color:var(--or);color:var(--or);}
+.hero-trust{font-size:13px;color:#A89E94;}
+.hero-trust strong{color:var(--muted);font-weight:600;}
+
+/* RIGHT — crypto analyzer card */
+.hero-card{background:var(--white);border-radius:20px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 16px 48px rgba(0,0,0,.09);overflow:hidden;border:1px solid var(--fog);}
+.hcard-header{padding:18px 22px 14px;border-bottom:1px solid var(--fog);}
+.hcard-title{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.2px;margin-bottom:3px;}
+.hcard-sub{font-size:11px;color:var(--muted);line-height:1.5;}
+.hcard-body{padding:18px 22px 20px;}
+
+/* Chain selector removed */
+
+/* Input */
+.wrow{display:flex;margin-bottom:12px;}
+.win{flex:1;background:var(--snow);border:1.5px solid var(--fog);border-right:none;border-radius:var(--pill) 0 0 var(--pill);padding:10px 14px;font-family:'Inter',monospace;font-size:11px;color:var(--ink);transition:border-color .15s;min-width:0;}
+.win::placeholder{color:#C0B8B0;font-family:'Inter',sans-serif;font-size:11px;}
+.win:focus{outline:none;border-color:var(--or);}
+.wbtn{background:var(--or);color:#fff;border:none;cursor:pointer;padding:10px 14px;border-radius:0 var(--pill) var(--pill) 0;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;transition:background .15s;white-space:nowrap;flex-shrink:0;}
+.wbtn:hover{background:var(--or2);}
+.wbtn:disabled{background:#D4AA80;cursor:wait;}
+
+.az-status{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;display:none;}
+.az-status.on{display:block;}
+.az-status.err{color:#C04030;}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--fog);border-top-color:var(--or);border-radius:50%;animation:sp .7s linear infinite;margin-right:6px;vertical-align:middle;}
+@keyframes sp{to{transform:rotate(360deg);}}
+
+.az-results{display:none;}
+.az-results.on{display:block;}
+.az-div{height:1px;background:var(--fog);margin:10px 0;}
+.az-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.acat{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--pill);font-size:10px;font-weight:700;}
+.acat.cap{background:rgba(240,120,20,.08);border:1px solid rgba(240,120,20,.2);color:var(--or2);}
+.acat.air{background:rgba(80,120,255,.07);border:1px solid rgba(80,120,255,.2);color:#4060C8;}
+.acat.stk{background:rgba(30,160,80,.07);border:1px solid rgba(30,160,80,.2);color:#1A7A40;}
+.acat.rew{background:rgba(160,80,200,.07);border:1px solid rgba(160,80,200,.2);color:#8040A0;}
+.acat em{font-style:normal;font-weight:900;color:inherit;}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.rb{background:var(--snow);border:1px solid var(--fog);border-radius:10px;padding:10px 12px;}
+.rb-l{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.rb-v{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.5px;}
+.rb-v.am{color:var(--or);}
+.rb-v.gr{color:#1A8A40;}
+.rb-s{font-size:9px;color:#B0A898;margin-top:2px;}
+.sav{background:linear-gradient(135deg,var(--or) 0%,var(--or2) 100%);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sav-l{font-size:9px;color:rgba(255,255,255,.75);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.sav-v{font-size:24px;font-weight:900;color:#fff;letter-spacing:-1px;}
+.sav-n{font-size:10px;color:rgba(255,255,255,.65);text-align:right;max-width:100px;line-height:1.35;}
+.breakdown{background:var(--cloud);border-radius:10px;padding:10px 12px;margin-bottom:10px;}
+.bd-title{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;}
+.bd-row{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--fog);}
+.bd-row:last-child{border-bottom:none;}
+.bd-label{font-size:11px;color:var(--ink);font-weight:600;}
+.bd-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.wcta{display:block;width:100%;background:var(--or);color:#fff;text-align:center;padding:11px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;box-shadow:0 4px 16px rgba(240,120,20,.22);}
+.wcta:hover{background:var(--or2);}
+.wfine{text-align:center;font-size:9px;color:#C0B8B0;margin-top:5px;line-height:1.5;}
+
+
+
+/* ═══ AS FEATURED IN — hero bottom, straight lines ═══ */
+.hero-press{
+  position:relative;z-index:2;
+  border-top:1px solid var(--fog); /* straight horizontal line */
+  background:var(--hero-bg);
+  padding:16px 0;
+}
+.hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
+.hp-lbl{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C0B8B0;white-space:nowrap;padding-right:22px;border-right:1px solid var(--fog);flex-shrink:0;margin-right:4px;}
+.hp-logos{display:flex;flex:1;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;min-width:0;}
+.hpl{font-weight:800;color:#D8D0C4;transition:color .2s;cursor:default;white-space:nowrap;}
+.hpl:hover{color:var(--muted);}
+.hpl.xl{font-size:16px;letter-spacing:-.6px;}
+.hpl.lg{font-size:12px;}
+.hpl.sm{font-size:9px;letter-spacing:2px;text-transform:uppercase;}
+
+/* ═══ PAGE SECTIONS ═══ */
+.sec{padding:96px 0;}
+.sec-inner{max-width:var(--max);margin:0 auto;padding:0 48px;}
+.ey{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--or);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.ey::before{content:'';width:18px;height:1.5px;background:var(--or);}
+.sh{font-size:clamp(26px,3.2vw,42px);font-weight:800;color:var(--ink);letter-spacing:-1.8px;line-height:1.1;}
+.sh em{font-style:normal;color:var(--or);}
+.ssub{font-size:16px;color:var(--muted);max-width:540px;margin-top:12px;line-height:1.78;}
+.about{background:var(--snow);border-top:1px solid var(--fog);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-copy p{font-size:15px;color:var(--muted);line-height:1.82;margin-top:16px;}
+.about-copy p+p{margin-top:12px;}
+.about-copy p strong{color:var(--ink);font-weight:700;}
+.abtn{display:inline-flex;align-items:center;gap:8px;background:var(--or);color:#fff;padding:12px 26px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;margin-top:26px;box-shadow:0 4px 16px rgba(240,120,20,.24);}
+.abtn:hover{background:var(--or2);transform:translateY(-1px);}
+.abtn svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;}
+.about-boxes{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.abox{background:#fff;border:1px solid var(--fog);border-radius:var(--card);padding:26px 22px;transition:all .2s;}
+.abox:hover{border-color:rgba(240,120,20,.3);box-shadow:0 8px 28px rgba(0,0,0,.05);transform:translateY(-2px);}
+.abox-n{font-size:32px;font-weight:900;color:var(--ink);letter-spacing:-1.5px;line-height:1;margin-bottom:5px;}
+.abox-n em{color:var(--or);font-style:normal;}
+.abox-l{font-size:13px;color:var(--muted);line-height:1.45;}
+.numbers{background:var(--ink2);padding:64px 0;}
+.numbers-inner{max-width:var(--max);margin:0 auto;padding:0 48px;}
+.numbers-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
+.num-ey{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(240,120,20,.7);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.num-ey::before{content:'';width:18px;height:1.5px;background:var(--or);}
+.num-h{font-size:clamp(20px,2.4vw,32px);font-weight:800;color:#fff;letter-spacing:-1.2px;line-height:1.1;max-width:400px;}
+.num-sub{font-size:13px;color:rgba(255,255,255,.32);max-width:300px;line-height:1.65;text-align:right;}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid rgba(255,255,255,.07);}
+.sitem{padding:28px 20px 0;border-right:1px solid rgba(255,255,255,.07);text-align:center;}
+.sitem:last-child{border-right:none;}
+.sn{font-size:36px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:6px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;}
+.sn.go{opacity:1;transform:none;}
+.sn em{color:var(--or3);font-style:normal;}
+.sl{font-size:12px;color:rgba(255,255,255,.32);font-weight:500;line-height:1.4;}
+.featured{background:var(--cloud);border-top:1px solid var(--fog);border-bottom:1px solid var(--fog);padding:72px 0;}
+.art-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.art{background:#fff;border:1px solid var(--fog);border-radius:var(--card);padding:22px 20px;transition:all .2s;}
+.art:hover{border-color:rgba(240,120,20,.25);box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-2px);}
+.art-pub{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.art-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:8px;}
+.art-q{font-size:11px;color:var(--muted);line-height:1.6;font-style:italic;}
+.art-tag{display:inline-flex;background:rgba(240,120,20,.07);border:1px solid rgba(240,120,20,.15);color:var(--or);font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--pill);margin-top:10px;}
+.services{background:#fff;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.svc{background:var(--snow);border:1px solid var(--fog);border-radius:var(--card);padding:34px 28px;position:relative;overflow:hidden;transition:all .22s;}
+.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--or);transform:scaleX(0);transform-origin:left;transition:transform .28s ease;}
+.svc:hover{background:#fff;border-color:rgba(240,120,20,.2);box-shadow:0 12px 44px rgba(0,0,0,.07);transform:translateY(-4px);}
+.svc:hover::after{transform:scaleX(1);}
+.svc-ico{width:44px;height:44px;background:rgba(240,120,20,.09);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;}
+.svc-t{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.2px;margin-bottom:10px;}
+.svc-b{font-size:13px;color:var(--muted);line-height:1.75;}
+.svc-lnk{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--or);margin-top:14px;transition:gap .15s;}
+.svc-lnk:hover{gap:9px;}
+.svc-lnk svg{width:11px;height:11px;stroke:var(--or);fill:none;stroke-width:2.5;}
+.serve{background:var(--snow);border-top:1px solid var(--fog);}
+.serve-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;}
+.sc{background:#fff;border:1px solid var(--fog);border-radius:var(--card);padding:26px 22px;transition:all .22s;position:relative;overflow:hidden;}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--or);transform:scaleX(0);transform-origin:left;transition:transform .25s ease;}
+.sc:hover{border-color:rgba(240,120,20,.2);box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-3px);}
+.sc:hover::before{transform:scaleX(1);}
+.sc-ico{width:38px;height:38px;background:rgba(240,120,20,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px;}
+.sc-t{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+.sc-b{font-size:12px;color:var(--muted);line-height:1.7;}
+.testi{background:#fff;border-top:1px solid var(--fog);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.tc{background:var(--snow);border:1px solid var(--fog);border-radius:var(--card);padding:30px 24px;transition:all .22s;}
+.tc:hover{border-color:rgba(240,120,20,.2);box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-3px);}
+.tc-stars{color:var(--or);letter-spacing:3px;font-size:11px;margin-bottom:12px;}
+.tc-q{font-size:14px;color:var(--ink);line-height:1.74;font-style:italic;margin-bottom:16px;}
+.tc-name{font-size:13px;font-weight:700;color:var(--ink);}
+.tc-role{font-size:11px;color:var(--muted);margin-top:2px;}
+.tc-tag{display:inline-flex;background:rgba(240,120,20,.07);border:1px solid rgba(240,120,20,.15);color:var(--or);font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--pill);margin-top:8px;}
+.cta-band{background:var(--or);padding:88px 0;position:relative;overflow:hidden;}
+.cta-band::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.10) 0%,transparent 60%);}
+.cta-inner{max-width:680px;margin:0 auto;text-align:center;padding:0 48px;position:relative;z-index:1;}
+.cta-ey{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:14px;}
+.cta-h{font-size:clamp(28px,4vw,48px);font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.08;margin-bottom:14px;}
+.cta-p{font-size:16px;color:rgba(255,255,255,.75);line-height:1.72;margin-bottom:32px;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-white{background:#fff;color:var(--or);padding:13px 28px;border-radius:var(--pill);font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;transition:all .18s;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.btn-white:hover{background:var(--snow);transform:translateY(-1px);}
+.btn-white svg{width:13px;height:13px;stroke:var(--or);fill:none;stroke-width:2.5;}
+.btn-woutline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);padding:12px 26px;border-radius:var(--pill);font-size:14px;font-weight:700;transition:all .18s;}
+.btn-woutline:hover{border-color:#fff;background:rgba(255,255,255,.1);}
+footer{background:#0F0C08;padding:60px 0 28px;}
+.ft{max-width:var(--max);margin:0 auto;padding:0 48px;}
+.ft-grid{display:grid;grid-template-columns:220px repeat(3,1fr);gap:48px;margin-bottom:48px;}
+.ft-logo img{height:18px;filter:brightness(0) invert(1);opacity:.5;margin-bottom:14px;}
+.ft-about{font-size:12px;color:rgba(255,255,255,.24);line-height:1.75;}
+.ft-ch{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:12px;}
+.ft-col a{display:block;font-size:12px;color:rgba(255,255,255,.34);margin-bottom:8px;transition:color .15s;}
+.ft-col a:hover{color:rgba(255,255,255,.75);}
+.ft-btm{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.18);flex-wrap:wrap;gap:8px;}
+
+/* ═══ RESPONSIVE — mobile & tablet ═══ */
+/* Tablet: 768–1060px */
+@media(max-width:1060px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .hero-inner{grid-template-columns:1fr;gap:40px;padding:70px 40px 52px;}
+  .hero-card{max-width:100%;}
+  .orb-a{width:45%;}
+  .orb-b-glow,.orb-c-1{width:360px;height:360px;}
+  .about-grid{grid-template-columns:1fr;gap:40px;}
+  .art-grid{grid-template-columns:repeat(2,1fr);}
+  .serve-grid{grid-template-columns:repeat(2,1fr);}
+  .numbers-head{flex-direction:column;gap:14px;align-items:flex-start;}
+  .num-sub{text-align:left;}
+  .stat-row{grid-template-columns:repeat(3,1fr);}
+  .sitem:nth-child(3){border-right:none;}
+  .sitem:nth-child(4){border-right:1px solid rgba(255,255,255,.07);}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:32px;}
+}
+/* Mobile: <768px */
+@media(max-width:767px){
+  .nav-inner{padding:0 20px;}
+  .nav-login{display:none;} /* shown in mobile menu instead */
+  .hero-inner{padding:56px 20px 40px;gap:32px;}
+  .hero-h1{font-size:clamp(38px,10vw,56px);letter-spacing:-2px;}
+  .hero-sub{font-size:16px;}
+  .hbtn-solid,.hbtn-outline{padding:12px 22px;font-size:13px;}
+  .hero-btns{gap:10px;}
+  .orb-a{width:180px;opacity:.6;}
+  .orb-a-inner{width:280px;height:280px;}
+  .orb-c-1{width:220px;height:220px;}
+  .orb-b-glow{width:220px;height:220px;}
+  .hero-press-inner{padding:0 20px;gap:8px;}
+  .hp-lbl{padding-right:14px;margin-right:0;}
+  .hp-logos{gap:10px 14px;}
+  .hpl.xl{font-size:13px;}
+  .hpl.lg{font-size:11px;}
+  .sec-inner,.numbers-inner,.ft,.cta-inner{padding-left:20px;padding-right:20px;}
+  .sec{padding:64px 0;}
+  .svc-grid,.testi-grid,.art-grid,.serve-grid{grid-template-columns:1fr;}
+  .about-boxes{grid-template-columns:1fr 1fr;}
+  .stat-row{grid-template-columns:repeat(2,1fr);}
+  .sitem{padding:20px 16px 0;}
+  .sitem:nth-child(2n){border-right:none;}
+  .sitem:nth-child(3){border-right:1px solid rgba(255,255,255,.07);}
+  .rg{grid-template-columns:1fr 1fr;}
+  .ft-grid{grid-template-columns:1fr;gap:28px;}
+  .numbers-head{margin-bottom:32px;}
+  .cta-band{padding:64px 0;}
+}
+/* Very small: <400px */
+@media(max-width:400px){
+  .hero-h1{font-size:36px;}
+  .hero-btns{flex-direction:column;align-items:flex-start;}
+  .hbtn-solid,.hbtn-outline{width:100%;justify-content:center;}
+  .rg{grid-template-columns:1fr;}
+  .about-boxes{grid-template-columns:1fr;}
+}
+</style>
+<style>
+/* ── Inner page styles ── */
+.page-hero{background:var(--snow);border-bottom:1px solid var(--fog);padding:120px 24px 64px;text-align:center;}
+.page-hero-eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--or);margin-bottom:16px;}
+.page-hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:var(--ink);line-height:1.15;max-width:760px;margin:0 auto 20px;}
+.page-hero p{font-size:1.1rem;color:var(--muted);max-width:620px;margin:0 auto 32px;line-height:1.7;}
+.page-hero .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.content-wrap{max-width:var(--max);margin:0 auto;padding:72px 24px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.two-col-wide{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;}
+@media(max-width:768px){.two-col,.two-col-wide{grid-template-columns:1fr;}}
+.section-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-bottom:12px;}
+.section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:18px;}
+.section-body{color:var(--muted);line-height:1.8;font-size:1.02rem;}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:40px;}
+.service-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:28px;transition:box-shadow .2s,transform .2s;}
+.service-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.08);transform:translateY(-2px);}
+.service-card-icon{width:40px;height:40px;background:rgba(240,120,20,.10);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px;}
+.service-card h3{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.service-card p{font-size:.9rem;color:var(--muted);line-height:1.65;}
+.service-card a{display:inline-block;margin-top:12px;font-size:.85rem;font-weight:700;color:var(--or);text-decoration:none;}
+.service-card a:hover{text-decoration:underline;}
+.faq-item{border-bottom:1px solid var(--fog);padding:20px 0;cursor:pointer;}
+.faq-q{font-weight:700;color:var(--ink);font-size:1rem;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.faq-q span{color:var(--or);font-size:1.2rem;flex-shrink:0;transition:transform .2s;}
+.faq-a{font-size:.95rem;color:var(--muted);line-height:1.75;padding-top:12px;display:none;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-q span{transform:rotate(45deg);}
+.cta-band{background:var(--ink);color:var(--white);padding:72px 24px;text-align:center;}
+.cta-band h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:12px;}
+.cta-band p{color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 28px;line-height:1.7;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px;margin-top:40px;}
+.team-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);overflow:hidden;}
+.team-img{width:100%;height:200px;object-fit:cover;object-position:top;}
+.team-info{padding:20px 22px;}
+.team-info h3{font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.team-info .team-title{font-size:.82rem;color:var(--or);font-weight:700;margin-bottom:8px;}
+.team-info p{font-size:.85rem;color:var(--muted);line-height:1.6;}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;margin-top:40px;}
+.blog-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:28px;transition:box-shadow .2s;}
+.blog-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.07);}
+.blog-tag{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--or);margin-bottom:10px;}
+.blog-card h3{font-size:1.02rem;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:10px;}
+.blog-card p{font-size:.88rem;color:var(--muted);line-height:1.65;}
+.blog-card .read-more{display:inline-block;margin-top:14px;font-size:.82rem;font-weight:700;color:var(--or);text-decoration:none;}
+.checklist{list-style:none;padding:0;}
+.checklist li{padding:10px 0 10px 28px;position:relative;border-bottom:1px solid var(--fog);font-size:.95rem;color:var(--muted);line-height:1.6;}
+.checklist li:last-child{border-bottom:none;}
+.checklist li::before{content:"✓";position:absolute;left:0;color:var(--or);font-weight:800;}
+.stat-chips{display:flex;flex-wrap:wrap;gap:16px;margin:24px 0;}
+.stat-chip{background:var(--white);border:1px solid var(--fog);border-radius:var(--pill);padding:10px 20px;font-size:.88rem;}
+.stat-chip strong{color:var(--or);}
+.pill-cta{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;background:var(--or);color:var(--white);border-radius:var(--pill);padding:14px 28px;font-weight:700;font-size:.95rem;text-decoration:none;transition:background .2s,transform .15s;}
+.pill-cta:hover{background:var(--or2);transform:translateY(-1px);}
+.pill-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);border:2px solid var(--fog);border-radius:var(--pill);padding:12px 26px;font-weight:700;font-size:.95rem;text-decoration:none;transition:border-color .2s;}
+.pill-ghost:hover{border-color:var(--or);color:var(--or);}
+.highlight-box{background:rgba(240,120,20,.06);border:1px solid rgba(240,120,20,.18);border-radius:var(--card);padding:24px 28px;margin:28px 0;}
+.highlight-box h4{font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.highlight-box p{font-size:.9rem;color:var(--muted);line-height:1.7;}
+.page-section{padding:72px 24px;}
+.page-section.alt{background:var(--snow);}
+.inner-wrap{max-width:var(--max);margin:0 auto;}
+
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="https://rex-4fb32e29.base44.app/functions/securusSite" class="nav-logo">
+      <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
+    </a>
+    <div class="nav-links">
+      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about">About Us</a>
+      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">Services</a>
+      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax</a>
+      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Contact</a>
+    </div>
+    <a href="https://portal.corvisors.com/login" class="nav-login">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Client Portal
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about" onclick="toggleMenu()">About Us</a>
+    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services" onclick="toggleMenu()">Services</a>
+    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact" onclick="toggleMenu()">Contact</a>
+    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Consultation</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-eyebrow">Who We Are</div>
+  <h1>The CPA Firm Built for Crypto, HNW &amp; Business</h1>
+  <p>Licensed CPAs and tax attorneys with Big 4 backgrounds, Harvard and NYU credentials, and a decade of hands-on crypto tax experience. We're not learning this market — we've been inside it.</p>
+</section>
+
+<div class="page-section">
+  <div class="inner-wrap two-col">
+    <div>
+      <div class="section-label">Our Story</div>
+      <div class="section-title">Built from the inside of the industry.</div>
+      <div class="section-body">
+        <p>Securus Advisors was founded on a straightforward observation: the crypto tax problem isn't a software problem. It's an expertise problem. Most tax firms are guessing at DeFi. Most crypto tools are guessing at tax law.</p>
+        <p style="margin-top:16px;">We built a firm that doesn't guess. Our partners came from Big 4 public accounting and elite tax law programs specifically to serve clients whose wealth is increasingly denominated in digital assets — and who deserve the same caliber of advice that institutional investors have always had access to.</p>
+        <p style="margin-top:16px;">We serve crypto investors, high-net-worth individuals, and business owners across all 50 states — with a specialty in the complex, high-stakes tax situations that general practitioners decline to touch.</p>
+      </div>
+    </div>
+    <div>
+      <div class="highlight-box">
+        <h4>Firm Credentials</h4>
+        <ul class="checklist">
+          <li>Licensed CPAs — all 50 states</li>
+          <li>Big 4 public accounting background</li>
+          <li>Harvard &amp; NYU-trained tax attorney partner</li>
+          <li>MoonTax strategic partner</li>
+          <li>500+ crypto tax returns filed</li>
+          <li>$10M+ in verified tax savings</li>
+          <li>IRS audit representation — crypto-specific</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section alt">
+  <div class="inner-wrap">
+    <div class="section-label">The Team</div>
+    <div class="section-title">People you'd want in your corner at an IRS audit.</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <img class="team-img" src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/6e685d641_MichaelBergloff.jpg" alt="Michael Bergloff CPA"/>
+        <div class="team-info">
+          <h3>Michael Bergloff, CPA</h3>
+          <div class="team-title">Partner &amp; Lead Crypto Tax Advisor</div>
+          <p>Big 4 background. Deep crypto-native expertise across DeFi, airdrops, staking, NFTs, and multi-chain portfolio taxation. Licensed in all 50 states.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <img class="team-img" src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/0bd0c5828_MelodyCook.jpg" alt="Melody Cook CPA"/>
+        <div class="team-info">
+          <h3>Melody Cook, CPA</h3>
+          <div class="team-title">Senior Tax Advisor</div>
+          <p>Specialist in high-net-worth individual tax planning, entity structuring, and business tax strategy for entrepreneurs and founders.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <img class="team-img" src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/224fae09d_MaggieBarnwell.jpg" alt="Maggie Barnwell"/>
+        <div class="team-info">
+          <h3>Maggie Barnwell</h3>
+          <div class="team-title">Tax Associate</div>
+          <p>Crypto tax compliance specialist focusing on transaction reconciliation, cost basis reconstruction, and DeFi tax reporting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="inner-wrap">
+    <div class="section-label">Our Philosophy</div>
+    <div class="section-title" style="max-width:640px;">Your tax position should be as strategic as your investments.</div>
+    <div class="two-col" style="margin-top:32px;">
+      <div class="section-body">
+        <p>We don't file returns. We build tax positions. There's a difference.</p>
+        <p style="margin-top:16px;">Filing a return means looking backward — capturing what happened. Building a tax position means looking forward — structuring transactions, timing realizations, and electing methodologies that minimize what you owe across multiple years, not just this April.</p>
+        <p style="margin-top:16px;">Our clients don't just save money this year. They build a durable framework that compounds savings over time — the same way a well-built portfolio does.</p>
+      </div>
+      <div>
+        <div class="highlight-box">
+          <h4>Our $10K Guarantee</h4>
+          <p>We identify a minimum of $10,000 in tax savings for every engagement we accept — or we credit the difference back to you. We only take clients we can meaningfully help.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="page-section" style="background:#FAF8F5;">
+  <div class="inner-wrap" style="max-width:760px;">
+    <div class="section-label">Common Questions</div>
+    <div class="section-title" style="margin-bottom:32px;">Frequently Asked Questions</div>
+    <div class="faq-item">
+      <div class="faq-q">What is Securus Advisors' background? <span>+</span></div>
+      <div class="faq-a">Securus Advisors was founded by CPAs with Big 4 public accounting backgrounds who saw a gap in the market: most accounting firms treat crypto as an afterthought. We built our entire practice around digital assets, serving crypto investors, DeFi participants, HNW individuals, and business owners with proactive tax strategy — not just compliance.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Who is the attorney partner mentioned on your site? <span>+</span></div>
+      <div class="faq-a">Our attorney partner holds advanced tax law degrees from Harvard Law School and NYU School of Law. They provide legal backing for complex IRS audit defense, penalty abatement, and voluntary disclosure matters — capabilities that most CPA firms cannot offer in-house.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What is the MoonTax partnership? <span>+</span></div>
+      <div class="faq-a">MoonTax is a leading crypto tax software platform. Our strategic partnership gives Securus clients preferred access to MoonTax's on-chain transaction aggregation engine, which we use to build the cost basis reports that underpin our tax filings. It's fully integrated into our advisory workflow.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are your fees tax-deductible? <span>+</span></div>
+      <div class="faq-a">In many cases, yes. Tax preparation and advisory fees related to investment income — including crypto — may be deductible as a business expense for self-employed individuals, traders, and business owners. We'll help you structure the engagement to maximize deductibility where applicable.</div>
+    </div>
+  </div>
+</div>
+<section class="cta-band">
+  <h2>Work with people who actually know your world.</h2>
+  <p>Book a free consultation. No pressure — just a real conversation about your tax situation and what's possible.</p>
+  <a href="https://calendly.com/michaelcpa" class="pill-cta" style="background:var(--or);">Schedule a Free Consultation →</a>
+</section>
+
+<footer>
+  <div class="ft">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-logo"><img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/></div>
+        <p class="ft-about">Crypto, HNW &amp; Business Tax Advisory. Big 4 background. Harvard/NYU law. Licensed all 50 states.</p>
+      </div>
+      <div class="ft-col">
+        <div class="ft-ch">Services</div>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax Planning</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=airdrop-tax">Airdrop &amp; Phantom Income</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-hack-tax">Hack &amp; Theft Loss (IRC §165)</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">DeFi &amp; Yield Tax</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">IRS Audit Defense</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">1099-DA Compliance</a>
+      </div>
+      <div class="ft-col">
+        <div class="ft-ch">Company</div>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about">About Us</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">All Services</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Contact</a>
+        <a href="https://portal.corvisors.com/login">Client Portal</a>
+      </div>
+      <div class="ft-col">
+        <div class="ft-ch">Get Started</div>
+        <a href="https://calendly.com/michaelcpa">Schedule a Consultation</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Free Tax Analysis</a>
+        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax Strategy</a>
+        <a href="mailto:info@securusadvisors.com">info@securusadvisors.com</a>
+      </div>
+    </div>
+    <div class="ft-btm">
+      <span>© 2026 Securus Advisors LLC. All rights reserved.</span>
+      <span>Licensed CPAs · All 50 States · Big 4 Background</span>
+    </div>
+  </div>
+</footer>
+<script>
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('nav');
+  if(nav) nav.classList.toggle('up', window.scrollY > 10);
+}, {passive: true});
+
+function toggleMenu() {
+  var m = document.getElementById('nav-mobile');
+  if(m) m.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  var nav = document.getElementById('nav');
+  var menu = document.getElementById('nav-mobile');
+  if (menu && menu.classList.contains('open') && !nav.contains(e.target) && !menu.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+
+// FAQ accordion — runs immediately since script is at bottom of body (DOM is ready)
+document.querySelectorAll('.faq-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    item.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
