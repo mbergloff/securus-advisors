@@ -431,6 +431,10 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .res-form button:disabled{opacity:.5;cursor:not-allowed;}
 .res-form-msg{margin-top:10px;font-size:13px;font-weight:600;}
 
+
+.res-subtotal { border-top: 2px solid #f07814 !important; margin-top: 8px; padding-top: 10px; }
+.res-subtotal span { font-weight: 700 !important; color: #1a1a1a !important; }
+.res-orange { color: #f07814 !important; font-size: 1.1em; }
 </style>
 </head>
 <body>
@@ -741,39 +745,38 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════
-   SECURUS ADVISORS — CRYPTO TAX CALCULATOR v5.2
-   Direct API calls (CORS-enabled, no proxy needed):
-     · Moralis  — EVM wallet history & token balances
-     · Helius   — Solana transactions & staking rewards
-     · DeFiLlama — Historical & current token prices
-   Tax Positions:
-     1. Airdrop income → taxed on disposal, not receipt
-     2. Staking/mining rewards → taxed on disposal, not receipt
-     3. Wrapped tokens (ETH→wETH) → non-taxable
-     4. Liquid staking (ETH→stETH) → non-taxable
-   Email delivery → securusProxy (send_report via old proxy)
+   SECURUS ADVISORS — CRYPTO TAX CALCULATOR v5.3
+   - Direct API calls: Moralis + Helius + DeFiLlama (all CORS-open)
+   - Full tx scan via erc20/transfers (not capped at 500)
+   - Email via Resend onboarding domain (pending domain verification)
+   - Tax positions shown on EMAIL REPORT only, not on-screen
+   - Broken-out categories: Airdrops | Staking | Mining | Wraps | LST
    ═══════════════════════════════════════════════════════════════════ */
 
-const MK      = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImQ5MDdhYjlkLTBiYjEtNDVjYi1iZWRkLWYwNmMwM2M5MzAyYSIsIm9yZ0lkIjoiNTE3NDIzIiwidXNlcklkIjoiNTMyNDkzIiwidHlwZUlkIjoiYzUyYTY5ZGUtYjNkMC00NjNiLWI2MzQtMDg0NzY4MWY2ZGVmIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3Nzk3MjIzNDcsImV4cCI6NDkzNTQ4MjM0N30.agJwmEk8aI8R_hFLsPGr5CHa8LMSZlZ2sZrF0ENQ3V8';
-const HK      = 'fda795c1-0483-4181-822d-e6ea6125721f';
-const MBASE   = 'https://deep-index.moralis.io/api/v2.2';
-const HELIUS  = 'https://api.helius.xyz/v0';
-const HRPC    = 'https://mainnet.helius-rpc.com/?api-key=' + HK;
-const LLAMA   = 'https://coins.llama.fi';
-const PROXY   = 'https://rex-4fb32e29.base44.app/functions/securusProxy';
+const MK     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImQ5MDdhYjlkLTBiYjEtNDVjYi1iZWRkLWYwNmMwM2M5MzAyYSIsIm9yZ0lkIjoiNTE3NDIzIiwidXNlcklkIjoiNTMyNDkzIiwidHlwZUlkIjoiYzUyYTY5ZGUtYjNkMC00NjNiLWI2MzQtMDg0NzY4MWY2ZGVmIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3Nzk3MjIzNDcsImV4cCI6NDkzNTQ4MjM0N30.agJwmEk8aI8R_hFLsPGr5CHa8LMSZlZ2sZrF0ENQ3V8';
+const HK     = 'fda795c1-0483-4181-822d-e6ea6125721f';
+const RK     = 're_i3LRV8EP_GR1GgEcLrAmgAcKA6vCbWqv6';
+const MBASE  = 'https://deep-index.moralis.io/api/v2.2';
+const HELIUS = 'https://api.helius.xyz/v0';
+const HRPC   = 'https://mainnet.helius-rpc.com/?api-key=' + HK;
+const LLAMA  = 'https://coins.llama.fi';
 
-const SHORT_RATE = 0.408; // 37% + 3.8% NIIT
-const LONG_RATE  = 0.238; // 20% + 3.8% NIIT
+const SHORT = 0.408; // 37% federal + 3.8% NIIT
+const LONG  = 0.238; // 20% long-term + 3.8% NIIT
 
-/* ── Known token sets ── */
+/* ── Known token classification ── */
 const AIRDROP_SYM = new Set([
   'ARB','OP','BLUR','EIGEN','UNI','ENS','LDO','JUP','JTO','PENGU',
   'PYTH','W','DYDX','STRK','ZK','SAFE','GRT','ONDO','WLD','ETHFI',
   'AEVO','MANTA','ALT','DYM','ZETA','TIA','SEI','BOME','KMNO','POPCAT',
+  'WIF','BONK','JTO','TNSR','MOBILE','HNT','IOT',
+]);
+const LST_SYM = new Set([
+  'STETH','WSTETH','RETH','CBETH','SFRXETH','FRXETH','ANKRETH',
+  'SWETH','ETHX','OSETH','MSOL','JITOSOL','BSOL','JSOL',
 ]);
 const WRAP_SYM = new Set([
-  'WETH','WBTC','WBNB','WMATIC','WAVAX','WSTETH','STETH','RETH',
-  'CBETH','SFRXETH','FRXETH','ANKRETH','MSOL','JITOSOL','BETH','SWETH',
+  'WETH','WBTC','WBNB','WMATIC','WAVAX','WFTM','WONE',
 ]);
 const AIRDROP_CONTRACTS = {
   '0xb50721bcf8d664c30412cfbc6cf7a15145234ad1':'arb',
@@ -784,15 +787,18 @@ const AIRDROP_CONTRACTS = {
   '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72':'ens',
   '0x5a98fcbea516cf06857215779fd812ca3bef1b32':'ldo',
 };
+const LST_CONTRACTS = new Set([
+  '0xae7ab96520de3a18e5e111b5eaab095312d7fe84', // stETH
+  '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0', // wstETH
+  '0xae78736cd615f374d3085123a210448e74fc6393', // rETH
+  '0xbe9895146f7af43049ca1c1ae358b0541ea49704', // cbETH
+  '0xf951e335afb289353dc249e82926178eac7ded78', // swETH
+  '0xa35b1b31ce002fbf2058d22f30f95d405200a15b', // ETHx
+  '0xf1c9acdc66974dfb6decb12aa385b9cd01190e38', // osETH
+]);
 const WRAP_CONTRACTS = new Set([
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
-  '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-  '0xae78736cd615f374d3085123a210448e74fc6393',
-  '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
-  '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
-  '0xf951e335afb289353dc249e82926178eac7ded78',
-  '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
+  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
+  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', // WBTC
 ]);
 const SOL_AIRDROP = {
   'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN':'jup',
@@ -810,7 +816,8 @@ const CG_MAP = {
   wld:'worldcoin-wld',zk:'zksync',safe:'safe',grt:'the-graph',
   aave:'aave',link:'chainlink',matic:'matic-network',avax:'avalanche-2',
   bnb:'binancecoin',weth:'weth',steth:'staked-ether',reth:'rocket-pool-eth',
-  cbeth:'coinbase-wrapped-staked-eth',wbtc:'wrapped-bitcoin',usdc:'usd-coin',usdt:'tether',
+  cbeth:'coinbase-wrapped-staked-eth',wbtc:'wrapped-bitcoin',
+  usdc:'usd-coin',usdt:'tether',dai:'dai',
 };
 
 /* ── Utilities ── */
@@ -818,7 +825,7 @@ function setSt(msg, err=false) {
   const el = document.getElementById('az-status');
   if (!el) return;
   el.textContent = msg;
-  el.style.color = err ? '#e53e3e' : 'var(--muted)';
+  el.style.color = err ? '#e53e3e' : 'var(--muted,#888)';
 }
 function fmt(n) {
   if (n === null || n === undefined || isNaN(n)) return '—';
@@ -832,9 +839,9 @@ function detectChain(addr) {
   return 'evm';
 }
 
-/* ── Price helpers (DeFiLlama — CORS open) ── */
+/* ── Price helpers (DeFiLlama) ── */
 async function llamaPrice(slug, ts) {
-  const cg = CG_MAP[slug.toLowerCase()] || slug.toLowerCase();
+  const cg  = CG_MAP[slug.toLowerCase()] || slug.toLowerCase();
   const key = 'coingecko:' + cg;
   try {
     const r = await fetch(`${LLAMA}/chart/${encodeURIComponent(key)}?start=${ts-43200}&span=2&period=1d`);
@@ -842,205 +849,258 @@ async function llamaPrice(slug, ts) {
     const d = await r.json();
     const pts = d.coins?.[key]?.prices || [];
     if (!pts.length) return 0;
-    return pts.reduce((b,p) => Math.abs(p.timestamp-ts) < Math.abs(b.timestamp-ts) ? p : b, pts[0]).price || 0;
+    return pts.reduce((b,p) => Math.abs(p.timestamp-ts)<Math.abs(b.timestamp-ts)?p:b, pts[0]).price || 0;
   } catch { return 0; }
 }
 async function llamaCurrent(slugs) {
   if (!slugs.length) return {};
-  const unique = [...new Set(slugs.map(s => s.toLowerCase()))];
-  const keys   = unique.map(s => 'coingecko:' + (CG_MAP[s] || s));
+  const unique = [...new Set(slugs.map(s=>s.toLowerCase()))];
+  const keys   = unique.map(s=>'coingecko:'+(CG_MAP[s]||s));
   try {
     const r = await fetch(`${LLAMA}/prices/current/${keys.join(',')}`);
     const d = await r.json();
     const out = {};
-    unique.forEach((s,i) => { out[s] = d.coins?.[keys[i]]?.price ?? 0; });
+    unique.forEach((s,i)=>{ out[s]=d.coins?.[keys[i]]?.price??0; });
     return out;
   } catch { return {}; }
 }
 
-/* ── EVM Scan (Moralis direct — CORS open) ── */
-async function scanEVM(addr) {
-  setSt('Fetching Ethereum transaction history…');
-  const events = [];
-  let cursor;
-  let totalTxs = 0;
-  const nowTs = Math.floor(Date.now() / 1000);
+/* ── Classify a token ── */
+function classifyToken(contract, sym, moralisCategory) {
+  const c = (contract||'').toLowerCase();
+  const s = (sym||'').toUpperCase();
+  const cat = (moralisCategory||'').toLowerCase();
+  if (WRAP_CONTRACTS.has(c) || WRAP_SYM.has(s))        return 'wrap';
+  if (LST_CONTRACTS.has(c)  || LST_SYM.has(s))          return 'lst';
+  if (cat === 'airdrop' || AIRDROP_CONTRACTS[c] || AIRDROP_SYM.has(s)) return 'airdrop';
+  if (cat === 'staking reward' || cat === 'reward')      return 'staking_reward';
+  if (s === 'ETH' && cat === 'mining')                   return 'mining_reward';
+  return 'token_receive';
+}
 
-  for (let page = 0; page < 5; page++) {
-    let url = `${MBASE}/wallets/${addr}/history?chain=eth&limit=100`;
+/* ── EVM Scan — uses erc20/transfers for FULL history (not capped at 500) ── */
+async function scanEVM(addr) {
+  const events  = [];
+  let cursor;
+  let totalTxs  = 0;
+  let page      = 0;
+  const nowTs   = Math.floor(Date.now()/1000);
+  const addrL   = addr.toLowerCase();
+
+  setSt('Fetching full ERC-20 transfer history…');
+
+  // Scan all ERC20 transfers (receives only)
+  while (page < 40) { // up to 4,000 transfers
+    let url = `${MBASE}/${addr}/erc20/transfers?chain=eth&limit=100`;
     if (cursor) url += `&cursor=${cursor}`;
     let data;
     try {
-      const r = await fetch(url, { headers: { 'X-API-Key': MK } });
+      const r = await fetch(url, { headers:{'X-API-Key':MK} });
       data = await r.json();
     } catch { break; }
 
     const results = data.result || [];
-    totalTxs += results.length;
-    setSt(`Analyzing ${totalTxs} transactions…`);
     if (!results.length) break;
 
-    for (const tx of results) {
-      const ts  = Math.floor(new Date(tx.block_timestamp).getTime() / 1000);
-      const yr  = new Date(ts * 1000).getUTCFullYear();
-      const dt  = (tx.block_timestamp || '').slice(0, 10);
-      const cat = (tx.category || '').toLowerCase();
+    const receives = results.filter(t => (t.to_address||'').toLowerCase() === addrL);
+    totalTxs += results.length;
+    page++;
+    setSt(`Scanning transfers — ${totalTxs} processed, ${events.length} taxable events found…`);
 
-      for (const rcv of (tx.erc20_transfers || []).filter(t => t.direction === 'receive')) {
-        const contract = (rcv.address || '').toLowerCase();
-        const sym      = (rcv.token_symbol || '').toUpperCase();
-        const amount   = parseFloat(rcv.value_formatted || rcv.value || '0') || 0;
-        if (amount <= 0 || (rcv.possible_spam)) continue;
+    for (const t of receives) {
+      if (t.possible_spam) continue;
+      const contract = (t.address||'').toLowerCase();
+      const sym      = (t.token_symbol||'').toUpperCase();
+      const dec      = parseInt(t.token_decimals||'18') || 18;
+      const amount   = parseFloat(t.value_decimal || (parseInt(t.value||'0')/Math.pow(10,dec)).toString()) || 0;
+      if (amount <= 0) continue;
 
-        // Non-taxable: wrap / LST
-        if (WRAP_CONTRACTS.has(contract) || WRAP_SYM.has(sym)) {
-          events.push({ type:'wrap', date:dt, year:yr, token:sym, amount, incomeUSD:0, currentValueUSD:0, taxable:false });
-          continue;
-        }
+      const ts  = Math.floor(new Date(t.block_timestamp).getTime()/1000);
+      const yr  = new Date(ts*1000).getUTCFullYear();
+      const dt  = (t.block_timestamp||'').slice(0,10);
+      const type = classifyToken(contract, sym, '');
 
-        // Classify
-        let type = 'token_receive';
-        if (cat === 'airdrop' || AIRDROP_CONTRACTS[contract] || AIRDROP_SYM.has(sym)) type = 'airdrop';
-        else if (cat === 'staking reward' || cat === 'reward') type = 'staking_reward';
-
-        const slug = AIRDROP_CONTRACTS[contract] || sym.toLowerCase();
-        const [priceAt, priceCur] = await Promise.all([
-          llamaPrice(slug, ts),
-          llamaCurrent([slug]).then(p => p[slug] || 0),
-        ]);
-
-        const incomeUSD = amount * priceAt;
-        if (incomeUSD < 0.50) continue;
-
-        events.push({ type, date:dt, year:yr, token:sym, amount, priceAt, priceCur, incomeUSD, currentValueUSD: amount * priceCur, taxable:true });
+      // Non-taxable types — track but don't price
+      if (type === 'wrap' || type === 'lst') {
+        events.push({ type, date:dt, year:yr, token:sym, amount, incomeUSD:0, currentValueUSD:0, taxable:false });
+        continue;
       }
+
+      // Taxable — get price at receipt and current price
+      const slug = AIRDROP_CONTRACTS[contract] || sym.toLowerCase();
+      const [priceAt, priceCur] = await Promise.all([
+        llamaPrice(slug, ts),
+        llamaCurrent([slug]).then(p=>p[slug]||0),
+      ]);
+
+      const incomeUSD = amount * priceAt;
+      if (incomeUSD < 1.00) continue; // skip dust
+
+      events.push({ type, date:dt, year:yr, token:sym, amount, priceAt, priceCur, incomeUSD, currentValueUSD:amount*priceCur, taxable:true });
     }
+
     cursor = data.cursor;
     if (!cursor) break;
   }
 
-  // Holdings for harvest analysis
-  setSt('Analyzing current holdings…');
+  // Also scan native ETH staking rewards from wallet history
+  let histCursor;
+  let histPage = 0;
+  while (histPage < 10) {
+    let url = `${MBASE}/wallets/${addr}/history?chain=eth&limit=100`;
+    if (histCursor) url += `&cursor=${histCursor}`;
+    let data;
+    try { const r=await fetch(url,{headers:{'X-API-Key':MK}}); data=await r.json(); } catch { break; }
+    const results = data.result||[];
+    if (!results.length) break;
+    histPage++;
+
+    for (const tx of results) {
+      const cat = (tx.category||'').toLowerCase();
+      if (cat !== 'staking reward' && cat !== 'reward' && cat !== 'mining') continue;
+      const ts = Math.floor(new Date(tx.block_timestamp).getTime()/1000);
+      const yr = new Date(ts*1000).getUTCFullYear();
+      const dt = (tx.block_timestamp||'').slice(0,10);
+      const ethVal = parseFloat(tx.value||'0') / 1e18;
+      if (ethVal < 0.0001) continue;
+      const [priceAt, priceCur] = await Promise.all([
+        llamaPrice('eth', ts),
+        llamaCurrent(['eth']).then(p=>p['eth']||0),
+      ]);
+      const type = cat === 'mining' ? 'mining_reward' : 'staking_reward';
+      events.push({ type, date:dt, year:yr, token:'ETH', amount:ethVal, priceAt, priceCur, incomeUSD:ethVal*priceAt, currentValueUSD:ethVal*priceCur, taxable:true });
+    }
+    histCursor = data.cursor;
+    if (!histCursor) break;
+  }
+
+  // Current holdings for harvest analysis
+  setSt('Analyzing current holdings for tax-loss harvesting…');
   let holdings = [];
   try {
-    const r   = await fetch(`${MBASE}/${addr}/erc20?chain=eth&limit=100`, { headers:{'X-API-Key':MK} });
+    const r   = await fetch(`${MBASE}/${addr}/erc20?chain=eth&limit=100`, {headers:{'X-API-Key':MK}});
     const raw = await r.json();
-    const arr = Array.isArray(raw) ? raw : (raw.result || []);
-    const filtered = arr.filter(h => !h.possible_spam).slice(0, 80);
-    const syms = [...new Set(filtered.map(h => (h.symbol||'').toLowerCase()).filter(Boolean))];
+    const arr = (Array.isArray(raw) ? raw : (raw.result||[])).filter(h=>!h.possible_spam).slice(0,80);
+    const syms = [...new Set(arr.map(h=>(h.symbol||'').toLowerCase()).filter(Boolean))];
     const prices = await llamaCurrent(syms);
-    holdings = filtered
-      .map(h => {
-        const s   = (h.symbol||'').toLowerCase();
-        const dec = parseInt(h.decimals || 18) || 18;
-        const amt = parseInt(h.balance || '0') / Math.pow(10, dec);
-        return { token:(h.symbol||'').toUpperCase(), amount:amt, currentValue: amt*(prices[s]||0) };
-      })
-      .filter(h => h.currentValue > 5)
-      .sort((a,b) => b.currentValue - a.currentValue)
-      .slice(0, 20);
+    holdings = arr.map(h=>{
+      const s   = (h.symbol||'').toLowerCase();
+      const dec = parseInt(h.decimals||'18')||18;
+      const amt = parseInt(h.balance||'0')/Math.pow(10,dec);
+      return { token:(h.symbol||'').toUpperCase(), amount:amt, currentValue:amt*(prices[s]||0) };
+    }).filter(h=>h.currentValue>5).sort((a,b)=>b.currentValue-a.currentValue).slice(0,20);
   } catch {}
 
   return buildResult(addr, 'Ethereum + L2s (EVM)', totalTxs, events, holdings);
 }
 
-/* ── Solana Scan (Helius direct — CORS open) ── */
+/* ── Solana Scan (Helius) ── */
 async function scanSOL(addr) {
   setSt('Fetching Solana transaction history…');
   const events = [];
   let before;
   let totalTxs = 0;
 
-  for (let page = 0; page < 5; page++) {
+  for (let page=0; page<20; page++) {
     let url = `${HELIUS}/addresses/${addr}/transactions?api-key=${HK}&limit=100`;
     if (before) url += `&before=${before}`;
     let txs;
-    try {
-      const r = await fetch(url);
-      txs = await r.json();
-      if (!Array.isArray(txs) || !txs.length) break;
-    } catch { break; }
-
+    try { const r=await fetch(url); txs=await r.json(); if(!Array.isArray(txs)||!txs.length) break; } catch { break; }
     totalTxs += txs.length;
-    setSt(`Analyzing ${totalTxs} Solana transactions…`);
+    setSt(`Scanning Solana — ${totalTxs} transactions…`);
 
     for (const tx of txs) {
-      const ts   = tx.timestamp || 0;
-      const yr   = new Date(ts * 1000).getUTCFullYear();
-      const dt   = new Date(ts * 1000).toISOString().slice(0, 10);
+      const ts = tx.timestamp||0;
+      const yr = new Date(ts*1000).getUTCFullYear();
+      const dt = new Date(ts*1000).toISOString().slice(0,10);
 
-      for (const tt of (tx.tokenTransfers || [])) {
+      for (const tt of (tx.tokenTransfers||[])) {
         if (tt.toUserAccount !== addr) continue;
-        const mint   = tt.mint || '';
-        const amount = parseFloat(tt.tokenAmount || '0') || 0;
-        if (amount <= 0) continue;
+        const mint   = tt.mint||'';
+        const amount = parseFloat(tt.tokenAmount||'0')||0;
+        if (amount<=0) continue;
         const slug = SOL_AIRDROP[mint];
         if (!slug) continue;
-        const [priceAt, priceCur] = await Promise.all([
-          llamaPrice(slug, ts),
-          llamaCurrent([slug]).then(p => p[slug] || 0),
+        const [priceAt,priceCur] = await Promise.all([
+          llamaPrice(slug,ts),
+          llamaCurrent([slug]).then(p=>p[slug]||0),
         ]);
-        const incomeUSD = amount * priceAt;
-        if (incomeUSD < 0.50) continue;
-        events.push({ type:'airdrop', date:dt, year:yr, token:slug.toUpperCase(), amount, priceAt, priceCur, incomeUSD, currentValueUSD:amount*priceCur, taxable:true });
+        const incomeUSD=amount*priceAt;
+        if (incomeUSD<1) continue;
+        events.push({type:'airdrop',date:dt,year:yr,token:slug.toUpperCase(),amount,priceAt,priceCur,incomeUSD,currentValueUSD:amount*priceCur,taxable:true});
       }
 
-      if (tx.type === 'STAKING_REWARD' || tx.type === 'CLAIM_REWARDS') {
-        for (const nt of (tx.nativeTransfers || [])) {
-          if (nt.toUserAccount !== addr) continue;
-          const amount = (nt.amount || 0) / 1e9;
-          if (amount < 0.0001) continue;
-          const [priceAt, priceCur] = await Promise.all([
-            llamaPrice('sol', ts),
-            llamaCurrent(['sol']).then(p => p['sol'] || 0),
-          ]);
-          events.push({ type:'staking_reward', date:dt, year:yr, token:'SOL', amount, priceAt, priceCur, incomeUSD:amount*priceAt, currentValueUSD:amount*priceCur, taxable:true });
+      if (tx.type==='STAKING_REWARD'||tx.type==='CLAIM_REWARDS') {
+        for (const nt of (tx.nativeTransfers||[])) {
+          if (nt.toUserAccount!==addr) continue;
+          const amount=(nt.amount||0)/1e9;
+          if (amount<0.0001) continue;
+          const [priceAt,priceCur]=await Promise.all([llamaPrice('sol',ts),llamaCurrent(['sol']).then(p=>p['sol']||0)]);
+          events.push({type:'staking_reward',date:dt,year:yr,token:'SOL',amount,priceAt,priceCur,incomeUSD:amount*priceAt,currentValueUSD:amount*priceCur,taxable:true});
         }
       }
     }
     before = txs[txs.length-1]?.signature;
   }
 
-  // SOL balance
-  let solBalance = 0;
+  let solBalance=0;
   try {
-    const r = await fetch(HRPC, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({jsonrpc:'2.0',id:1,method:'getBalance',params:[addr]}) });
-    const d = await r.json();
-    solBalance = (d.result?.value || 0) / 1e9;
+    const r=await fetch(HRPC,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'getBalance',params:[addr]})});
+    const d=await r.json(); solBalance=(d.result?.value||0)/1e9;
   } catch {}
-  const solPrice = await llamaCurrent(['sol']).then(p => p['sol'] || 0);
-  const holdings = solBalance > 0 ? [{ token:'SOL', amount:solBalance, currentValue:solBalance*solPrice }] : [];
-
-  return buildResult(addr, 'Solana', totalTxs, events, holdings);
+  const solPrice=await llamaCurrent(['sol']).then(p=>p['sol']||0);
+  const holdings=solBalance>0?[{token:'SOL',amount:solBalance,currentValue:solBalance*solPrice}]:[];
+  return buildResult(addr,'Solana',totalTxs,events,holdings);
 }
 
 /* ── Result Builder ── */
 function buildResult(wallet, chain, totalTxs, events, holdings) {
-  const taxable = events.filter(e => e.taxable);
-  let totalIncomeUSD = 0, currentValueUSD = 0;
-  const byYear = {};
+  const taxable = events.filter(e=>e.taxable);
+  let totalIncomeUSD=0, currentValueUSD=0;
+  const byYear={};
 
   for (const e of taxable) {
     totalIncomeUSD  += e.incomeUSD;
     currentValueUSD += e.currentValueUSD;
-    if (!byYear[e.year]) byYear[e.year] = { income:0, currentValue:0, savings:0 };
+    if (!byYear[e.year]) byYear[e.year]={income:0,currentValue:0,savings:0};
     byYear[e.year].income       += e.incomeUSD;
     byYear[e.year].currentValue += e.currentValueUSD;
   }
 
   const phantomLoss  = Math.max(0, totalIncomeUSD - currentValueUSD);
-  const harvestable  = holdings.reduce((s,h) => s + h.currentValue * 0.10, 0);
-  const totalSavings = Math.round(phantomLoss * 0.37 + harvestable * 0.20);
+  const harvestable  = holdings.reduce((s,h)=>s+h.currentValue*0.10,0);
+
+  // Savings from each category
+  const airdropIncome   = events.filter(e=>e.type==='airdrop').reduce((s,e)=>s+e.incomeUSD,0);
+  const stakingIncome   = events.filter(e=>e.type==='staking_reward').reduce((s,e)=>s+e.incomeUSD,0);
+  const miningIncome    = events.filter(e=>e.type==='mining_reward').reduce((s,e)=>s+e.incomeUSD,0);
+  const wrapValue       = events.filter(e=>e.type==='wrap').length * 0; // non-taxable avoidance
+  const lstValue        = events.filter(e=>e.type==='lst').length * 0;
+
+  // Each category's savings = income * tax rate (deferred = avoided at this rate)
+  const airdropSavings  = Math.round(airdropIncome  * SHORT);
+  const stakingSavings  = Math.round(stakingIncome  * SHORT);
+  const miningSavings   = Math.round(miningIncome   * SHORT);
+  const wrapSavings     = Math.round(events.filter(e=>e.type==='wrap').reduce((s,e)=>s+(e.amount*(e.priceCur||0)),0) * SHORT);
+  const lstSavings      = Math.round(events.filter(e=>e.type==='lst').reduce((s,e)=>s+(e.amount*(e.priceCur||0)),0) * SHORT);
+  const harvestSavings  = Math.round(phantomLoss * LONG);
+  const totalSavings    = airdropSavings + stakingSavings + miningSavings + wrapSavings + lstSavings + harvestSavings;
 
   for (const yr of Object.keys(byYear)) {
-    const y = byYear[parseInt(yr)];
-    y.savings = Math.round(Math.max(0, y.income - y.currentValue) * 0.37);
+    const y=byYear[parseInt(yr)];
+    y.savings=Math.round(Math.max(0,y.income-y.currentValue)*LONG);
   }
 
-  return { wallet, chain, totalTxs, events, totalIncomeUSD, currentValueUSD, phantomLossUSD:phantomLoss, totalSavingsEstimate:totalSavings, byYear, currentHoldings:holdings };
+  return {
+    wallet, chain, totalTxs, events, totalIncomeUSD, currentValueUSD,
+    phantomLossUSD:phantomLoss, harvestable,
+    airdropIncome, stakingIncome, miningIncome,
+    airdropSavings, stakingSavings, miningSavings, wrapSavings, lstSavings, harvestSavings,
+    totalSavingsEstimate:totalSavings, byYear, currentHoldings:holdings,
+  };
 }
 
-/* ── Render Results ── */
+/* ── Render Results (clean — NO tax positions shown here, only on report) ── */
 let _lastResult = null;
 
 function renderResults(d) {
@@ -1048,68 +1108,76 @@ function renderResults(d) {
   const az = document.getElementById('az-results');
   if (!az) return;
 
-  const airdrops   = d.events.filter(e => e.type === 'airdrop');
-  const staking    = d.events.filter(e => e.type === 'staking_reward');
-  const wraps      = d.events.filter(e => e.type === 'wrap');
-  const taxable    = d.events.filter(e => e.taxable);
-
-  const airdropIncome  = airdrops.reduce((s,e) => s + e.incomeUSD, 0);
-  const stakingIncome  = staking.reduce((s,e) => s + e.incomeUSD, 0);
-  const wrapValue      = wraps.reduce((s,e) => s + (e.currentValueUSD || 0), 0);
-
-  const airdropSavings = Math.round(airdropIncome  * SHORT_RATE);
-  const stakingSavings = Math.round(stakingIncome  * SHORT_RATE);
-  const wrapSavings    = Math.round(wrapValue      * SHORT_RATE);
-  const harvestSavings = Math.round((d.phantomLossUSD || 0) * LONG_RATE);
-  const totalSavings   = d.totalSavingsEstimate || (airdropSavings + stakingSavings + wrapSavings + harvestSavings);
+  const airdropEvents  = d.events.filter(e=>e.type==='airdrop');
+  const stakingEvents  = d.events.filter(e=>e.type==='staking_reward');
+  const miningEvents   = d.events.filter(e=>e.type==='mining_reward');
+  const wrapEvents     = d.events.filter(e=>e.type==='wrap');
+  const lstEvents      = d.events.filter(e=>e.type==='lst');
+  const taxable        = d.events.filter(e=>e.taxable);
+  const total          = d.totalSavingsEstimate || 0;
 
   az.innerHTML = `
     <div class="res-grid">
+
       <div class="res-section">
         <div class="res-title">Wallet Overview</div>
-        <div class="res-row"><span>Chain Detected</span><strong>${d.chain}</strong></div>
-        <div class="res-row"><span>Transactions Scanned</span><strong>${(d.totalTxs||0).toLocaleString()}</strong></div>
-        <div class="res-row"><span>Taxable Events (Standard Filing)</span><strong class="res-red">${taxable.length.toLocaleString()}</strong></div>
-        <div class="res-row"><span>Gross Income (Without Optimization)</span><strong class="res-red">${fmt(d.totalIncomeUSD)}</strong></div>
+        <div class="res-row"><span>Network</span><strong>${d.chain}</strong></div>
+        <div class="res-row"><span>Transfers Scanned</span><strong>${(d.totalTxs||0).toLocaleString()}</strong></div>
+        <div class="res-row"><span>Taxable Events Identified</span><strong class="res-red">${taxable.length.toLocaleString()}</strong></div>
+        <div class="res-row"><span>Gross Income (Standard Filing)</span><strong class="res-red">${fmt(d.totalIncomeUSD)}</strong></div>
         <div class="res-row"><span>Current Token Value</span><strong>${fmt(d.currentValueUSD)}</strong></div>
       </div>
 
       <div class="res-section">
-        <div class="res-title">Tax Positions Applied <span class="res-badge">Securus Method</span></div>
-        <div class="res-row res-pos">
-          <span>🔄 Airdrop Income — Deferred to Disposal<br><small>${airdrops.length} event${airdrops.length !== 1 ? 's' : ''} · ${fmt(airdropIncome)} deferred · You owe nothing until you sell</small></span>
-          <strong class="res-green">${fmt(airdropSavings)} saved</strong>
+        <div class="res-title">Savings Breakdown</div>
+
+        <div class="res-row">
+          <span>🪂 Airdrop Deferral<br><small>${airdropEvents.length} event${airdropEvents.length!==1?'s':''} · ${fmt(d.airdropIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.airdropSavings)}</strong>
         </div>
-        <div class="res-row res-pos">
-          <span>⛏ Staking &amp; Mining Rewards — Deferred to Disposal<br><small>${staking.length} event${staking.length !== 1 ? 's' : ''} · ${fmt(stakingIncome)} deferred · Taxed when sold, not when earned</small></span>
-          <strong class="res-green">${fmt(stakingSavings)} saved</strong>
+
+        <div class="res-row">
+          <span>🔒 Staking Reward Deferral<br><small>${stakingEvents.length} event${stakingEvents.length!==1?'s':''} · ${fmt(d.stakingIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.stakingSavings)}</strong>
         </div>
-        <div class="res-row res-pos">
-          <span>🔁 Wrapped &amp; Liquid Staking — Non-Taxable<br><small>${wraps.length} event${wraps.length !== 1 ? 's' : ''} · ETH→wETH, ETH→stETH excluded entirely</small></span>
-          <strong class="res-green">${fmt(wrapSavings)} saved</strong>
+
+        <div class="res-row">
+          <span>⛏ Mining Reward Deferral<br><small>${miningEvents.length} event${miningEvents.length!==1?'s':''} · ${fmt(d.miningIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.miningSavings)}</strong>
         </div>
-        <div class="res-row res-pos">
-          <span>📉 Tax-Loss Harvesting Opportunities<br><small>Depreciated holdings available to offset your capital gains</small></span>
-          <strong class="res-green">${fmt(harvestSavings)} saved</strong>
+
+        <div class="res-row">
+          <span>🔁 Token Wrapping (Non-Taxable)<br><small>${wrapEvents.length} wrap event${wrapEvents.length!==1?'s':''} · ETH → wETH, BTC → wBTC</small></span>
+          <strong class="res-green">${fmt(d.wrapSavings)}</strong>
+        </div>
+
+        <div class="res-row">
+          <span>🌊 Liquid Staking (Non-Taxable)<br><small>${lstEvents.length} LST event${lstEvents.length!==1?'s':''} · ETH → stETH, rETH, cbETH</small></span>
+          <strong class="res-green">${fmt(d.lstSavings)}</strong>
+        </div>
+
+        <div class="res-row">
+          <span>📉 Tax-Loss Harvesting<br><small>Depreciated holdings offsetting capital gains</small></span>
+          <strong class="res-green">${fmt(d.harvestSavings)}</strong>
+        </div>
+
+        <div class="res-row res-subtotal">
+          <span>Estimated Total Tax Savings</span>
+          <strong class="res-orange">${fmt(total)}</strong>
         </div>
       </div>
 
-      <div class="res-total">
-        <div class="res-total-label">Estimated Total Tax Savings</div>
-        <div class="res-total-amount">${fmt(totalSavings)}</div>
-        <div class="res-total-sub">Based on ${(d.totalTxs||0).toLocaleString()} transactions · Securus tax positions applied</div>
-      </div>
     </div>
 
     <div class="res-cta-block">
       <div class="res-cta-text">
-        <strong>Want the full breakdown emailed to you?</strong>
-        <span>Enter your name and email — we'll send a detailed year-by-year crypto tax report. Free.</span>
+        <strong>Get your full year-by-year breakdown emailed to you — free.</strong>
+        <span>We'll send a detailed crypto tax report with every event, savings by year, and a custom strategy recommendation.</span>
       </div>
       <form class="res-form" id="res-form" onsubmit="submitReport(event)">
         <input type="text"  id="rep-name"  placeholder="Your name"  required autocomplete="name"/>
         <input type="email" id="rep-email" placeholder="Your email" required autocomplete="email"/>
-        <button type="submit" id="rep-btn">Send My Report →</button>
+        <button type="submit" id="rep-btn">Email My Report →</button>
       </form>
       <div class="res-form-msg" id="res-form-msg"></div>
     </div>
@@ -1117,80 +1185,154 @@ function renderResults(d) {
   az.classList.add('on');
 }
 
-/* ── Email Report ── */
+/* ── Email Report (Resend) ── */
 async function submitReport(e) {
   e.preventDefault();
-  const name  = document.getElementById('rep-name')?.value.trim();
-  const email = document.getElementById('rep-email')?.value.trim();
+  const name  = (document.getElementById('rep-name')?.value||'').trim();
+  const email = (document.getElementById('rep-email')?.value||'').trim();
   const btn   = document.getElementById('rep-btn');
   const msg   = document.getElementById('res-form-msg');
-  if (!name || !email) return;
+  if (!name||!email) return;
 
   btn.disabled = true;
   btn.textContent = 'Sending…';
 
-  // Try proxy send_report, fall back to confirmation
-  let sent = false;
+  const d = _lastResult || {};
+  const fmt2 = n => n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1e3?'$'+Math.round(n).toLocaleString():'$'+Math.round(n);
+
+  const taxable = (d.events||[]).filter(e=>e.taxable);
+  const byYearRows = Object.entries(d.byYear||{})
+    .sort(([a],[b])=>parseInt(b)-parseInt(a))
+    .map(([yr,y])=>`<tr>
+      <td style="padding:8px 12px;border-bottom:1px solid #f0ede8;font-weight:600;">${yr}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${fmt2(y.income)}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${fmt2(y.currentValue)}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #f0ede8;color:#f07814;font-weight:700;">~${fmt2(y.savings)}</td>
+    </tr>`).join('');
+
+  const evtRows = taxable.sort((a,b)=>b.incomeUSD-a.incomeUSD).slice(0,30).map(ev=>`<tr>
+    <td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;">${ev.date}</td>
+    <td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;text-transform:capitalize;">${(ev.type||'').replace(/_/g,' ')}</td>
+    <td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;font-weight:600;">${ev.token}</td>
+    <td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#dc2626;">${fmt2(ev.incomeUSD)}</td>
+    <td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#16a34a;">${fmt2(ev.currentValueUSD)}</td>
+  </tr>`).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background:#faf8f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<div style="max-width:660px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08);">
+  <div style="background:#1a1a1a;padding:28px 36px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;">Securus Advisors</div>
+    <div style="font-size:12px;color:#888;margin-top:3px;">Crypto · High-Net-Worth · Business Tax</div>
+  </div>
+  <div style="padding:28px 36px;background:linear-gradient(135deg,#fff9f4,#fff);">
+    <div style="font-size:12px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Your Crypto Tax Report</div>
+    <div style="font-size:22px;font-weight:800;color:#1a1a1a;">Hi ${name}, here's your breakdown.</div>
+    <div style="font-size:12px;color:#6b7280;margin-top:6px;">Wallet: <code style="background:#f5f5f5;padding:2px 8px;border-radius:4px;">${d.wallet||''}</code></div>
+  </div>
+  <div style="margin:0 36px;padding:24px;background:#fff9f0;border-radius:10px;border:2px solid #f07814;text-align:center;">
+    <div style="font-size:11px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;">Estimated Total Tax Savings</div>
+    <div style="font-size:46px;font-weight:900;color:#f07814;line-height:1.1;margin:6px 0;">${fmt2(d.totalSavingsEstimate||0)}</div>
+    <div style="font-size:12px;color:#9ca3af;">${(d.totalTxs||0).toLocaleString()} transfers scanned · All positions applied</div>
+  </div>
+  <div style="padding:24px 36px;">
+    <div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:12px;">Tax Positions Applied</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
+      <tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🪂 Airdrop Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${fmt2(d.airdropIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.airdropSavings||0)}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔒 Staking Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${fmt2(d.stakingIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.stakingSavings||0)}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">⛏ Mining Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${fmt2(d.miningIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.miningSavings||0)}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔁 Token Wrapping (Non-Taxable)</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='wrap').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.wrapSavings||0)}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🌊 Liquid Staking (Non-Taxable)</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='lst').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.lstSavings||0)}</td></tr>
+      <tr><td style="padding:8px 0;">📉 Tax-Loss Harvesting</td><td style="padding:8px 0;text-align:right;color:#6b7280;">Unrealized losses</td><td style="padding:8px 0 0 12px;text-align:right;color:#16a34a;font-weight:700;">${fmt2(d.harvestSavings||0)}</td></tr>
+    </table>
+    ${byYearRows?`<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Savings by Tax Year</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px;">
+      <thead><tr style="background:#f9fafb;">
+        <th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Year</th>
+        <th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Income</th>
+        <th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Current Value</th>
+        <th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Est. Savings</th>
+      </tr></thead><tbody>${byYearRows}</tbody>
+    </table>`:''}
+    ${evtRows?`<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Top Income Events</div>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead><tr style="background:#f9fafb;">
+        <th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Date</th>
+        <th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Type</th>
+        <th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Token</th>
+        <th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Income</th>
+        <th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Current Value</th>
+      </tr></thead><tbody>${evtRows}</tbody>
+    </table>`:''}
+  </div>
+  <div style="margin:0 36px 28px;padding:24px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:10px;text-align:center;">
+    <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;">Ready to lock in your savings?</div>
+    <div style="font-size:12px;color:#9ca3af;margin-bottom:18px;">Our CPAs build a custom strategy to recover every dollar identified in this report.</div>
+    <a href="https://calendly.com/michaelcpa" style="display:inline-block;background:#f07814;color:#fff;font-weight:700;font-size:13px;padding:12px 28px;border-radius:8px;text-decoration:none;">Schedule a Free Consultation →</a>
+  </div>
+  <div style="padding:16px 36px;border-top:1px solid #f0ede8;text-align:center;">
+    <div style="font-size:10px;color:#9ca3af;">Securus Advisors · Licensed CPAs · All 50 States</div>
+    <div style="font-size:10px;color:#9ca3af;margin-top:3px;">Informational only — not tax advice. Consult your CPA for personalized guidance.</div>
+  </div>
+</div></body></html>`;
+
   try {
-    const res = await fetch(PROXY + '?action=send_report', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ name, email, result: _lastResult }),
+      headers: { 'Authorization': 'Bearer ' + RK, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Securus Advisors <onboarding@resend.dev>',
+        to:   [email],
+        bcc:  ['michael@securusadvisors.com'],
+        subject: `Your Crypto Tax Report — ${fmt2(d.totalSavingsEstimate||0)} in Potential Savings`,
+        html,
+      }),
     });
-    sent = res.ok;
-  } catch {}
-
-  // Show success regardless (we can always manually follow up)
-  msg.textContent = sent
-    ? '✓ Report sent! Check your inbox — we\'ll follow up within 24 hours.'
-    : '✓ Got it! We\'ll send your report to ' + email + ' shortly.';
-  msg.style.color = '#1A7A40';
-  document.getElementById('res-form').style.display = 'none';
-
-  // Store lead in proxy entities via evm_erc20 endpoint isn't available
-  // Log to console for manual follow-up
-  console.log('[LEAD]', { name, email, savings: _lastResult?.totalSavingsEstimate });
+    if (res.ok) {
+      msg.textContent = '✓ Report sent! Check your inbox (check spam if not there within 2 min).';
+      msg.style.color = '#1A7A40';
+      document.getElementById('res-form').style.display = 'none';
+    } else {
+      throw new Error('send failed');
+    }
+  } catch {
+    msg.textContent = '✓ We\'ll send your report to ' + email + ' shortly.';
+    msg.style.color = '#1A7A40';
+    document.getElementById('res-form').style.display = 'none';
+  }
 }
 
 /* ── Main Entry ── */
 async function doAnalyze() {
-  const raw = (document.getElementById('waddr')?.value || '').trim();
+  const raw = (document.getElementById('waddr')?.value||'').trim();
   if (!raw) { setSt('Please enter a wallet address or ENS name.', true); return; }
 
   const btn = document.getElementById('az-btn');
   if (btn) btn.disabled = true;
   const az = document.getElementById('az-results');
-  if (az) { az.classList.remove('on'); az.innerHTML = ''; }
+  if (az) { az.classList.remove('on'); az.innerHTML=''; }
 
   setSt('Resolving address…');
 
   try {
     let addr = raw;
 
-    // ENS resolution via Moralis
-    if (raw.endsWith('.eth') || (raw.includes('.') && !raw.includes(':') && !raw.startsWith('0x'))) {
+    if (raw.endsWith('.eth')||(raw.includes('.')&&!raw.includes(':')&&!raw.startsWith('0x'))) {
       setSt('Resolving ENS name…');
-      try {
-        const r = await fetch(`${MBASE}/resolve/ens/${encodeURIComponent(raw)}`, { headers:{'X-API-Key':MK} });
-        const d = await r.json();
-        if (d.address?.startsWith('0x')) { addr = d.address; }
-        else { setSt('Could not resolve ENS name. Try the full 0x address.', true); if(btn) btn.disabled=false; return; }
-      } catch { setSt('ENS resolution failed. Try the 0x address directly.', true); if(btn) btn.disabled=false; return; }
+      const r = await fetch(`${MBASE}/resolve/ens/${encodeURIComponent(raw)}`, {headers:{'X-API-Key':MK}});
+      const d = await r.json();
+      if (d.address?.startsWith('0x')) addr=d.address;
+      else { setSt('Could not resolve ENS name. Try the 0x address.', true); if(btn) btn.disabled=false; return; }
     }
 
     const chain = detectChain(addr);
-    let result;
-
-    if (chain === 'evm')     result = await scanEVM(addr);
-    else if (chain === 'sol') result = await scanSOL(addr);
-    else { setSt('Unsupported address format.', true); if(btn) btn.disabled=false; return; }
-
+    const result = chain==='sol' ? await scanSOL(addr) : await scanEVM(addr);
     setSt('');
     renderResults(result);
 
   } catch(err) {
     setSt('Scan failed. Please check the address and try again.', true);
-    console.error('Scan error:', err);
+    console.error(err);
   } finally {
     if (btn) btn.disabled = false;
   }
