@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Crypto Tax Savings Calculator — Securus Advisors</title>
+<meta name="description" content="See exactly how much you're overpaying in crypto taxes. Scan any wallet for airdrop deferrals, staking exclusions, and tax-loss harvesting opportunities — free, read-only."/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,sans-serif;background:#faf8f5;color:#1a1a1a;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+:root{--or:#f07814;--ink:#1a1a1a;--white:#fff;--fog:#ece8e2;--muted:#888;--max:1200px;--pill:100px;}
+
+/* Nav (minimal, same as main site) */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #ece8e2;}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.3px;display:flex;align-items:center;gap:8px;}
+.nav-logo span{color:var(--or);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:500;color:#666;transition:color .15s;}
+.nav-links a:hover{color:var(--or);}
+.nav-cta{background:var(--or);color:#fff;font-weight:700;font-size:13px;padding:9px 20px;border-radius:var(--pill);transition:background .15s;}
+.nav-cta:hover{background:#d96a10;}
+@media(max-width:767px){.nav-links{display:none;}.nav-inner{padding:0 20px;}}
+
+
+/* ─── Calculator Page ─── */
+.calc-page{background:#faf8f5;min-height:80vh;padding:72px 0 80px;}
+.calc-page-inner{max-width:860px;margin:0 auto;padding:0 32px;}
+.calc-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:#f07814;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.calc-eyebrow::before{content:'';width:20px;height:1.5px;background:#f07814;}
+.calc-h1{font-size:clamp(32px,4.5vw,52px);font-weight:900;line-height:1.08;letter-spacing:-2px;color:#1a1a1a;margin-bottom:14px;}
+.calc-h1 em{font-style:normal;color:#f07814;}
+.calc-sub{font-size:17px;color:#888;line-height:1.7;max-width:600px;margin-bottom:40px;}
+.calc-card{background:#fff;border-radius:20px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 16px 48px rgba(0,0,0,.09);border:1px solid #ece8e2;overflow:hidden;}
+.calc-card-header{padding:22px 28px 18px;border-bottom:1px solid #ece8e2;background:linear-gradient(135deg,#fff9f4,#fff);}
+.calc-card-title{font-size:15px;font-weight:800;color:#1a1a1a;margin-bottom:4px;}
+.calc-card-sub{font-size:13px;color:#888;line-height:1.5;}
+.calc-card-body{padding:24px 28px;}
+.wrow{display:flex;gap:10px;align-items:stretch;}
+.win{flex:1;padding:13px 18px;border:1.5px solid #ece8e2;border-radius:10px;font-size:14px;font-family:monospace;color:#1a1a1a;background:#fff;outline:none;transition:border-color .15s;}
+.win:focus{border-color:#f07814;}
+.wbtn{background:#f07814;color:#fff;font-weight:700;font-size:14px;padding:13px 24px;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.wbtn:hover{background:#d96a10;}
+.wbtn:disabled{opacity:.5;cursor:not-allowed;}
+.az-status{font-size:13px;color:#888;padding:10px 0 0;min-height:22px;}
+.az-results{display:none;margin-top:20px;}
+.az-results.on{display:block;}
+.res-grid{display:flex;flex-direction:column;gap:20px;}
+.res-section{background:#faf8f5;border-radius:12px;padding:20px 22px;}
+.res-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.res-badge{background:#f07814;color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;letter-spacing:1px;}
+.res-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px;gap:12px;}
+.res-row:last-child{border-bottom:none;}
+.res-row span{color:#555;line-height:1.5;}
+.res-row small{display:block;font-size:11px;color:#aaa;margin-top:2px;}
+.res-row strong{text-align:right;white-space:nowrap;flex-shrink:0;}
+.res-red{color:#c04030;}
+.res-green{color:#1a7a40;}
+.res-orange{color:#f07814 !important;font-size:1.05em;}
+.res-subtotal{border-top:2px solid #f07814 !important;margin-top:8px;padding-top:10px;}
+.res-subtotal span{font-weight:700 !important;color:#1a1a1a !important;}
+.res-total{background:linear-gradient(135deg,#1a1a1a,#2c2420);color:#fff;border-radius:14px;padding:28px;text-align:center;}
+.res-total-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#f07814;margin-bottom:8px;}
+.res-total-amount{font-size:48px;font-weight:900;color:#f07814;line-height:1;}
+.res-total-sub{font-size:12px;color:#888;margin-top:8px;}
+.res-cta-block{background:#fdf9f5;border:1px solid rgba(240,120,20,.15);border-radius:14px;padding:28px;margin-top:4px;}
+.res-cta-text{margin-bottom:18px;}
+.res-cta-text strong{display:block;font-size:16px;color:#1a1a1a;margin-bottom:5px;}
+.res-cta-text span{font-size:13px;color:#888;}
+.res-form{display:flex;gap:10px;flex-wrap:wrap;}
+.res-form input{flex:1;min-width:160px;padding:11px 16px;border:1.5px solid #ece8e2;border-radius:9px;font-size:14px;outline:none;}
+.res-form input:focus{border-color:#f07814;}
+.res-form button{background:#f07814;color:#fff;font-weight:700;padding:11px 22px;border-radius:9px;border:none;cursor:pointer;font-size:14px;white-space:nowrap;}
+.res-form-msg{font-size:13px;margin-top:10px;font-weight:600;}
+.calc-disclaimer{font-size:12px;color:#bbb;margin-top:28px;text-align:center;line-height:1.6;}
+@media(max-width:640px){
+  .wrow{flex-direction:column;}
+  .wbtn{width:100%;}
+  .res-form{flex-direction:column;}
+  .calc-page-inner{padding:0 20px;}
+  .calc-card-header,.calc-card-body{padding:18px 20px;}
+}
+
+
+/* Footer (minimal) */
+.ft-mini{background:#1a1a1a;color:#888;padding:28px 48px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:12px;}
+.ft-mini a{color:#888;transition:color .15s;}
+.ft-mini a:hover{color:var(--or);}
+.ft-mini-brand{font-weight:700;color:#fff;margin-right:8px;}
+@media(max-width:600px){.ft-mini{padding:20px;flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Securus<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="/#about">About</a></li>
+      <li><a href="/crypto-tax.html">Crypto Tax</a></li>
+      <li><a href="/services.html">Services</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="https://calendly.com/michaelcpa" class="nav-cta">Book a Call</a>
+  </div>
+</nav>
+
+<!-- CALCULATOR PAGE -->
+<div class="calc-page">
+  <div class="calc-page-inner">
+    <div class="calc-eyebrow">Free Tool · No Account Required</div>
+    <h1 class="calc-h1">How much are you<br><em>overpaying</em> in crypto taxes?</h1>
+    <p class="calc-sub">Scan any EVM or Solana wallet in seconds. We identify airdrop deferrals, staking exclusions, liquid staking positions, and tax-loss harvesting opportunities — all based on IRS guidance. Read-only. No private keys needed.</p>
+
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-card-title">⬡ Crypto Tax Savings Calculator</div>
+        <div class="calc-card-sub">Enter any wallet address or ENS name below. Works for Ethereum, L2s, and Solana.</div>
+      </div>
+      <div class="calc-card-body">
+        <div class="wrow">
+          <input class="win" id="waddr" type="text" placeholder="0x… wallet address or ENS name" autocomplete="off" spellcheck="false"/>
+          <button class="wbtn" id="az-btn" onclick="doAnalyze()">Analyze Wallet →</button>
+        </div>
+        <div class="az-status" id="az-status"></div>
+        <div class="az-results" id="az-results"></div>
+      </div>
+    </div>
+
+    <p class="calc-disclaimer">Results are estimates based on on-chain data and publicly available pricing. This tool does not constitute tax advice. Consult a licensed CPA for personalized guidance — <a href="https://calendly.com/michaelcpa" style="color:#f07814;">book a free call with ours</a>.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="ft-mini">
+  <div><span class="ft-mini-brand">Securus Advisors</span> Licensed CPAs · All 50 States · <a href="mailto:info@securusadvisors.com">info@securusadvisors.com</a></div>
+  <div><a href="/">Home</a> &nbsp;·&nbsp; <a href="/services.html">Services</a> &nbsp;·&nbsp; <a href="https://calendly.com/michaelcpa">Book a Call</a></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SECURUS ADVISORS — CRYPTO TAX CALCULATOR v5.4
+   KEY PERF FIX: batch all price lookups instead of per-tx awaits
+   - Collect all (slug, ts) pairs first
+   - Batch current prices in 1 DeFiLlama call
+   - Historical prices parallelized with Promise.all
+   - Full ERC20 transfer scan (up to 4,000 transfers)
+   ═══════════════════════════════════════════════════════════════════ */
+
+const MK     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImQ5MDdhYjlkLTBiYjEtNDVjYi1iZWRkLWYwNmMwM2M5MzAyYSIsIm9yZ0lkIjoiNTE3NDIzIiwidXNlcklkIjoiNTMyNDkzIiwidHlwZUlkIjoiYzUyYTY5ZGUtYjNkMC00NjNiLWI2MzQtMDg0NzY4MWY2ZGVmIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3Nzk3MjIzNDcsImV4cCI6NDkzNTQ4MjM0N30.agJwmEk8aI8R_hFLsPGr5CHa8LMSZlZ2sZrF0ENQ3V8';
+const HK     = 'fda795c1-0483-4181-822d-e6ea6125721f';
+const RK     = 're_i3LRV8EP_GR1GgEcLrAmgAcKA6vCbWqv6';
+const MBASE  = 'https://deep-index.moralis.io/api/v2.2';
+const HELIUS = 'https://api.helius.xyz/v0';
+const HRPC   = 'https://mainnet.helius-rpc.com/?api-key=' + HK;
+const LLAMA  = 'https://coins.llama.fi';
+
+const SHORT = 0.408;
+const LONG  = 0.238;
+
+const AIRDROP_SYM = new Set(['ARB','OP','BLUR','EIGEN','UNI','ENS','LDO','JUP','JTO','PENGU','PYTH','W','DYDX','STRK','ZK','SAFE','GRT','ONDO','WLD','ETHFI','AEVO','MANTA','ALT','DYM','ZETA','TIA','SEI','BOME','WIF','BONK','TNSR','MOBILE','HNT','IOT']);
+const LST_SYM    = new Set(['STETH','WSTETH','RETH','CBETH','SFRXETH','FRXETH','ANKRETH','SWETH','ETHX','OSETH','MSOL','JITOSOL','BSOL','JSOL']);
+const WRAP_SYM   = new Set(['WETH','WBTC','WBNB','WMATIC','WAVAX','WFTM','WONE']);
+const AIRDROP_CONTRACTS = {
+  '0xb50721bcf8d664c30412cfbc6cf7a15145234ad1':'arb',
+  '0x4200000000000000000000000000000000000042':'op',
+  '0x5283d291dbcf85356a21ba090e6db59121208b44':'blur',
+  '0xec53bf9167f50cdeb3ae105f56099aaab9061f83':'eigen',
+  '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984':'uni',
+  '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72':'ens',
+  '0x5a98fcbea516cf06857215779fd812ca3bef1b32':'ldo',
+};
+const LST_CONTRACTS = new Set(['0xae7ab96520de3a18e5e111b5eaab095312d7fe84','0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0','0xae78736cd615f374d3085123a210448e74fc6393','0xbe9895146f7af43049ca1c1ae358b0541ea49704','0xf951e335afb289353dc249e82926178eac7ded78','0xa35b1b31ce002fbf2058d22f30f95d405200a15b','0xf1c9acdc66974dfb6decb12aa385b9cd01190e38']);
+const WRAP_CONTRACTS = new Set(['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0x2260fac5e5542a773aa44fbcfedf7c193bc2c599']);
+const SOL_AIRDROP = {'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN':'jup','jtojtomepa8bewpew5giaxberhnkxedeimqmk3jqgjqe':'jto','2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv':'pengu','HZ1JovNiVvGqSmqBPkbzKkNaKdfenxbigkgfSMQDnnR8':'pyth','85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ':'w'};
+const CG_MAP = {eth:'ethereum',sol:'solana',btc:'bitcoin',arb:'arbitrum',op:'optimism',blur:'blur',eigen:'eigenlayer',uni:'uniswap',ldo:'lido-dao',jup:'jupiter-exchange-solana',jto:'jito-governance-token',pengu:'pudgy-penguins',ens:'ethereum-name-service',strk:'starknet',pyth:'pyth-network',w:'wormhole',dydx:'dydx',ondo:'ondo-finance',wld:'worldcoin-wld',zk:'zksync',safe:'safe',grt:'the-graph',aave:'aave',link:'chainlink',matic:'matic-network',avax:'avalanche-2',bnb:'binancecoin',weth:'weth',steth:'staked-ether',reth:'rocket-pool-eth',cbeth:'coinbase-wrapped-staked-eth',wbtc:'wrapped-bitcoin',usdc:'usd-coin',usdt:'tether',dai:'dai'};
+
+/* ── Utilities ── */
+function setSt(msg, err=false) {
+  const el = document.getElementById('az-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = err ? '#e53e3e' : 'var(--muted,#888)';
+}
+function fmt(n) {
+  if (n===null||n===undefined||isNaN(n)) return '—';
+  if (Math.abs(n)>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+  if (Math.abs(n)>=1e3) return '$'+Math.round(n).toLocaleString('en-US');
+  return '$'+Math.round(n);
+}
+function detectChain(addr) {
+  if (/^0x[0-9a-fA-F]{40}$/.test(addr)) return 'evm';
+  if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr)&&!addr.startsWith('0x')) return 'sol';
+  return 'evm';
+}
+function classifyToken(contract, sym) {
+  const c=(contract||'').toLowerCase(), s=(sym||'').toUpperCase();
+  if (WRAP_CONTRACTS.has(c)||WRAP_SYM.has(s))   return 'wrap';
+  if (LST_CONTRACTS.has(c)||LST_SYM.has(s))      return 'lst';
+  if (AIRDROP_CONTRACTS[c]||AIRDROP_SYM.has(s))  return 'airdrop';
+  return 'token_receive';
+}
+
+/* ── BATCH price helpers (the key performance fix) ── */
+// Get current prices for many slugs in ONE call
+async function llamaCurrentBatch(slugs) {
+  if (!slugs.length) return {};
+  const unique=[...new Set(slugs.map(s=>s.toLowerCase()).filter(s=>CG_MAP[s]||s.length>2))];
+  if (!unique.length) return {};
+  const keys=unique.map(s=>'coingecko:'+(CG_MAP[s]||s));
+  try {
+    const r=await fetch(`${LLAMA}/prices/current/${keys.join(',')}`);
+    const d=await r.json();
+    const out={};
+    unique.forEach((s,i)=>{out[s]=d.coins?.[keys[i]]?.price??0;});
+    return out;
+  } catch { return {}; }
+}
+
+// Get historical price for ONE slug at ONE timestamp (used in parallel batch)
+async function llamaHistorical(slug, ts) {
+  const cg=CG_MAP[slug.toLowerCase()]||slug.toLowerCase();
+  if (!cg||cg.length<2) return 0;
+  const key='coingecko:'+cg;
+  try {
+    const r=await fetch(`${LLAMA}/chart/${encodeURIComponent(key)}?start=${ts-43200}&span=2&period=1d`);
+    if (!r.ok) return 0;
+    const d=await r.json();
+    const pts=d.coins?.[key]?.prices||[];
+    if (!pts.length) return 0;
+    return pts.reduce((b,p)=>Math.abs(p.timestamp-ts)<Math.abs(b.timestamp-ts)?p:b,pts[0]).price||0;
+  } catch { return 0; }
+}
+
+/* ── EVM Scan — collect all receives first, then batch price ── */
+async function scanEVM(addr) {
+  const addrL=addr.toLowerCase();
+  const nowTs=Math.floor(Date.now()/1000);
+
+  // ── PASS 1: Paginate all ERC20 transfers, collect raw receives ──
+  setSt('Fetching transfer history…');
+  const rawReceives=[];
+  const nonTaxable=[];
+  let cursor, page=0, totalScanned=0;
+
+  while (page<40) {
+    let url=`${MBASE}/${addr}/erc20/transfers?chain=eth&limit=100`;
+    if (cursor) url+=`&cursor=${cursor}`;
+    let data;
+    try {
+      const r=await fetch(url,{headers:{'X-API-Key':MK}});
+      data=await r.json();
+    } catch { break; }
+    const results=data.result||[];
+    if (!results.length) break;
+    totalScanned+=results.length;
+    page++;
+    setSt(`Scanning transfers — ${totalScanned} processed…`);
+
+    for (const t of results) {
+      if ((t.to_address||'').toLowerCase()!==addrL) continue;
+      if (t.possible_spam) continue;
+      const contract=(t.address||'').toLowerCase();
+      const sym=(t.token_symbol||'').toUpperCase();
+      const dec=parseInt(t.token_decimals||'18')||18;
+      const amount=parseFloat(t.value_decimal||(parseInt(t.value||'0')/Math.pow(10,dec)).toString())||0;
+      if (amount<=0) continue;
+      const type=classifyToken(contract,sym);
+      const ts=Math.floor(new Date(t.block_timestamp).getTime()/1000);
+      const yr=new Date(ts*1000).getUTCFullYear();
+      const dt=(t.block_timestamp||'').slice(0,10);
+
+      if (type==='wrap'||type==='lst') {
+        nonTaxable.push({type,date:dt,year:yr,token:sym,amount,incomeUSD:0,currentValueUSD:0,taxable:false});
+      } else {
+        const slug=AIRDROP_CONTRACTS[contract]||sym.toLowerCase();
+        rawReceives.push({type,date:dt,year:yr,token:sym,amount,slug,ts,taxable:true});
+      }
+    }
+    cursor=data.cursor;
+    if (!cursor) break;
+  }
+
+  setSt(`${totalScanned} transfers scanned — pricing ${rawReceives.length} taxable events…`);
+
+  // ── PASS 2: Batch current prices in ONE call ──
+  const slugsNeeded=[...new Set(rawReceives.map(r=>r.slug))];
+  const currentPrices=await llamaCurrentBatch(slugsNeeded);
+
+  // ── PASS 3: Historical prices — parallel batches of 10 to avoid rate limits ──
+  const events=[...nonTaxable];
+  const BATCH=10;
+  for (let i=0;i<rawReceives.length;i+=BATCH) {
+    if (i>0&&i%100===0) setSt(`Pricing events… ${i}/${rawReceives.length}`);
+    const chunk=rawReceives.slice(i,i+BATCH);
+    const historicalPrices=await Promise.all(chunk.map(r=>llamaHistorical(r.slug,r.ts)));
+    for (let j=0;j<chunk.length;j++) {
+      const r=chunk[j];
+      const priceAt=historicalPrices[j]||0;
+      const priceCur=currentPrices[r.slug]||0;
+      const incomeUSD=r.amount*priceAt;
+      if (incomeUSD<1) continue;
+      events.push({...r,priceAt,priceCur,incomeUSD,currentValueUSD:r.amount*priceCur});
+    }
+  }
+
+  // ── ETH staking/mining from wallet history (limited scan) ──
+  let histCursor, histPage=0;
+  while (histPage<5) {
+    let url=`${MBASE}/wallets/${addr}/history?chain=eth&limit=100`;
+    if (histCursor) url+=`&cursor=${histCursor}`;
+    let data;
+    try{const r=await fetch(url,{headers:{'X-API-Key':MK}});data=await r.json();}catch{break;}
+    const results=data.result||[];
+    if (!results.length) break;
+    histPage++;
+    for (const tx of results) {
+      const cat=(tx.category||'').toLowerCase();
+      if (cat!=='staking reward'&&cat!=='reward'&&cat!=='mining') continue;
+      const ts=Math.floor(new Date(tx.block_timestamp).getTime()/1000);
+      const yr=new Date(ts*1000).getUTCFullYear();
+      const dt=(tx.block_timestamp||'').slice(0,10);
+      const ethVal=parseFloat(tx.value||'0')/1e18;
+      if (ethVal<0.0001) continue;
+      const [priceAt,priceCur]=await Promise.all([llamaHistorical('eth',ts),llamaCurrentBatch(['eth']).then(p=>p['eth']||0)]);
+      const type=cat==='mining'?'mining_reward':'staking_reward';
+      events.push({type,date:dt,year:yr,token:'ETH',amount:ethVal,priceAt,priceCur,incomeUSD:ethVal*priceAt,currentValueUSD:ethVal*priceCur,taxable:true});
+    }
+    histCursor=data.cursor;
+    if (!histCursor) break;
+  }
+
+  // ── Holdings for harvest ──
+  setSt('Checking current holdings…');
+  let holdings=[];
+  try {
+    const r=await fetch(`${MBASE}/${addr}/erc20?chain=eth&limit=100`,{headers:{'X-API-Key':MK}});
+    const raw=await r.json();
+    const arr=(Array.isArray(raw)?raw:(raw.result||[])).filter(h=>!h.possible_spam).slice(0,80);
+    const syms=[...new Set(arr.map(h=>(h.symbol||'').toLowerCase()).filter(Boolean))];
+    const prices=await llamaCurrentBatch(syms);
+    holdings=arr.map(h=>{
+      const s=(h.symbol||'').toLowerCase();
+      const dec=parseInt(h.decimals||'18')||18;
+      const amt=parseInt(h.balance||'0')/Math.pow(10,dec);
+      return{token:(h.symbol||'').toUpperCase(),amount:amt,currentValue:amt*(prices[s]||0)};
+    }).filter(h=>h.currentValue>5).sort((a,b)=>b.currentValue-a.currentValue).slice(0,20);
+  } catch {}
+
+  return buildResult(addr,'Ethereum + L2s (EVM)',totalScanned,events,holdings);
+}
+
+/* ── Solana Scan ── */
+async function scanSOL(addr) {
+  setSt('Fetching Solana transactions…');
+  const rawReceives=[];
+  let before, totalTxs=0;
+  for (let page=0;page<20;page++) {
+    let url=`${HELIUS}/addresses/${addr}/transactions?api-key=${HK}&limit=100`;
+    if (before) url+=`&before=${before}`;
+    let txs;
+    try{const r=await fetch(url);txs=await r.json();if(!Array.isArray(txs)||!txs.length)break;}catch{break;}
+    totalTxs+=txs.length;
+    setSt(`Scanning ${totalTxs} Solana transactions…`);
+    for (const tx of txs) {
+      const ts=tx.timestamp||0;
+      const yr=new Date(ts*1000).getUTCFullYear();
+      const dt=new Date(ts*1000).toISOString().slice(0,10);
+      for (const tt of (tx.tokenTransfers||[])) {
+        if (tt.toUserAccount!==addr) continue;
+        const mint=tt.mint||'';
+        const amount=parseFloat(tt.tokenAmount||'0')||0;
+        if (amount<=0) continue;
+        const slug=SOL_AIRDROP[mint];
+        if (!slug) continue;
+        rawReceives.push({type:'airdrop',date:dt,year:yr,token:slug.toUpperCase(),amount,slug,ts,taxable:true});
+      }
+      if (tx.type==='STAKING_REWARD'||tx.type==='CLAIM_REWARDS') {
+        for (const nt of (tx.nativeTransfers||[])) {
+          if (nt.toUserAccount!==addr) continue;
+          const amount=(nt.amount||0)/1e9;
+          if (amount<0.0001) continue;
+          rawReceives.push({type:'staking_reward',date:dt,year:yr,token:'SOL',amount,slug:'sol',ts,taxable:true});
+        }
+      }
+    }
+    before=txs[txs.length-1]?.signature;
+  }
+
+  // Batch price
+  const slugsNeeded=[...new Set(rawReceives.map(r=>r.slug))];
+  const currentPrices=await llamaCurrentBatch(slugsNeeded);
+  const events=[];
+  for (let i=0;i<rawReceives.length;i+=10) {
+    const chunk=rawReceives.slice(i,i+10);
+    const historicalPrices=await Promise.all(chunk.map(r=>llamaHistorical(r.slug,r.ts)));
+    for (let j=0;j<chunk.length;j++) {
+      const r=chunk[j];
+      const priceAt=historicalPrices[j]||0;
+      const priceCur=currentPrices[r.slug]||0;
+      const incomeUSD=r.amount*priceAt;
+      if (incomeUSD<1) continue;
+      events.push({...r,priceAt,priceCur,incomeUSD,currentValueUSD:r.amount*priceCur});
+    }
+  }
+
+  let solBalance=0;
+  try{const r=await fetch(HRPC,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'getBalance',params:[addr]})});const d=await r.json();solBalance=(d.result?.value||0)/1e9;}catch{}
+  const solPrice=await llamaCurrentBatch(['sol']).then(p=>p['sol']||0);
+  const holdings=solBalance>0?[{token:'SOL',amount:solBalance,currentValue:solBalance*solPrice}]:[];
+  return buildResult(addr,'Solana',totalTxs,events,holdings);
+}
+
+/* ── Result Builder ── */
+function buildResult(wallet,chain,totalTxs,events,holdings) {
+  const taxable=events.filter(e=>e.taxable);
+  let totalIncomeUSD=0,currentValueUSD=0;
+  const byYear={};
+  for (const e of taxable) {
+    totalIncomeUSD+=e.incomeUSD; currentValueUSD+=e.currentValueUSD;
+    if (!byYear[e.year]) byYear[e.year]={income:0,currentValue:0,savings:0};
+    byYear[e.year].income+=e.incomeUSD; byYear[e.year].currentValue+=e.currentValueUSD;
+  }
+  const phantomLoss=Math.max(0,totalIncomeUSD-currentValueUSD);
+  const airdropIncome =events.filter(e=>e.type==='airdrop').reduce((s,e)=>s+e.incomeUSD,0);
+  const stakingIncome =events.filter(e=>e.type==='staking_reward').reduce((s,e)=>s+e.incomeUSD,0);
+  const miningIncome  =events.filter(e=>e.type==='mining_reward').reduce((s,e)=>s+e.incomeUSD,0);
+  const wrapEvents    =events.filter(e=>e.type==='wrap');
+  const lstEvents     =events.filter(e=>e.type==='lst');
+  const airdropSavings =Math.round(airdropIncome*SHORT);
+  const stakingSavings =Math.round(stakingIncome*SHORT);
+  const miningSavings  =Math.round(miningIncome*SHORT);
+  const wrapSavings    =Math.round(wrapEvents.reduce((s,e)=>s+(e.amount*(e.priceCur||0)),0)*SHORT);
+  const lstSavings     =Math.round(lstEvents.reduce((s,e)=>s+(e.amount*(e.priceCur||0)),0)*SHORT);
+  const harvestSavings =Math.round(phantomLoss*LONG);
+  const totalSavings   =airdropSavings+stakingSavings+miningSavings+wrapSavings+lstSavings+harvestSavings;
+  for (const yr of Object.keys(byYear)){const y=byYear[parseInt(yr)];y.savings=Math.round(Math.max(0,y.income-y.currentValue)*LONG);}
+  return{wallet,chain,totalTxs,events,totalIncomeUSD,currentValueUSD,phantomLossUSD:phantomLoss,airdropIncome,stakingIncome,miningIncome,airdropSavings,stakingSavings,miningSavings,wrapSavings,lstSavings,harvestSavings,totalSavingsEstimate:totalSavings,byYear,currentHoldings:holdings};
+}
+
+/* ── Render Results ── */
+let _lastResult=null;
+function renderResults(d) {
+  _lastResult=d;
+  const az=document.getElementById('az-results');
+  if (!az) return;
+  const airdropEvents=d.events.filter(e=>e.type==='airdrop');
+  const stakingEvents=d.events.filter(e=>e.type==='staking_reward');
+  const miningEvents =d.events.filter(e=>e.type==='mining_reward');
+  const wrapEvents   =d.events.filter(e=>e.type==='wrap');
+  const lstEvents    =d.events.filter(e=>e.type==='lst');
+  const taxable      =d.events.filter(e=>e.taxable);
+  const total        =d.totalSavingsEstimate||0;
+
+  az.innerHTML=`
+    <div class="res-grid">
+      <div class="res-section">
+        <div class="res-title">Wallet Overview</div>
+        <div class="res-row"><span>Network</span><strong>${d.chain}</strong></div>
+        <div class="res-row"><span>Transfers Scanned</span><strong>${(d.totalTxs||0).toLocaleString()}</strong></div>
+        <div class="res-row"><span>Taxable Events Identified</span><strong class="res-red">${taxable.length.toLocaleString()}</strong></div>
+        <div class="res-row"><span>Gross Income (Standard Filing)</span><strong class="res-red">${fmt(d.totalIncomeUSD)}</strong></div>
+        <div class="res-row"><span>Current Token Value</span><strong>${fmt(d.currentValueUSD)}</strong></div>
+      </div>
+      <div class="res-section">
+        <div class="res-title">Savings Breakdown</div>
+        <div class="res-row">
+          <span>🪂 Airdrop Deferral<br><small>${airdropEvents.length} event${airdropEvents.length!==1?'s':''} · ${fmt(d.airdropIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.airdropSavings)}</strong>
+        </div>
+        <div class="res-row">
+          <span>🔒 Staking Reward Deferral<br><small>${stakingEvents.length} event${stakingEvents.length!==1?'s':''} · ${fmt(d.stakingIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.stakingSavings)}</strong>
+        </div>
+        <div class="res-row">
+          <span>⛏ Mining Reward Deferral<br><small>${miningEvents.length} event${miningEvents.length!==1?'s':''} · ${fmt(d.miningIncome)} deferred</small></span>
+          <strong class="res-green">${fmt(d.miningSavings)}</strong>
+        </div>
+        <div class="res-row">
+          <span>🔁 Token Wrapping — Non-Taxable<br><small>${wrapEvents.length} event${wrapEvents.length!==1?'s':''} · ETH→wETH, BTC→wBTC excluded</small></span>
+          <strong class="res-green">${fmt(d.wrapSavings)}</strong>
+        </div>
+        <div class="res-row">
+          <span>🌊 Liquid Staking — Non-Taxable<br><small>${lstEvents.length} event${lstEvents.length!==1?'s':''} · ETH→stETH, rETH, cbETH excluded</small></span>
+          <strong class="res-green">${fmt(d.lstSavings)}</strong>
+        </div>
+        <div class="res-row">
+          <span>📉 Tax-Loss Harvesting<br><small>Depreciated holdings offsetting capital gains</small></span>
+          <strong class="res-green">${fmt(d.harvestSavings)}</strong>
+        </div>
+        <div class="res-row res-subtotal">
+          <span>Estimated Total Tax Savings</span>
+          <strong class="res-orange">${fmt(total)}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="res-cta-block">
+      <div class="res-cta-text">
+        <strong>Get your full year-by-year breakdown — free.</strong>
+        <span>We'll send a detailed report with every event, savings by year, and a custom strategy recommendation.</span>
+      </div>
+      <form class="res-form" id="res-form" onsubmit="submitReport(event)">
+        <input type="text"  id="rep-name"  placeholder="Your name"  required autocomplete="name"/>
+        <input type="email" id="rep-email" placeholder="Your email" required autocomplete="email"/>
+        <button type="submit" id="rep-btn">Email My Report →</button>
+      </form>
+      <div class="res-form-msg" id="res-form-msg"></div>
+    </div>`;
+  az.classList.add('on');
+}
+
+/* ── Email Report ── */
+let _lastResult2=null;
+async function submitReport(e) {
+  e.preventDefault();
+  const name=(document.getElementById('rep-name')?.value||'').trim();
+  const email=(document.getElementById('rep-email')?.value||'').trim();
+  const btn=document.getElementById('rep-btn');
+  const msg=document.getElementById('res-form-msg');
+  if (!name||!email) return;
+  btn.disabled=true; btn.textContent='Sending…';
+  const d=_lastResult||{};
+  const f=n=>n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1e3?'$'+Math.round(n).toLocaleString():'$'+Math.round(n);
+  const taxable=(d.events||[]).filter(e=>e.taxable);
+  const byYearRows=Object.entries(d.byYear||{}).sort(([a],[b])=>parseInt(b)-parseInt(a)).map(([yr,y])=>`<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;font-weight:600;">${yr}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${f(y.income)}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${f(y.currentValue)}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;color:#f07814;font-weight:700;">~${f(y.savings)}</td></tr>`).join('');
+  const evtRows=taxable.sort((a,b)=>b.incomeUSD-a.incomeUSD).slice(0,30).map(ev=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;">${ev.date}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;text-transform:capitalize;">${(ev.type||'').replace(/_/g,' ')}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;font-weight:600;">${ev.token}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#dc2626;">${f(ev.incomeUSD)}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#16a34a;">${f(ev.currentValueUSD)}</td></tr>`).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body style="margin:0;padding:0;background:#faf8f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><div style="max-width:660px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08);"><div style="background:#1a1a1a;padding:28px 36px;"><div style="font-size:20px;font-weight:700;color:#fff;">Securus Advisors</div><div style="font-size:12px;color:#888;margin-top:3px;">Crypto · High-Net-Worth · Business Tax</div></div><div style="padding:28px 36px;background:linear-gradient(135deg,#fff9f4,#fff);"><div style="font-size:12px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Your Crypto Tax Report</div><div style="font-size:22px;font-weight:800;color:#1a1a1a;">Hi ${name}, here's your breakdown.</div><div style="font-size:12px;color:#6b7280;margin-top:6px;">Wallet: <code style="background:#f5f5f5;padding:2px 8px;border-radius:4px;">${d.wallet||''}</code></div></div><div style="margin:0 36px;padding:24px;background:#fff9f0;border-radius:10px;border:2px solid #f07814;text-align:center;"><div style="font-size:11px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;">Estimated Total Tax Savings</div><div style="font-size:46px;font-weight:900;color:#f07814;line-height:1.1;margin:6px 0;">${f(d.totalSavingsEstimate||0)}</div><div style="font-size:12px;color:#9ca3af;">${(d.totalTxs||0).toLocaleString()} transfers scanned</div></div><div style="padding:24px 36px;"><div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:12px;">Tax Positions Applied</div><table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;"><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🪂 Airdrop Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.airdropIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.airdropSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔒 Staking Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.stakingIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.stakingSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">⛏ Mining Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.miningIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.miningSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔁 Token Wrapping</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='wrap').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.wrapSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🌊 Liquid Staking</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='lst').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.lstSavings||0)}</td></tr><tr><td style="padding:8px 0;">📉 Tax-Loss Harvesting</td><td style="padding:8px 0;text-align:right;color:#6b7280;">Unrealized losses</td><td style="padding:8px 0 0 12px;text-align:right;color:#16a34a;font-weight:700;">${f(d.harvestSavings||0)}</td></tr></table>${byYearRows?`<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Savings by Tax Year</div><table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px;"><thead><tr style="background:#f9fafb;"><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Year</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Current Value</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Est. Savings</th></tr></thead><tbody>${byYearRows}</tbody></table>`:''}<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Top Income Events</div><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#f9fafb;"><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Date</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Type</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Token</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Current Value</th></tr></thead><tbody>${evtRows}</tbody></table></div><div style="margin:0 36px 28px;padding:24px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:10px;text-align:center;"><div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;">Ready to lock in your savings?</div><div style="font-size:12px;color:#9ca3af;margin-bottom:18px;">Our CPAs build a custom strategy to recover every dollar in this report.</div><a href="https://calendly.com/michaelcpa" style="display:inline-block;background:#f07814;color:#fff;font-weight:700;font-size:13px;padding:12px 28px;border-radius:8px;text-decoration:none;">Schedule a Free Consultation →</a></div><div style="padding:16px 36px;border-top:1px solid #f0ede8;text-align:center;"><div style="font-size:10px;color:#9ca3af;">Securus Advisors · Licensed CPAs · All 50 States</div><div style="font-size:10px;color:#9ca3af;margin-top:3px;">Informational only — not tax advice.</div></div></div></body></html>`;
+  try {
+    const res=await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Authorization':'Bearer '+RK,'Content-Type':'application/json'},body:JSON.stringify({from:'Securus Advisors <onboarding@resend.dev>',to:[email],bcc:['michael@securusadvisors.com'],subject:'Your Crypto Tax Report — '+f(d.totalSavingsEstimate||0)+' in Potential Savings',html})});
+    if (res.ok){msg.textContent='✓ Report sent! Check your inbox (and spam folder just in case).';msg.style.color='#1A7A40';document.getElementById('res-form').style.display='none';}
+    else throw new Error();
+  } catch {
+    msg.textContent='✓ We\'ll send your report to '+email+' shortly.';
+    msg.style.color='#1A7A40';
+    document.getElementById('res-form').style.display='none';
+  }
+}
+
+/* ── Main Entry ── */
+async function doAnalyze() {
+  const raw=(document.getElementById('waddr')?.value||'').trim();
+  if (!raw){setSt('Please enter a wallet address or ENS name.',true);return;}
+  const btn=document.getElementById('az-btn');
+  if (btn) btn.disabled=true;
+  const az=document.getElementById('az-results');
+  if (az){az.classList.remove('on');az.innerHTML='';}
+  setSt('Resolving address…');
+  try {
+    let addr=raw;
+    if (raw.endsWith('.eth')||(raw.includes('.')&&!raw.includes(':')&&!raw.startsWith('0x'))){
+      setSt('Resolving ENS name…');
+      const r=await fetch(`${MBASE}/resolve/ens/${encodeURIComponent(raw)}`,{headers:{'X-API-Key':MK}});
+      const d=await r.json();
+      if (d.address?.startsWith('0x')) addr=d.address;
+      else{setSt('Could not resolve ENS name. Try the 0x address.',true);if(btn)btn.disabled=false;return;}
+    }
+    const chain=detectChain(addr);
+    const result=chain==='sol'?await scanSOL(addr):await scanEVM(addr);
+    setSt('');
+    renderResults(result);
+  } catch(err){
+    setSt('Scan failed. Please check the address and try again.',true);
+    console.error(err);
+  } finally {
+    if(btn) btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
