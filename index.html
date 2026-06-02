@@ -128,19 +128,19 @@ img{display:block;max-width:100%;}
 /* Hero body */
 .hero-body{position:relative;z-index:2;flex:1;display:flex;align-items:center;}
 .hero-inner{
-  max-width:var(--max);margin:0 auto;
-  padding:88px 48px 60px;width:100%;
-  display:grid;grid-template-columns:1fr 460px;gap:52px;align-items:center;
+  max-width:780px;margin:0 auto;
+  padding:100px 48px 72px;width:100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
 }
 
 /* LEFT */
-.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:10px;}
 .hero-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--or);}
 .hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;}
 .hero-h1 em{font-style:normal;color:var(--or);}
-.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:480px;margin-bottom:32px;}
+.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:36px;}
 .hero-sub strong{color:var(--ink);font-weight:600;}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;justify-content:center;}
 .hbtn-solid{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);color:#fff;padding:14px 30px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all .18s;box-shadow:0 6px 22px rgba(0,0,0,.22);}
 .hbtn-solid:hover{background:linear-gradient(135deg,#2C2420 0%,var(--ink) 100%);transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
 .hbtn-solid svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;}
@@ -323,7 +323,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 @media(max-width:1060px){
   .nav-links{display:none;}
   .nav-burger{display:flex;}
-  .hero-inner{grid-template-columns:1fr;gap:40px;padding:70px 40px 52px;}
+  .hero-inner{padding:80px 32px 52px;}
   .hero-card{max-width:100%;}
   .orb-a{width:45%;}
   .orb-b-glow,.orb-c-1{width:360px;height:360px;}
@@ -341,7 +341,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 @media(max-width:767px){
   .nav-inner{padding:0 20px;}
   .nav-login{display:none;} /* shown in mobile menu instead */
-  .hero-inner{padding:56px 20px 40px;gap:32px;}
+  .hero-inner{padding:60px 20px 44px;}
   .hero-h1{font-size:clamp(38px,10vw,56px);letter-spacing:-2px;}
   .hero-sub{font-size:16px;}
   .hbtn-solid,.hbtn-outline{padding:12px 22px;font-size:13px;}
@@ -371,7 +371,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 /* Very small: <400px */
 @media(max-width:400px){
   .hero-h1{font-size:36px;}
-  .hero-btns{flex-direction:column;align-items:flex-start;}
+  .hero-btns{flex-direction:column;align-items:center;}
   .hbtn-solid,.hbtn-outline{width:100%;justify-content:center;}
   
   .about-boxes{grid-template-columns:1fr;}
@@ -480,42 +480,21 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   </div>
   <div class="hero-body">
     <div class="hero-inner">
-
-      <!-- LEFT -->
-      <div>
-        <div class="hero-eyebrow">Crypto · High-Net-Worth · Business Tax</div>
-        <h1 class="hero-h1">
-          Your tax position<br>should be as strategic<br>as <em>your investments.</em>
-        </h1>
-        <p class="hero-sub">
-          Your tax bill isn't just a number — it's a decision. Securus combines <strong>Big 4 expertise</strong> with deep crypto-native knowledge to serve <strong>crypto investors, high-net-worth individuals, and business owners</strong> — recovering what's yours, legally and permanently.
-        </p>
-        <div class="hero-btns">
-          <a href="https://calendly.com/michaelcpa" class="hbtn-solid">
-            Schedule a Consultation
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </a>
-          <a href="#press-articles" class="hbtn-outline">Explore Tax Strategies →</a>
-        </div>
-        
+      <div class="hero-eyebrow">Crypto · High-Net-Worth · Business Tax</div>
+      <h1 class="hero-h1">
+        Your tax position<br>should be as strategic<br>as <em>your investments.</em>
+      </h1>
+      <p class="hero-sub">
+        Your tax bill isn't just a number — it's a decision. Securus combines <strong>Big 4 expertise</strong> with deep crypto-native knowledge to serve <strong>crypto investors, high-net-worth individuals, and business owners</strong> — recovering what's yours, legally and permanently.
+      </p>
+      <div class="hero-btns">
+        <a href="https://calendly.com/michaelcpa" class="hbtn-solid">
+          Schedule a Consultation
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="/crypto-tax-calculator.html" class="hbtn-outline">Free Tax Savings Calculator →</a>
       </div>
-
-      <!-- RIGHT — crypto analyzer -->
-      <div class="hero-card" id="hero-card">
-        <div class="hcard-header">
-          <div class="hcard-title">⬡ Crypto Tax Savings Calculator</div>
-          <div class="hcard-sub">Enter any wallet address or ENS name. We'll calculate your taxable events and potential savings — read-only, no keys required.</div>
-        </div>
-        <div class="hcard-body">
-          <div class="wrow">
-            <input class="win" id="waddr" type="text" placeholder="0x…, wallet address, or ENS name" autocomplete="off" spellcheck="false"/>
-            <button class="wbtn" id="az-btn" onclick="doAnalyze()">Analyze →</button>
-          </div>
-          <div class="az-status" id="az-status"></div>
-          <div class="az-results" id="az-results"></div>
-        </div>
-      </div>
-
+      <p class="hero-trust">Trusted by <strong>500+ crypto investors</strong> · Big 4 background · Licensed in all 50 states</p>
     </div>
   </div>
 
