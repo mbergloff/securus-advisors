@@ -128,19 +128,19 @@ img{display:block;max-width:100%;}
 /* Hero body */
 .hero-body{position:relative;z-index:2;flex:1;display:flex;align-items:center;}
 .hero-inner{
-  max-width:760px;margin:0 auto;
+  max-width:700px;margin:0 auto;
   padding:108px 48px 80px;width:100%;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
+  display:flex;flex-direction:column;align-items:flex-start;text-align:left;
 }
 
 /* LEFT */
-.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;width:100%;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
 .hero-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--or);}
-.hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;text-align:center;width:100%;}
+.hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;text-align:left;}
 .hero-h1 em{font-style:normal;color:var(--or);}
-.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:580px;margin-bottom:40px;text-align:center;}
+.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:580px;margin-bottom:40px;text-align:left;}
 .hero-sub strong{color:var(--ink);font-weight:600;}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;justify-content:center;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0;}
 .hbtn-solid{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);color:#fff;padding:14px 30px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all .18s;box-shadow:0 6px 22px rgba(0,0,0,.22);}
 .hbtn-solid:hover{background:linear-gradient(135deg,#2C2420 0%,var(--ink) 100%);transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
 .hbtn-solid svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;}
@@ -209,14 +209,14 @@ img{display:block;max-width:100%;}
 /* ═══ AS FEATURED IN — hero bottom, straight lines ═══ */
 .hero-press{
   position:relative;z-index:2;
-  border-top:1px solid var(--fog); /* straight horizontal line */
-  background:var(--hero-bg);
-  padding:16px 0;
+  border-top:1px solid rgba(0,0,0,.07);
+  background:#fff;
+  padding:28px 0;
 }
-.hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
-.hp-lbl{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C0B8B0;white-space:nowrap;padding-right:22px;border-right:1px solid var(--fog);flex-shrink:0;margin-right:4px;}
-.hp-logos{display:flex;flex:1;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;min-width:0;}
-.hpl{font-weight:800;color:#D8D0C4;transition:color .2s;cursor:default;white-space:nowrap;}
+.hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:nowrap;gap:12px;}
+.hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#aaa;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
+.hp-logos{display:flex;flex:1;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:4px 0;min-width:0;}
+.hpl{font-weight:800;color:#999;letter-spacing:-.3px;transition:color .2s;cursor:default;white-space:nowrap;font-size:15px;}
 .hpl:hover{color:var(--muted);}
 .hpl.xl{font-size:16px;letter-spacing:-.6px;}
 .hpl.lg{font-size:12px;}
@@ -323,7 +323,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 @media(max-width:1060px){
   .nav-links{display:none;}
   .nav-burger{display:flex;}
-  .hero-inner{padding:80px 32px 52px;}
+  .hero-inner{padding:80px 32px 52px;align-items:flex-start;text-align:left;}
   .hero-card{max-width:100%;}
   .orb-a{width:45%;}
   .orb-b-glow,.orb-c-1{width:360px;height:360px;}
@@ -341,17 +341,18 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 @media(max-width:767px){
   .nav-inner{padding:0 20px;}
   .nav-login{display:none;} /* shown in mobile menu instead */
-  .hero-inner{padding:60px 20px 44px;}
+  .hero-inner{padding:60px 20px 44px;align-items:flex-start;text-align:left;}
   .hero-h1{font-size:clamp(38px,10vw,56px);letter-spacing:-2px;}
   .hero-sub{font-size:16px;}
-  .hbtn-solid,.hbtn-outline{padding:12px 22px;font-size:13px;}
+  .hbtn-solid,.hbtn-outline{padding:14px 24px;font-size:14px;width:100%;justify-content:center;box-sizing:border-box;}
   .hero-btns{gap:10px;}
   .orb-a{width:180px;opacity:.6;}
   .orb-a-inner{width:280px;height:280px;}
   .orb-c-1{width:220px;height:220px;}
   .orb-b-glow{width:220px;height:220px;}
-  .hero-press-inner{padding:0 20px;gap:8px;}
-  .hp-lbl{padding-right:14px;margin-right:0;}
+  .hero-press-inner{padding:16px 20px;gap:10px;flex-wrap:wrap;}
+  .hp-lbl{display:none;}
+  .hp-logos{justify-content:center;gap:6px 20px;}
   .hp-logos{gap:10px 14px;}
   .hpl.xl{font-size:13px;}
   .hpl.lg{font-size:11px;}
@@ -371,7 +372,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 /* Very small: <400px */
 @media(max-width:400px){
   .hero-h1{font-size:36px;}
-  .hero-btns{flex-direction:column;align-items:center;width:100%;}
+  .hero-btns{flex-direction:column;align-items:flex-start;width:100%;}
   .hbtn-solid,.hbtn-outline{width:100%;justify-content:center;}
   
   .about-boxes{grid-template-columns:1fr;}
@@ -442,6 +443,15 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .hero-cred-item svg{width:13px;height:13px;stroke:#f07814;flex-shrink:0;}
 .hero-cred-sep{color:#ccc;font-size:12px;line-height:1;}
 @media(max-width:600px){.hero-cred-sep{display:none;}.hero-creds{gap:8px;}.hero-cred-item{font-size:11px;}}
+
+/* Very small phones */
+@media(max-width:480px){
+  .hero-h1{font-size:34px;letter-spacing:-1.5px;}
+  .hero-sub{font-size:15px;}
+  .hpl.sm{display:none;}
+  .hpl{font-size:13px;}
+  .hp-logos{gap:5px 16px;}
+}
 </style>
 </head>
 <body>
