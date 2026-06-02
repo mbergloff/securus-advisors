@@ -435,6 +435,13 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .res-subtotal { border-top: 2px solid #f07814 !important; margin-top: 8px; padding-top: 10px; }
 .res-subtotal span { font-weight: 700 !important; color: #1a1a1a !important; }
 .res-orange { color: #f07814 !important; font-size: 1.1em; }
+
+/* ── Hero credential row ── */
+.hero-creds{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 14px;margin-top:6px;}
+.hero-cred-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#888;letter-spacing:.01em;}
+.hero-cred-item svg{width:13px;height:13px;stroke:#f07814;flex-shrink:0;}
+.hero-cred-sep{color:#ccc;font-size:12px;line-height:1;}
+@media(max-width:600px){.hero-cred-sep{display:none;}.hero-creds{gap:8px;}.hero-cred-item{font-size:11px;}}
 </style>
 </head>
 <body>
@@ -494,7 +501,23 @@ footer{background:#0F0C08;padding:60px 0 28px;}
         </a>
         <a href="/crypto-tax-calculator.html" class="hbtn-outline">Free Tax Savings Calculator →</a>
       </div>
-      <p class="hero-trust">Trusted by <strong>500+ crypto investors</strong> · Big 4 background · Licensed in all 50 states</p>
+      <div class="hero-creds">
+        <div class="hero-cred-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg>
+          <span>Harvard &amp; NYU Law Partner</span>
+        </div>
+        <div class="hero-cred-sep">·</div>
+        <div class="hero-cred-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>IRS-Recognized Crypto Positions</span>
+        </div>
+        <div class="hero-cred-sep">·</div>
+        <div class="hero-cred-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>Year-Round Strategy, Not Just Filing</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
