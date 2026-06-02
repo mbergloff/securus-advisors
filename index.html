@@ -128,17 +128,17 @@ img{display:block;max-width:100%;}
 /* Hero body */
 .hero-body{position:relative;z-index:2;flex:1;display:flex;align-items:center;}
 .hero-inner{
-  max-width:780px;margin:0 auto;
-  padding:100px 48px 72px;width:100%;
+  max-width:760px;margin:0 auto;
+  padding:108px 48px 80px;width:100%;
   display:flex;flex-direction:column;align-items:center;text-align:center;
 }
 
 /* LEFT */
-.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--or);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;width:100%;}
 .hero-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--or);}
-.hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;}
+.hero-h1{font-size:clamp(48px,5.8vw,76px);font-weight:900;line-height:1.03;letter-spacing:-3px;color:var(--ink);margin-bottom:22px;text-align:center;width:100%;}
 .hero-h1 em{font-style:normal;color:var(--or);}
-.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:36px;}
+.hero-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:580px;margin-bottom:40px;text-align:center;}
 .hero-sub strong{color:var(--ink);font-weight:600;}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;justify-content:center;}
 .hbtn-solid{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);color:#fff;padding:14px 30px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:all .18s;box-shadow:0 6px 22px rgba(0,0,0,.22);}
@@ -371,7 +371,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 /* Very small: <400px */
 @media(max-width:400px){
   .hero-h1{font-size:36px;}
-  .hero-btns{flex-direction:column;align-items:center;}
+  .hero-btns{flex-direction:column;align-items:center;width:100%;}
   .hbtn-solid,.hbtn-outline{width:100%;justify-content:center;}
   
   .about-boxes{grid-template-columns:1fr;}
@@ -449,14 +449,14 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 <!-- NAV -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="/" class="nav-logo">
+    <a href="https://securusadvisors.com" class="nav-logo">
       <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
     </a>
     <div class="nav-links">
-      <a href="/about/">About Us</a>
-      <a href="/services/">Services</a>
-      <a href="/crypto-tax/">Crypto Tax</a>
-      <a href="/contact/">Contact</a>
+      <a href="/#about">About</a>
+      <a href="/services.html">Services</a>
+      <a href="/crypto-tax.html">Crypto Tax</a>
+      <a href="/#contact">Contact</a>
     </div>
     <a href="https://portal.corvisors.com/login" class="nav-login">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -467,10 +467,10 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     </button>
   </div>
   <div class="nav-mobile" id="nav-mobile">
-    <a href="/about/" onclick="toggleMenu()">About Us</a>
-    <a href="/services/" onclick="toggleMenu()">Services</a>
-    <a href="/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
-    <a href="/contact/" onclick="toggleMenu()">Contact</a>
+    <a href="/#about" onclick="toggleMenu()">About</a>
+    <a href="/services.html" onclick="toggleMenu()">Services</a>
+    <a href="/crypto-tax.html" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="/#contact" onclick="toggleMenu()">Contact</a>
     <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Consultation</a>
   </div>
 </nav>
@@ -499,25 +499,8 @@ footer{background:#0F0C08;padding:60px 0 28px;}
           Schedule a Consultation
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
-        <a href="/crypto-tax-calculator.html" class="hbtn-outline">Free Tax Savings Calculator →</a>
+        <a href="/crypto-tax-calculator" class="hbtn-outline">Free Tax Savings Calculator →</a>
       </div>
-      <div class="hero-creds">
-        <div class="hero-cred-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg>
-          <span>Harvard &amp; NYU Law Partner</span>
-        </div>
-        <div class="hero-cred-sep">·</div>
-        <div class="hero-cred-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>IRS-Recognized Crypto Positions</span>
-        </div>
-        <div class="hero-cred-sep">·</div>
-        <div class="hero-cred-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span>Year-Round Strategy, Not Just Filing</span>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -601,9 +584,9 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     <h2 class="sh" style="margin-top:4px;">Navigate complexity.<br>Capture opportunity.</h2>
     <p class="ssub">We build strategies that turn your tax position into a long-term advantage — not a year-end surprise.</p>
     <div class="svc-grid">
-      <div class="svc"><div class="svc-ico">⬡</div><div class="svc-t">Crypto & Digital Assets</div><div class="svc-b">HIFO cost basis, DeFi income recognition, airdrop phantom tax mitigation, NFT treatment, staking rewards, hack victim IRC §165 theft-loss claims, and IRS audit defense.</div><a href="/crypto-tax/" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
-      <div class="svc"><div class="svc-ico">◆</div><div class="svc-t">High-Net-Worth Planning</div><div class="svc-b">Tax minimization for incomes over $500K — QOZ investments, charitable vehicles, Roth conversions, estate structures, and multi-state exposure management.</div><a href="/services/" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
-      <div class="svc"><div class="svc-ico">▲</div><div class="svc-t">Business Tax Strategy</div><div class="svc-b">Entity optimization, S-Corp elections, R&D credits, bonus depreciation, MoonTax partnership, and quarterly proactive planning for founders at every growth stage.</div><a href="/services/" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+      <div class="svc"><div class="svc-ico">⬡</div><div class="svc-t">Crypto & Digital Assets</div><div class="svc-b">HIFO cost basis, DeFi income recognition, airdrop phantom tax mitigation, NFT treatment, staking rewards, hack victim IRC §165 theft-loss claims, and IRS audit defense.</div><a href="/crypto-tax.html" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+      <div class="svc"><div class="svc-ico">◆</div><div class="svc-t">High-Net-Worth Planning</div><div class="svc-b">Tax minimization for incomes over $500K — QOZ investments, charitable vehicles, Roth conversions, estate structures, and multi-state exposure management.</div><a href="/services.html" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+      <div class="svc"><div class="svc-ico">▲</div><div class="svc-t">Business Tax Strategy</div><div class="svc-b">Entity optimization, S-Corp elections, R&D credits, bonus depreciation, MoonTax partnership, and quarterly proactive planning for founders at every growth stage.</div><a href="/services.html" class="svc-lnk">Explore <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a></div>
     </div>
   </div>
 </section>
@@ -716,25 +699,25 @@ footer{background:#0F0C08;padding:60px 0 28px;}
       </div>
       <div class="ft-col">
         <div class="ft-ch">Services</div>
-        <a href="/crypto-tax/">Crypto Tax Planning</a>
-        <a href="/airdrop-tax/">Airdrop &amp; Phantom Income</a>
-        <a href="/crypto-hack-tax/">Hack &amp; Theft Loss (IRC §165)</a>
-        <a href="/services/">DeFi &amp; Yield Tax</a>
-        <a href="/services/">IRS Audit Defense</a>
-        <a href="/services/">1099-DA Compliance</a>
+        <a href="/crypto-tax.html">Crypto Tax Planning</a>
+        <a href="/airdrop-tax.html">Airdrop &amp; Phantom Income</a>
+        <a href="/crypto-hack-tax.html">Hack &amp; Theft Loss (IRC §165)</a>
+        <a href="/services.html">DeFi &amp; Yield Tax</a>
+        <a href="/services.html">IRS Audit Defense</a>
+        <a href="/services.html">1099-DA Compliance</a>
       </div>
       <div class="ft-col">
         <div class="ft-ch">Company</div>
-        <a href="/about/">About Us</a>
-        <a href="/services/">All Services</a>
-        <a href="/contact/">Contact</a>
+        <a href="/#about">About</a>
+        <a href="/services.html">All Services</a>
+        <a href="/#contact">Contact</a>
         <a href="https://portal.corvisors.com/login">Client Portal</a>
       </div>
       <div class="ft-col">
         <div class="ft-ch">Get Started</div>
         <a href="https://calendly.com/michaelcpa">Schedule a Consultation</a>
-        <a href="/contact/">Free Tax Analysis</a>
-        <a href="/crypto-tax/">Crypto Tax Strategy</a>
+        <a href="/#contact">Free Tax Analysis</a>
+        <a href="/crypto-tax.html">Crypto Tax Strategy</a>
         <a href="mailto:info@securusadvisors.com">info@securusadvisors.com</a>
       </div>
     </div>
