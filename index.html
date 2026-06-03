@@ -179,7 +179,7 @@ img{display:block;max-width:100%;}
 
 /* ═══ AS FEATURED IN — hero bottom, straight lines ═══ */
 .hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:nowrap;gap:12px;}
-.hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#aaa;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
+.hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
 .hp-logos{display:flex;flex:1;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:4px 0;min-width:0;}
 .hpl{font-size:13px;font-weight:800;color:#B8B0A6;letter-spacing:.03em;white-space:nowrap;padding:0 10px;}
 .hpl:hover{color:var(--muted);}
@@ -602,7 +602,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .nav-cta{
   display:inline-flex;
   align-items:center;
-  background:var(--or);
+  background:linear-gradient(135deg,#2a2a2a 0%,#000 100%);
   color:#fff !important;
   font-size:13px;
   font-weight:700;
@@ -617,7 +617,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   transform:translateY(-6px);
   transition:opacity .3s ease, transform .3s ease;
 }
-.nav-cta:hover{background:#d96a0f;color:#fff !important;}
+.nav-cta:hover{background:linear-gradient(135deg,#3a3a3a 0%,#111 100%);color:#fff !important;}
 .nav-cta.visible{
   opacity:1;
   pointer-events:auto;
@@ -626,6 +626,16 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 /* hide on mobile — mobile nav already has the CTA */
 @media(max-width:768px){
   .nav-cta{display:none !important;}
+}
+
+/* ══ Press strip links ══════════════════════════════ */
+.hpl a{
+  color:inherit;
+  text-decoration:none;
+  transition:color .15s;
+}
+.hpl a:hover{
+  color:var(--or);
 }
 </style>
 </head>
@@ -695,14 +705,14 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   <!-- AS FEATURED IN — true bottom via flex push -->
   <div class="hero-press">
     <div class="hero-press-inner">
-      <div class="hp-lbl">As Seen In</div>
+      <div class="hp-lbl">Published In</div>
       <div class="hp-logos">
-        <div class="hpl">Forbes</div>
-        <div class="hpl">Bloomberg Tax</div>
-        <div class="hpl">CoinDesk</div>
-        <div class="hpl">Cointelegraph</div>
-        <div class="hpl">The Block</div>
-        <div class="hpl">Decrypt</div>
+        <div class="hpl"><a href="https://www.forbes.com" target="_blank" rel="noopener">Forbes</a></div>
+        <div class="hpl"><a href="https://pro.bloombergtax.com" target="_blank" rel="noopener">Bloomberg Tax</a></div>
+        <div class="hpl"><a href="https://www.coindesk.com" target="_blank" rel="noopener">CoinDesk</a></div>
+        <div class="hpl"><a href="https://cointelegraph.com" target="_blank" rel="noopener">Cointelegraph</a></div>
+        <div class="hpl"><a href="https://www.theblock.co" target="_blank" rel="noopener">The Block</a></div>
+        <div class="hpl"><a href="https://decrypt.co" target="_blank" rel="noopener">Decrypt</a></div>
       </div>
       </div>
       </div>
