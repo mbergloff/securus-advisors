@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-  <link rel="icon" type="image/png" href="https://base44.app/api/apps/6a07e39a974a7f134fb32e29/files/mp/public/6a07e39a974a7f134fb32e29/571305ebd_favicon.png">
-  <link rel="shortcut icon" type="image/png" href="https://base44.app/api/apps/6a07e39a974a7f134fb32e29/files/mp/public/6a07e39a974a7f134fb32e29/571305ebd_favicon.png">
-  <link rel="apple-touch-icon" href="https://base44.app/api/apps/6a07e39a974a7f134fb32e29/files/mp/public/6a07e39a974a7f134fb32e29/571305ebd_favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
 <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 
@@ -558,28 +558,29 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .hero-inner{padding:52px 16px 32px;}
 }
 
-
-
-/* ══ ROTATING TEXT — px-based, glitch-free ═════════════ */
+/* ══ ROTATING TEXT ══════════════════════════════════════ */
 .rotate-wrap{
   display:inline-block;
   position:relative;
   overflow:hidden;
-  vertical-align:text-bottom;
-  /* JS sets exact px height after measuring */
+  vertical-align:bottom;
 }
 .rotate-words{
   display:flex;
   flex-direction:column;
   will-change:transform;
-  transition:transform .55s cubic-bezier(.77,0,.18,1);
+  /* transition set by JS after first measurement */
 }
 .rw{
   display:block;
   white-space:nowrap;
   color:var(--or);
   font-style:italic;
-  /* line-height inherited from hero-h1 (1.03) */
+  /* Hard-code line-height to match hero-h1 exactly.
+     This makes every slot identical height before JS measures. */
+  line-height:1.03;
+  padding:0;
+  margin:0;
 }
 </style>
 </head>
@@ -627,9 +628,9 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   <div class="hero-body">
     <div class="hero-inner">
 
-      <h1 class="hero-h1">Your tax position<br>should be<br>as strategic as <em><span class="rotate-wrap"><span class="rotate-words" id="rotateWords"><span class="rw">your investments.</span><span class="rw">your portfolio.</span><span class="rw">your wealth.</span><span class="rw">your future.</span></span></span></em></h1>
+      <h1 class="hero-h1">Your tax position<br>should be as<br>strategic as <em><span class="rotate-wrap"><span class="rotate-words" id="rotateWords"><span class="rw">your investments.</span><span class="rw">your portfolio.</span><span class="rw">your wealth.</span><span class="rw">your future.</span></span></span></em></h1>
 
-      <p class="hero-sub">Led by an <strong>Ex-Big 4 CPA</strong> and <strong>Harvard trained tax attorney</strong> building proactive strategies for <strong>crypto investors</strong>, <strong>high-net-worth individuals</strong> and <strong>business owners</strong> that protect your wealth before the IRS sees it. Higher-income earners typically see <strong>$50K+ in savings annually</strong> working with us.</p>
+      <p class="hero-sub">Led by an <strong>Ex-Big 4 CPA</strong> and <strong>Harvard trained tax attorney</strong> building proactive strategies for <strong>crypto investors</strong>, <strong>high-net-worth individuals</strong> and <strong>business owners</strong> that protect your wealth before the IRS sees it. Higher-income earners typically see <strong>$100K+ in savings annually</strong> working with us.</p>
 
       <div class="hero-btns">
         <a href="https://calendly.com/michaelcpa" class="hbtn-solid">
@@ -1298,35 +1299,59 @@ document.addEventListener('click', function(e) {
   var words = document.querySelectorAll('.rw');
   if(!wrap || !track || !words.length) return;
 
-  function init(){
-    // Measure one word's exact rendered height
+  var current = 0;
+  var slotH   = 0;
+
+  function measure(){
+    // Force layout flush so we get real post-font metrics
     var h = words[0].getBoundingClientRect().height;
-    if(h < 1){ h = parseFloat(getComputedStyle(words[0]).lineHeight) || 48; }
-    wrap.style.height = h + 'px';
-    // Store on track for resize
-    track._slotH = h;
-    track.style.transform = 'translateY(0px)';
+    // Fallback: parse computed line-height × font-size
+    if(!h || h < 4){
+      var cs  = getComputedStyle(words[0]);
+      var lh  = parseFloat(cs.lineHeight);
+      var fs  = parseFloat(cs.fontSize);
+      h = isNaN(lh) ? fs * 1.03 : lh;
+    }
+    slotH = Math.ceil(h);      // ceil avoids sub-pixel gaps
+    wrap.style.height  = slotH + 'px';
+    wrap.style.overflow = 'hidden';
+    // Jump to current position without animation
+    track.style.transition = 'none';
+    track.style.transform  = 'translateY(-' + (current * slotH) + 'px)';
+    // Re-enable transition after paint
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        track.style.transition = 'transform .55s cubic-bezier(.77,0,.18,1)';
+      });
+    });
   }
 
-  var current = 0;
-  init();
+  function setup(){
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        measure();
+        // Interval starts AFTER measure is stable
+        setInterval(function(){
+          current = (current + 1) % words.length;
+          track.style.transform = 'translateY(-' + (current * slotH) + 'px)';
+        }, 2800);
+      });
+    });
+  }
 
-  // Re-init on resize (font-size changes with clamp)
+  // Wait for fonts so metrics are accurate
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(setup);
+  } else {
+    window.addEventListener('load', setup);
+  }
+
+  // Re-measure on resize (clamp changes font-size)
   var resizeTimer;
   window.addEventListener('resize', function(){
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function(){
-      init();
-      track.style.transition = 'none';
-      track.style.transform = 'translateY(-' + (current * track._slotH) + 'px)';
-      setTimeout(function(){ track.style.transition = ''; }, 50);
-    }, 120);
+    resizeTimer = setTimeout(measure, 150);
   });
-
-  setInterval(function(){
-    current = (current + 1) % words.length;
-    track.style.transform = 'translateY(-' + (current * track._slotH) + 'px)';
-  }, 2800);
 })();
 </script>
 
