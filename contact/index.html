@@ -28,10 +28,10 @@ img{display:block;max-width:100%;}
 /* ═══ NAV ═══ */
 .nav{background:var(--white);border-bottom:1px solid var(--fog);position:sticky;top:0;z-index:900;transition:box-shadow .2s;}
 .nav.up{box-shadow:0 2px 20px rgba(0,0,0,.06);}
-.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.nav-logo img{height:20px;width:auto;display:block;flex-shrink:0;}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.nav-logo img{height:28px;width:auto;display:block;flex-shrink:0;}
 .nav-links{display:flex;align-items:stretch;height:60px;margin-left:36px;flex:1;}
-.nav-links a{font-size:13px;font-weight:500;color:#5A5450;padding:0 14px;display:flex;align-items:center;position:relative;transition:color .15s;white-space:nowrap;}
+.nav-links a{font-size:14px;font-weight:500;color:#5A5450;padding:0 14px;display:flex;align-items:center;position:relative;transition:color .15s;white-space:nowrap;}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:2px;background:var(--or);transform:scaleX(0);transition:transform .2s;}
 .nav-links a:hover{color:var(--or);}
 .nav-links a:hover::after{transform:scaleX(1);}
@@ -42,12 +42,12 @@ img{display:block;max-width:100%;}
 .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;margin-left:auto;}
 .nav-burger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .2s;}
 /* Mobile menu */
-.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;background:var(--white);border-bottom:1px solid var(--fog);z-index:899;padding:16px 24px 20px;box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.nav-mobile{display:none;position:fixed;top:72px;left:0;right:0;background:var(--white);border-bottom:1px solid var(--fog);z-index:899;padding:16px 24px 20px;box-shadow:0 8px 24px rgba(0,0,0,.08);}
 .nav-mobile.open{display:block;}
 .nav-mobile a{display:block;font-size:14px;font-weight:500;color:var(--ink);padding:11px 0;border-bottom:1px solid var(--fog);}
 .nav-mobile a:last-child{border-bottom:none;}
 .nav-mobile a:hover{color:var(--or);}
-.nav-mobile .nm-cta{background:var(--or);color:#fff;text-align:center;border-radius:var(--pill);border-bottom:none;margin-top:12px;padding:12px;font-weight:700;}
+.nav-mobile .nm-cta{background:var(--or);color:#fff;text-align:center;border-radius:var(--pill);border-bottom:none;margin-top:72px;padding:12px;font-weight:700;}
 
 /* ═══ HERO ═══ */
 .hero{background:var(--hero-bg);position:relative;overflow:hidden;display:flex;flex-direction:column;}
@@ -355,6 +355,14 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .rg{grid-template-columns:1fr;}
   .about-boxes{grid-template-columns:1fr;}
 }
+
+/* ══ NAV SCROLL CTA pill ════════════════════════════ */
+.nav-cta{display:inline-flex;align-items:center;background:linear-gradient(135deg,#2a2a2a 0%,#000 100%);color:#fff !important;font-size:13px;font-weight:700;padding:8px 20px;border-radius:var(--pill);white-space:nowrap;flex-shrink:0;margin-left:12px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .3s ease, transform .3s ease;}
+.nav-cta:hover{background:linear-gradient(135deg,#3a3a3a 0%,#111 100%);color:#fff !important;}
+.nav-cta.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
+@media(max-width:768px){.nav-cta{display:none !important;}}
+.hpl a{color:inherit;text-decoration:none;transition:color .15s;}
+.hpl a:hover{color:var(--or);}
 </style>
 <style>
 /* ── Inner page styles ── */
@@ -424,15 +432,16 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 <body>
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite" class="nav-logo">
+    <a href="/securus-advisors/" class="nav-logo">
       <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
     </a>
     <div class="nav-links">
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about">About Us</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">Services</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Contact</a>
+      <a href="/securus-advisors/#about">About</a>
+      <a href="/securus-advisors/services/">Services</a>
+      <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
+      <a href="/securus-advisors/#contact">Contact</a>
     </div>
+    <a href="https://calendly.com/michaelcpa" class="nav-cta" id="navCta" aria-hidden="true">Schedule a Strategy Session</a>
     <a href="https://portal.corvisors.com/login" class="nav-login">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Client Portal
@@ -442,11 +451,11 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     </button>
   </div>
   <div class="nav-mobile" id="nav-mobile">
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about" onclick="toggleMenu()">About Us</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services" onclick="toggleMenu()">Services</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax" onclick="toggleMenu()">Crypto Tax</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact" onclick="toggleMenu()">Contact</a>
-    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Consultation</a>
+    <a href="/securus-advisors/#about" onclick="toggleMenu()">About</a>
+    <a href="/securus-advisors/services/" onclick="toggleMenu()">Services</a>
+    <a href="/securus-advisors/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="/securus-advisors/#contact" onclick="toggleMenu()">Contact</a>
+    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Strategy Session</a>
   </div>
 </nav>
 
@@ -567,6 +576,29 @@ document.querySelectorAll('.faq-item').forEach(function(item) {
     item.classList.toggle('open');
   });
 });
+</script>
+<script>
+/* ── Nav CTA: appears when hero scrolls out of view ── */
+(function(){
+  var cta    = document.getElementById('navCta');
+  var hero   = document.querySelector('.hero');
+  if(!cta || !hero) return;
+
+  function check(){
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    // heroBottom < 72 means hero has scrolled above the nav bar
+    if(heroBottom < 72){
+      cta.classList.add('visible');
+      cta.setAttribute('aria-hidden','false');
+    } else {
+      cta.classList.remove('visible');
+      cta.setAttribute('aria-hidden','true');
+    }
+  }
+
+  window.addEventListener('scroll', check, {passive:true});
+  check(); // run once on load in case page is already scrolled
+})();
 </script>
 </body>
 </html>
