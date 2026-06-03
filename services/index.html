@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Tax Services | Securus Advisors</title>
 <meta name="description" content="Crypto tax, DeFi tax, airdrop phantom income, NFT tax, IRS audit defense and more. Big 4 CPAs licensed in all 50 states."/>
-<link rel="canonical" href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services"/>
+<link rel="canonical" href="/securus-advisors/services/"/>
 <meta property="og:title" content="Tax Services | Securus Advisors"/>
 <meta property="og:description" content="Crypto tax, DeFi tax, airdrop phantom income, NFT tax, IRS audit defense and more. Big 4 CPAs licensed in all 50 states."/>
 <meta property="og:type" content="website"/>
@@ -355,6 +355,47 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .rg{grid-template-columns:1fr;}
   .about-boxes{grid-template-columns:1fr;}
 }
+
+/* ══ Services — Why Us Page ══════════════════════════════ */
+.sv-why-hero{background:#fff;padding:0;}
+.sv-why-inner{max-width:960px;margin:0 auto;padding:96px 48px 80px;}
+.sv-why-eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:18px;}
+.sv-why-h1{font-size:clamp(36px,5vw,60px);font-weight:900;line-height:1.08;letter-spacing:-2px;color:var(--ink);margin-bottom:20px;}
+.sv-why-h1 em{font-style:italic;color:var(--amber);}
+.sv-why-sub{font-size:18px;color:var(--muted);line-height:1.75;max-width:680px;margin-bottom:64px;}
+
+/* Pillars grid */
+.sv-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:64px;}
+.sv-pillar{background:#fafaf9;border:1px solid var(--fog);border-radius:16px;padding:28px 24px;}
+.sv-pillar-num{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--amber);margin-bottom:10px;}
+.sv-pillar h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.3;}
+.sv-pillar p{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* Proof bar */
+.sv-proof-bar{display:flex;align-items:center;justify-content:center;gap:0;background:var(--ink);border-radius:16px;padding:32px 40px;margin-bottom:64px;flex-wrap:wrap;gap:0;}
+.sv-proof-item{text-align:center;padding:0 32px;}
+.sv-proof-item span{display:block;font-size:28px;font-weight:900;color:#fff;margin-bottom:4px;}
+.sv-proof-item p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.4;margin:0;max-width:140px;}
+.sv-proof-div{width:1px;height:48px;background:rgba(255,255,255,.15);}
+
+/* CTA block */
+.sv-cta-block{text-align:center;}
+.sv-cta-pre{font-size:16px;color:var(--muted);margin-bottom:20px;}
+.sv-cta-btn{display:inline-flex;}
+.sv-cta-note{font-size:12px;color:#B0A89E;margin-top:14px;}
+
+/* Mobile */
+@media(max-width:900px){
+  .sv-pillars{grid-template-columns:repeat(2,1fr);}
+  .sv-proof-bar{flex-direction:column;gap:24px;}
+  .sv-proof-div{width:80px;height:1px;}
+}
+@media(max-width:600px){
+  .sv-why-inner{padding:64px 20px 48px;}
+  .sv-pillars{grid-template-columns:1fr;}
+  .sv-proof-item{padding:0 20px;}
+}
+
 </style>
 <style>
 /* ── Inner page styles ── */
@@ -424,14 +465,14 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 <body>
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite" class="nav-logo">
+    <a href="/securus-advisors/" class="nav-logo">
       <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
     </a>
     <div class="nav-links">
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about">About Us</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">Services</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax</a>
-      <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Contact</a>
+      <a href="/securus-advisors/about/">About Us</a>
+      <a href="/securus-advisors/services/">Services</a>
+      <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
+      <a href="/securus-advisors/contact/">Contact</a>
     </div>
     <a href="https://portal.corvisors.com/login" class="nav-login">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -442,21 +483,74 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     </button>
   </div>
   <div class="nav-mobile" id="nav-mobile">
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about" onclick="toggleMenu()">About Us</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services" onclick="toggleMenu()">Services</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax" onclick="toggleMenu()">Crypto Tax</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact" onclick="toggleMenu()">Contact</a>
+    <a href="/securus-advisors/about/" onclick="toggleMenu()">About Us</a>
+    <a href="/securus-advisors/services/" onclick="toggleMenu()">Services</a>
+    <a href="/securus-advisors/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="/securus-advisors/contact/" onclick="toggleMenu()">Contact</a>
     <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Consultation</a>
   </div>
 </nav>
 
-<section class="page-hero">
-  <div class="page-hero-eyebrow">What We Do</div>
-  <h1>Tax Services Built for the Digital Asset Era</h1>
-  <p>From DeFi to high-net-worth portfolios, Securus Advisors handles the full spectrum of crypto and business tax strategy — with Big 4 precision and crypto-native expertise.</p>
-  <div class="hero-btns">
-    <a href="https://calendly.com/michaelcpa" class="pill-cta">Schedule a Consultation →</a>
-    <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about" class="pill-ghost">Meet the Team</a>
+<section class="page-hero sv-why-hero">
+  <div class="sv-why-inner">
+    <div class="sv-why-eyebrow">Why Securus Advisors</div>
+    <h1 class="sv-why-h1">What if your CPA could save you<br><em>more than they cost?</em></h1>
+    <p class="sv-why-sub">Most tax firms react to what already happened. We show up before the IRS does — with strategies most CPAs have never heard of. Here's what that looks like for clients like you.</p>
+
+    <!-- VALUE PILLARS -->
+    <div class="sv-pillars">
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">01</div>
+        <h3>Tax-Loss Harvesting on Autopilot</h3>
+        <p>We identify unrealized losses across your entire portfolio and harvest them strategically — offsetting gains before year-end. The average crypto investor leaves $30K+ on the table every year by not doing this.</p>
+      </div>
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">02</div>
+        <h3>HIFO Cost Basis — Not FIFO</h3>
+        <p>Your default cost basis method is costing you. HIFO (Highest-In, First-Out) reduces taxable gain on every sale. We switch clients to HIFO and the savings are immediate and compounding.</p>
+      </div>
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">03</div>
+        <h3>Airdrop &amp; Staking Tax Defense</h3>
+        <p>Received tokens you didn't ask for? Phantom income from airdrops is one of the IRS's fastest-growing audit triggers. We structure your positions to minimize the hit — legally.</p>
+      </div>
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">04</div>
+        <h3>Entity Structuring for Business Owners</h3>
+        <p>An S-Corp or LLC structured correctly can save a business owner $15,000–$80,000 per year in self-employment tax alone. Most business owners are overpaying by a wide margin.</p>
+      </div>
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">05</div>
+        <h3>IRS Audit Defense &amp; Representation</h3>
+        <p>If the IRS comes knocking, you want a Big 4-trained CPA and a Harvard-credentialed tax attorney in your corner — not a general practitioner scrambling through crypto records.</p>
+      </div>
+      <div class="sv-pillar">
+        <div class="sv-pillar-num">06</div>
+        <h3>$50K Guaranteed Tax Savings</h3>
+        <p>For qualifying high-net-worth clients, we guarantee a minimum of $50,000 in identified tax savings — or we work for free. That's how confident we are in our strategy.</p>
+      </div>
+    </div>
+
+    <!-- PROOF BAR -->
+    <div class="sv-proof-bar">
+      <div class="sv-proof-item"><span>$50K+</span><p>Guaranteed savings for qualifying clients</p></div>
+      <div class="sv-proof-div"></div>
+      <div class="sv-proof-item"><span>Big 4</span><p>CPA training behind every strategy</p></div>
+      <div class="sv-proof-div"></div>
+      <div class="sv-proof-item"><span>Harvard</span><p>Tax attorney credentials on every complex matter</p></div>
+      <div class="sv-proof-div"></div>
+      <div class="sv-proof-item"><span>100%</span><p>Confidential — protected by CPA-client privilege</p></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="sv-cta-block">
+      <p class="sv-cta-pre">Ready to see what we'd find in your specific situation?</p>
+      <a href="https://calendly.com/michaelcpa" class="hbtn-solid sv-cta-btn">
+        Book Your Free Strategy Session
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <p class="sv-cta-note">30 minutes. No obligation. We'll identify at least one strategy you're not using.</p>
+    </div>
   </div>
 </section>
 
@@ -469,31 +563,31 @@ footer{background:#0F0C08;padding:60px 0 28px;}
         <div class="service-card-icon">⛓</div>
         <h3>Crypto Tax Planning &amp; Strategy</h3>
         <p>Proactive, year-round tax planning for crypto investors — HIFO cost basis, tax-loss harvesting, and multi-chain portfolio optimization.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">🌊</div>
         <h3>DeFi &amp; Yield Tax</h3>
         <p>Comprehensive DeFi tax reporting: LP positions, liquidity rewards, yield farming, staking, and liquid staking token income.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">🪂</div>
         <h3>Airdrop &amp; Phantom Income</h3>
         <p>Minimize phantom income tax liabilities from depreciated airdrop tokens. Expert IRC §83 and fair market value analysis.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=airdrop-tax">Learn more →</a>
+        <a href="/securus-advisors/?page=airdrop-tax">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">🖼</div>
         <h3>NFT Tax Reporting</h3>
         <p>Sales, royalties, minting costs, and wash-sale adjacency issues — full NFT tax compliance for collectors and creators.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">🛡</div>
         <h3>Crypto Hack &amp; Theft Loss (IRC §165)</h3>
         <p>Recover your tax losses from DeFi hacks, exchange insolvencies, and rug pulls. Specialized IRC §165 casualty loss deductions.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-hack-tax">Learn more →</a>
+        <a href="/securus-advisors/?page=crypto-hack-tax">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">📋</div>
@@ -505,19 +599,19 @@ footer{background:#0F0C08;padding:60px 0 28px;}
         <div class="service-card-icon">🏛</div>
         <h3>IRS Audit Defense</h3>
         <p>Expert representation for crypto-related IRS audits, CP2000 notices, and enforcement actions. Backed by Harvard/NYU-trained tax counsel.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">📊</div>
         <h3>High-Net-Worth Tax Planning</h3>
         <p>Comprehensive tax strategy for HNW individuals: entity structuring, multi-state compliance, concentrated position management.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
       <div class="service-card">
         <div class="service-card-icon">🏢</div>
         <h3>Business &amp; Entity Tax</h3>
         <p>S-Corp elections, partnership returns, cost segregation, and business tax strategy for entrepreneurs and founders.</p>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Learn more →</a>
+        <a href="/securus-advisors/crypto-tax/">Learn more →</a>
       </div>
     </div>
   </div>
@@ -595,25 +689,25 @@ footer{background:#0F0C08;padding:60px 0 28px;}
       </div>
       <div class="ft-col">
         <div class="ft-ch">Services</div>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax Planning</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=airdrop-tax">Airdrop &amp; Phantom Income</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-hack-tax">Hack &amp; Theft Loss (IRC §165)</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">DeFi &amp; Yield Tax</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">IRS Audit Defense</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">1099-DA Compliance</a>
+        <a href="/securus-advisors/crypto-tax/">Crypto Tax Planning</a>
+        <a href="/securus-advisors/?page=airdrop-tax">Airdrop &amp; Phantom Income</a>
+        <a href="/securus-advisors/?page=crypto-hack-tax">Hack &amp; Theft Loss (IRC §165)</a>
+        <a href="/securus-advisors/services/">DeFi &amp; Yield Tax</a>
+        <a href="/securus-advisors/services/">IRS Audit Defense</a>
+        <a href="/securus-advisors/services/">1099-DA Compliance</a>
       </div>
       <div class="ft-col">
         <div class="ft-ch">Company</div>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=about">About Us</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=services">All Services</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Contact</a>
+        <a href="/securus-advisors/about/">About Us</a>
+        <a href="/securus-advisors/services/">All Services</a>
+        <a href="/securus-advisors/contact/">Contact</a>
         <a href="https://portal.corvisors.com/login">Client Portal</a>
       </div>
       <div class="ft-col">
         <div class="ft-ch">Get Started</div>
         <a href="https://calendly.com/michaelcpa">Schedule a Consultation</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=contact">Free Tax Analysis</a>
-        <a href="https://rex-4fb32e29.base44.app/functions/securusSite?page=crypto-tax">Crypto Tax Strategy</a>
+        <a href="/securus-advisors/contact/">Free Tax Analysis</a>
+        <a href="/securus-advisors/crypto-tax/">Crypto Tax Strategy</a>
         <a href="mailto:info@securusadvisors.com">info@securusadvisors.com</a>
       </div>
     </div>
