@@ -597,6 +597,36 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   transform:translateY(8px);
   transition:none;
 }
+
+/* ══ NAV SCROLL CTA pill ════════════════════════════ */
+.nav-cta{
+  display:inline-flex;
+  align-items:center;
+  background:var(--or);
+  color:#fff !important;
+  font-size:13px;
+  font-weight:700;
+  padding:8px 20px;
+  border-radius:var(--pill);
+  white-space:nowrap;
+  flex-shrink:0;
+  margin-left:12px;
+  /* hidden state */
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .3s ease, transform .3s ease;
+}
+.nav-cta:hover{background:#d96a0f;color:#fff !important;}
+.nav-cta.visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
+/* hide on mobile — mobile nav already has the CTA */
+@media(max-width:768px){
+  .nav-cta{display:none !important;}
+}
 </style>
 </head>
 <body>
@@ -613,6 +643,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
       <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
       <a href="/securus-advisors/#contact">Contact</a>
     </div>
+    <a href="https://calendly.com/michaelcpa" class="nav-cta" id="navCta" aria-hidden="true">Schedule a Strategy Session</a>
     <a href="https://portal.corvisors.com/login" class="nav-login">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Client Portal
@@ -1344,6 +1375,29 @@ document.addEventListener('click', function(e) {
 })();
 </script>
 
+<script>
+/* ── Nav CTA: appears when hero scrolls out of view ── */
+(function(){
+  var cta    = document.getElementById('navCta');
+  var hero   = document.querySelector('.hero');
+  if(!cta || !hero) return;
+
+  function check(){
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    // heroBottom < 72 means hero has scrolled above the nav bar
+    if(heroBottom < 72){
+      cta.classList.add('visible');
+      cta.setAttribute('aria-hidden','false');
+    } else {
+      cta.classList.remove('visible');
+      cta.setAttribute('aria-hidden','true');
+    }
+  }
+
+  window.addEventListener('scroll', check, {passive:true});
+  check(); // run once on load in case page is already scrolled
+})();
+</script>
 </body></html>`;
   try {
     const res=await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Authorization':'Bearer '+RK,'Content-Type':'application/json'},body:JSON.stringify({from:'Securus Advisors <onboarding@resend.dev>',to:[email],bcc:['michael@securusadvisors.com'],subject:'Your Crypto Tax Report — '+f(d.totalSavingsEstimate||0)+' in Potential Savings',html})});
@@ -1418,5 +1472,28 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
+<script>
+/* ── Nav CTA: appears when hero scrolls out of view ── */
+(function(){
+  var cta    = document.getElementById('navCta');
+  var hero   = document.querySelector('.hero');
+  if(!cta || !hero) return;
+
+  function check(){
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    // heroBottom < 72 means hero has scrolled above the nav bar
+    if(heroBottom < 72){
+      cta.classList.add('visible');
+      cta.setAttribute('aria-hidden','false');
+    } else {
+      cta.classList.remove('visible');
+      cta.setAttribute('aria-hidden','true');
+    }
+  }
+
+  window.addEventListener('scroll', check, {passive:true});
+  check(); // run once on load in case page is already scrolled
+})();
+</script>
 </body>
 </html>
