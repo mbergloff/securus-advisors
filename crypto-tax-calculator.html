@@ -15,11 +15,11 @@ a{text-decoration:none;color:inherit;}
 
 /* Nav (minimal, same as main site) */
 .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #ece8e2;}
-.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.3px;display:flex;align-items:center;gap:8px;}
 .nav-logo span{color:var(--or);}
 .nav-links{display:flex;gap:28px;list-style:none;}
-.nav-links a{font-size:13px;font-weight:500;color:#666;transition:color .15s;}
+.nav-links a{font-size:14px;font-weight:500;color:#666;transition:color .15s;}
 .nav-links a:hover{color:var(--or);}
 .nav-cta{background:var(--or);color:#fff;font-weight:700;font-size:13px;padding:9px 20px;border-radius:var(--pill);transition:background .15s;}
 .nav-cta:hover{background:#d96a10;}
@@ -91,21 +91,39 @@ a{text-decoration:none;color:inherit;}
 .ft-mini a:hover{color:var(--or);}
 .ft-mini-brand{font-weight:700;color:#fff;margin-right:8px;}
 @media(max-width:600px){.ft-mini{padding:20px;flex-direction:column;text-align:center;}}
+.hpl a{color:inherit;text-decoration:none;transition:color .15s;}
+.hpl a:hover{color:var(--or);}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="/" class="nav-logo">Securus<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="/#about">About</a></li>
-      <li><a href="/crypto-tax.html">Crypto Tax</a></li>
-      <li><a href="/services.html">Services</a></li>
-      <li><a href="/#faq">FAQ</a></li>
-    </ul>
-    <a href="https://calendly.com/michaelcpa" class="nav-cta">Book a Call</a>
+    <a href="/securus-advisors/" class="nav-logo">
+      <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
+    </a>
+    <div class="nav-links">
+      <a href="/securus-advisors/#about">About</a>
+      <a href="/securus-advisors/services/">Services</a>
+      <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
+      <a href="/securus-advisors/#contact">Contact</a>
+    </div>
+    <a href="https://calendly.com/michaelcpa" class="nav-cta" id="navCta" aria-hidden="true">Schedule a Strategy Session</a>
+    <a href="https://portal.corvisors.com/login" class="nav-login">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Client Portal
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="/securus-advisors/#about" onclick="toggleMenu()">About</a>
+    <a href="/securus-advisors/services/" onclick="toggleMenu()">Services</a>
+    <a href="/securus-advisors/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="/securus-advisors/#contact" onclick="toggleMenu()">Contact</a>
+    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Strategy Session</a>
   </div>
 </nav>
 
@@ -528,7 +546,30 @@ async function submitReport(e) {
   const taxable=(d.events||[]).filter(e=>e.taxable);
   const byYearRows=Object.entries(d.byYear||{}).sort(([a],[b])=>parseInt(b)-parseInt(a)).map(([yr,y])=>`<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;font-weight:600;">${yr}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${f(y.income)}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;">${f(y.currentValue)}</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede8;color:#f07814;font-weight:700;">~${f(y.savings)}</td></tr>`).join('');
   const evtRows=taxable.sort((a,b)=>b.incomeUSD-a.incomeUSD).slice(0,30).map(ev=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;">${ev.date}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;text-transform:capitalize;">${(ev.type||'').replace(/_/g,' ')}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;font-weight:600;">${ev.token}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#dc2626;">${f(ev.incomeUSD)}</td><td style="padding:7px 10px;border-bottom:1px solid #f0ede8;font-size:11px;color:#16a34a;">${f(ev.currentValueUSD)}</td></tr>`).join('');
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body style="margin:0;padding:0;background:#faf8f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><div style="max-width:660px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08);"><div style="background:#1a1a1a;padding:28px 36px;"><div style="font-size:20px;font-weight:700;color:#fff;">Securus Advisors</div><div style="font-size:12px;color:#888;margin-top:3px;">Crypto · High-Net-Worth · Business Tax</div></div><div style="padding:28px 36px;background:linear-gradient(135deg,#fff9f4,#fff);"><div style="font-size:12px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Your Crypto Tax Report</div><div style="font-size:22px;font-weight:800;color:#1a1a1a;">Hi ${name}, here's your breakdown.</div><div style="font-size:12px;color:#6b7280;margin-top:6px;">Wallet: <code style="background:#f5f5f5;padding:2px 8px;border-radius:4px;">${d.wallet||''}</code></div></div><div style="margin:0 36px;padding:24px;background:#fff9f0;border-radius:10px;border:2px solid #f07814;text-align:center;"><div style="font-size:11px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;">Estimated Total Tax Savings</div><div style="font-size:46px;font-weight:900;color:#f07814;line-height:1.1;margin:6px 0;">${f(d.totalSavingsEstimate||0)}</div><div style="font-size:12px;color:#9ca3af;">${(d.totalTxs||0).toLocaleString()} transfers scanned</div></div><div style="padding:24px 36px;"><div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:12px;">Tax Positions Applied</div><table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;"><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🪂 Airdrop Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.airdropIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.airdropSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔒 Staking Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.stakingIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.stakingSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">⛏ Mining Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.miningIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.miningSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔁 Token Wrapping</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='wrap').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.wrapSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🌊 Liquid Staking</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='lst').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.lstSavings||0)}</td></tr><tr><td style="padding:8px 0;">📉 Tax-Loss Harvesting</td><td style="padding:8px 0;text-align:right;color:#6b7280;">Unrealized losses</td><td style="padding:8px 0 0 12px;text-align:right;color:#16a34a;font-weight:700;">${f(d.harvestSavings||0)}</td></tr></table>${byYearRows?`<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Savings by Tax Year</div><table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px;"><thead><tr style="background:#f9fafb;"><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Year</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Current Value</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Est. Savings</th></tr></thead><tbody>${byYearRows}</tbody></table>`:''}<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Top Income Events</div><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#f9fafb;"><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Date</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Type</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Token</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Current Value</th></tr></thead><tbody>${evtRows}</tbody></table></div><div style="margin:0 36px 28px;padding:24px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:10px;text-align:center;"><div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;">Ready to lock in your savings?</div><div style="font-size:12px;color:#9ca3af;margin-bottom:18px;">Our CPAs build a custom strategy to recover every dollar in this report.</div><a href="https://calendly.com/michaelcpa" style="display:inline-block;background:#f07814;color:#fff;font-weight:700;font-size:13px;padding:12px 28px;border-radius:8px;text-decoration:none;">Schedule a Free Consultation →</a></div><div style="padding:16px 36px;border-top:1px solid #f0ede8;text-align:center;"><div style="font-size:10px;color:#9ca3af;">Securus Advisors · Licensed CPAs · All 50 States</div><div style="font-size:10px;color:#9ca3af;margin-top:3px;">Informational only — not tax advice.</div></div></div></body></html>`;
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body style="margin:0;padding:0;background:#faf8f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><div style="max-width:660px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08);"><div style="background:#1a1a1a;padding:28px 36px;"><div style="font-size:20px;font-weight:700;color:#fff;">Securus Advisors</div><div style="font-size:12px;color:#888;margin-top:3px;">Crypto · High-Net-Worth · Business Tax</div></div><div style="padding:28px 36px;background:linear-gradient(135deg,#fff9f4,#fff);"><div style="font-size:12px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Your Crypto Tax Report</div><div style="font-size:22px;font-weight:800;color:#1a1a1a;">Hi ${name}, here's your breakdown.</div><div style="font-size:12px;color:#6b7280;margin-top:6px;">Wallet: <code style="background:#f5f5f5;padding:2px 8px;border-radius:4px;">${d.wallet||''}</code></div></div><div style="margin:0 36px;padding:24px;background:#fff9f0;border-radius:10px;border:2px solid #f07814;text-align:center;"><div style="font-size:11px;color:#f07814;font-weight:700;text-transform:uppercase;letter-spacing:.1em;">Estimated Total Tax Savings</div><div style="font-size:46px;font-weight:900;color:#f07814;line-height:1.1;margin:6px 0;">${f(d.totalSavingsEstimate||0)}</div><div style="font-size:12px;color:#9ca3af;">${(d.totalTxs||0).toLocaleString()} transfers scanned</div></div><div style="padding:24px 36px;"><div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:12px;">Tax Positions Applied</div><table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;"><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🪂 Airdrop Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.airdropIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.airdropSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔒 Staking Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.stakingIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.stakingSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">⛏ Mining Reward Deferral</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${f(d.miningIncome||0)} deferred</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.miningSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🔁 Token Wrapping</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='wrap').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.wrapSavings||0)}</td></tr><tr><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;">🌊 Liquid Staking</td><td style="padding:8px 0;border-bottom:1px solid #f5f5f5;text-align:right;color:#6b7280;">${(d.events||[]).filter(e=>e.type==='lst').length} events</td><td style="padding:8px 0 8px 12px;border-bottom:1px solid #f5f5f5;text-align:right;color:#16a34a;font-weight:700;">${f(d.lstSavings||0)}</td></tr><tr><td style="padding:8px 0;">📉 Tax-Loss Harvesting</td><td style="padding:8px 0;text-align:right;color:#6b7280;">Unrealized losses</td><td style="padding:8px 0 0 12px;text-align:right;color:#16a34a;font-weight:700;">${f(d.harvestSavings||0)}</td></tr></table>${byYearRows?`<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Savings by Tax Year</div><table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px;"><thead><tr style="background:#f9fafb;"><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Year</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Current Value</th><th style="padding:8px 12px;text-align:left;color:#6b7280;border-bottom:2px solid #e5e7eb;">Est. Savings</th></tr></thead><tbody>${byYearRows}</tbody></table>`:''}<div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Top Income Events</div><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#f9fafb;"><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Date</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Type</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Token</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Income</th><th style="padding:7px 10px;text-align:left;color:#6b7280;font-size:11px;border-bottom:2px solid #e5e7eb;">Current Value</th></tr></thead><tbody>${evtRows}</tbody></table></div><div style="margin:0 36px 28px;padding:24px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:10px;text-align:center;"><div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;">Ready to lock in your savings?</div><div style="font-size:12px;color:#9ca3af;margin-bottom:18px;">Our CPAs build a custom strategy to recover every dollar in this report.</div><a href="https://calendly.com/michaelcpa" style="display:inline-block;background:#f07814;color:#fff;font-weight:700;font-size:13px;padding:12px 28px;border-radius:8px;text-decoration:none;">Schedule a Free Consultation →</a></div><div style="padding:16px 36px;border-top:1px solid #f0ede8;text-align:center;"><div style="font-size:10px;color:#9ca3af;">Securus Advisors · Licensed CPAs · All 50 States</div><div style="font-size:10px;color:#9ca3af;margin-top:3px;">Informational only — not tax advice.</div></div></div><script>
+/* ── Nav CTA: appears when hero scrolls out of view ── */
+(function(){
+  var cta    = document.getElementById('navCta');
+  var hero   = document.querySelector('.hero');
+  if(!cta || !hero) return;
+
+  function check(){
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    // heroBottom < 72 means hero has scrolled above the nav bar
+    if(heroBottom < 72){
+      cta.classList.add('visible');
+      cta.setAttribute('aria-hidden','false');
+    } else {
+      cta.classList.remove('visible');
+      cta.setAttribute('aria-hidden','true');
+    }
+  }
+
+  window.addEventListener('scroll', check, {passive:true});
+  check(); // run once on load in case page is already scrolled
+})();
+</script>
+</body></html>`;
   try {
     const res=await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Authorization':'Bearer '+RK,'Content-Type':'application/json'},body:JSON.stringify({from:'Securus Advisors <onboarding@resend.dev>',to:[email],bcc:['michael@securusadvisors.com'],subject:'Your Crypto Tax Report — '+f(d.totalSavingsEstimate||0)+' in Potential Savings',html})});
     if (res.ok){msg.textContent='✓ Report sent! Check your inbox (and spam folder just in case).';msg.style.color='#1A7A40';document.getElementById('res-form').style.display='none';}
@@ -569,6 +610,29 @@ async function doAnalyze() {
     if(btn) btn.disabled=false;
   }
 }
+</script>
+<script>
+/* ── Nav CTA: appears when hero scrolls out of view ── */
+(function(){
+  var cta    = document.getElementById('navCta');
+  var hero   = document.querySelector('.hero');
+  if(!cta || !hero) return;
+
+  function check(){
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    // heroBottom < 72 means hero has scrolled above the nav bar
+    if(heroBottom < 72){
+      cta.classList.add('visible');
+      cta.setAttribute('aria-hidden','false');
+    } else {
+      cta.classList.remove('visible');
+      cta.setAttribute('aria-hidden','true');
+    }
+  }
+
+  window.addEventListener('scroll', check, {passive:true});
+  check(); // run once on load in case page is already scrolled
+})();
 </script>
 </body>
 </html>
