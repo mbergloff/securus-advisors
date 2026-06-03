@@ -178,12 +178,8 @@ img{display:block;max-width:100%;}
 .hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:nowrap;gap:12px;}
 .hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#aaa;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
 .hp-logos{display:flex;flex:1;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:4px 0;min-width:0;}
-.hpl{font-weight:800;color:#999;letter-spacing:-.3px;transition:color .2s;cursor:default;white-space:nowrap;font-size:15px;}
+.hpl{font-size:13px;font-weight:800;color:#B8B0A6;letter-spacing:.03em;white-space:nowrap;padding:0 10px;}
 .hpl:hover{color:var(--muted);}
-.hpl.xl{font-size:16px;letter-spacing:-.6px;}
-.hpl.lg{font-size:12px;}
-.hpl.sm{font-size:9px;letter-spacing:2px;text-transform:uppercase;}
-
 /* ═══ PAGE SECTIONS ═══ */
 .sec{padding:96px 0;}
 .sec-inner{max-width:var(--max);margin:0 auto;padding:0 48px;}
@@ -314,8 +310,6 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .hp-lbl{display:none;}
   .hp-logos{justify-content:center;gap:6px 20px;}
   .hp-logos{gap:10px 14px;}
-  .hpl.xl{font-size:13px;}
-  .hpl.lg{font-size:11px;}
   .sec-inner,.numbers-inner,.ft,.cta-inner{padding-left:20px;padding-right:20px;}
   .sec{padding:64px 0;}
   .svc-grid,.testi-grid,.art-grid,.serve-grid{grid-template-columns:1fr;}
@@ -399,7 +393,6 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .hero-cred-item svg{width:13px;height:13px;stroke:#f07814;flex-shrink:0;}
 
   .hero-sub{font-size:15px;}
-  .hpl.sm{display:none;}
   .hpl{font-size:13px;}
   .hp-logos{gap:5px 16px;}
 }
@@ -413,25 +406,20 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .hp-lbl{display:none;}
   .hp-logos{justify-content:center;gap:8px 22px;flex-wrap:wrap;}
   .hpl{font-size:14px !important;}
-  .hpl.sm{font-size:12px !important;}
-}
+  }
 @media(max-width:480px){
   .hero-sub{font-size:16px;}
-  .hpl.sm{display:none;}
-}
+  }
 
   50%{opacity:.5;transform:scale(.75);}
 }
 
 /* ── Explore Pill Button ── */
 /* ── Press strip updated ── */
-.hpl.md{font-size:15px;font-weight:700;color:#555;letter-spacing:-.01em;}
-
 /* ── Mobile adjustments ── */
 @media(max-width:767px){
   
-  .hpl.md{font-size:13px;}
-}
+  }
 
 /* ══ HERO LAYOUT — single source of truth ══════════════════ */
 
@@ -566,6 +554,29 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .hero-h1{font-size:40px;letter-spacing:-1.8px;}
   .hero-inner{padding:52px 16px 32px;}
 }
+
+/* ══ ROTATING TEXT ══════════════════════════════════════ */
+.rotate-wrap{
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:bottom;
+  /* height matches one line of the h1 */
+  height:1.08em;
+  position:relative;
+}
+.rotate-words{
+  display:flex;
+  flex-direction:column;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+}
+.rw{
+  display:block;
+  white-space:nowrap;
+  line-height:1.08;
+  color:var(--or);
+  font-style:italic;
+}
+
 </style>
 </head>
 <body>
@@ -613,11 +624,11 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     <div class="hero-inner">
 
       <h1 class="hero-h1">
-        Your tax position<br>should be as strategic<br>as <em>your investments.</em>
+        Your tax position<br>should be as strategic<br>as <em><span class="rotate-wrap"><span class="rotate-words" id="rotateWords"><span class="rw active">your investments.</span><span class="rw">your portfolio.</span><span class="rw">your strategy.</span><span class="rw">your future.</span></span></span></em>
       </h1>
 
       <p class="hero-sub">
-        Most CPAs file what happened. We engineer what's possible — Led by an Ex-Big 4 CPA and Harvard trained tax attorney to build proactive strategies for <strong>crypto investors</strong>, <strong>high-net-worth individuals</strong> and <strong>business owners</strong> that protect your wealth before the IRS sees it.
+        Most CPAs file what happened. We engineer what's possible — led by an <strong>Ex-Big 4 CPA</strong> and <strong>Harvard trained tax attorney</strong> building proactive strategies for <strong>crypto investors</strong>, <strong>high-net-worth individuals</strong> and <strong>business owners</strong> that protect your wealth before the IRS sees it. Higher-income earners typically see <strong>$100K+ in savings annually</strong> working with us.
       </p>
 
       <div class="hero-btns">
@@ -639,16 +650,17 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     <div class="hero-press-inner">
       <div class="hp-lbl">As Seen In</div>
       <div class="hp-logos">
-        <div class="hpl xl">Forbes</div>
-        <div class="hpl xl">Bloomberg</div>
-        <div class="hpl lg">Wall Street Journal</div>
-        <div class="hpl lg">CoinDesk</div>
-        <div class="hpl lg">Reuters</div>
-        <div class="hpl md">Bloomberg Tax</div>
-        <div class="hpl md">Barron's</div>
-        <div class="hpl md">Financial Times</div>
-        <div class="hpl sm">The Block</div>
-        <div class="hpl sm">Decrypt</div>
+        <div class="hpl">Forbes</div>
+        <div class="hpl">Bloomberg</div>
+        <div class="hpl">Wall Street Journal</div>
+        <div class="hpl">CoinDesk</div>
+        <div class="hpl">Reuters</div>
+        <div class="hpl">Bloomberg Tax</div>
+        <div class="hpl">Barron's</div>
+        <div class="hpl">Financial Times</div>
+        <div class="hpl">The Block</div>
+        <div class="hpl">Decrypt</div>
+      </div>
       </div>
     </div>
   </div>
@@ -1279,6 +1291,20 @@ document.addEventListener('click', function(e) {
     toggleMenu();
   }
 });
+</script>
+
+
+<script>
+(function(){
+  var words = document.querySelectorAll('.rw');
+  var wrap  = document.querySelector('.rotate-words');
+  if(!wrap || !words.length) return;
+  var current = 0;
+  setInterval(function(){
+    current = (current + 1) % words.length;
+    wrap.style.transform = 'translateY(-' + (current * 1.08) + 'em)';
+  }, 2600);
+})();
 </script>
 
 </body></html>`;
