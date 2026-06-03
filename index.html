@@ -71,7 +71,7 @@ img{display:block;max-width:100%;}
 .nav-mobile .nm-cta{background:var(--or);color:#fff;text-align:center;border-radius:var(--pill);border-bottom:none;margin-top:12px;padding:12px;font-weight:700;}
 
 /* ═══ HERO ═══ */
-.hero{background:var(--hero-bg);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.hero{background:var(--hero-bg);position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:92vh;}
 
 /* ══════════════════════════════════════
    ANIMATED HERO BACKGROUND
@@ -129,7 +129,7 @@ img{display:block;max-width:100%;}
 .hero-body{position:relative;z-index:2;flex:1;display:flex;align-items:center;}
 .hero-inner{
   max-width:700px;margin:0 auto;
-  padding:108px 48px 80px;width:100%;
+  padding:80px 48px 56px;width:100%;
   display:flex;flex-direction:column;align-items:flex-start;text-align:left;
 }
 
@@ -205,12 +205,7 @@ img{display:block;max-width:100%;}
 
 
 /* ═══ AS FEATURED IN — hero bottom, straight lines ═══ */
-.hero-press{
-  position:relative;z-index:2;
-  border-top:1px solid rgba(0,0,0,.07);
-  background:#fff;
-  padding:28px 0;
-}
+.hero-press{position:relative;z-index:2;border-top:1px solid rgba(0,0,0,.07);background:#fff;padding:24px 0;}
 .hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:nowrap;gap:12px;}
 .hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#aaa;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
 .hp-logos{display:flex;flex:1;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:4px 0;min-width:0;}
@@ -569,7 +564,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
         <a href="/securus-advisors/services/" class="hbtn-pill">
-          See Your Options
+          What Could You Save?
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
       </div>
@@ -577,24 +572,25 @@ footer{background:#0F0C08;padding:60px 0 28px;}
     </div>
   </div>
 
-  <!-- AS FEATURED IN — flush bottom of hero -->
+  <!-- AS FEATURED IN — pinned to absolute bottom of hero -->
   <div class="hero-press">
     <div class="hero-press-inner">
-      <div class="hp-lbl">As Featured In</div>
+      <div class="hp-lbl">As Seen In</div>
       <div class="hp-logos">
         <div class="hpl xl">Forbes</div>
-        <div class="hpl lg">Bloomberg</div>
-        <div class="hpl md">Wall Street Journal</div>
+        <div class="hpl xl">Bloomberg</div>
+        <div class="hpl lg">Wall Street Journal</div>
         <div class="hpl lg">CoinDesk</div>
+        <div class="hpl lg">Reuters</div>
+        <div class="hpl md">Bloomberg Tax</div>
         <div class="hpl md">Barron's</div>
-        <div class="hpl lg">Bloomberg Tax</div>
-        <div class="hpl md">The Block</div>
-        <div class="hpl sm">Investopedia</div>
-        <div class="hpl sm">Yahoo Finance</div>
+        <div class="hpl md">Financial Times</div>
+        <div class="hpl sm">The Block</div>
         <div class="hpl sm">Decrypt</div>
       </div>
     </div>
   </div>
+
 </section>
 
 <!-- ABOUT US -->
