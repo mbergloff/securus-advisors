@@ -1385,27 +1385,20 @@ document.addEventListener('click', function(e) {
 })();
 </script>
 
+
 <script>
 /* ── Nav CTA: appears when hero scrolls out of view ── */
 (function(){
-  var cta    = document.getElementById('navCta');
-  var hero   = document.querySelector('.hero');
+  var cta  = document.getElementById('navCta');
+  var hero = document.querySelector('.hero, .page-hero');
   if(!cta || !hero) return;
-
   function check(){
-    var heroBottom = hero.getBoundingClientRect().bottom;
-    // heroBottom < 72 means hero has scrolled above the nav bar
-    if(heroBottom < 72){
-      cta.classList.add('visible');
-      cta.setAttribute('aria-hidden','false');
-    } else {
-      cta.classList.remove('visible');
-      cta.setAttribute('aria-hidden','true');
-    }
+    var bottom = hero.getBoundingClientRect().bottom;
+    if(bottom < 72){ cta.classList.add('visible'); cta.setAttribute('aria-hidden','false'); }
+    else            { cta.classList.remove('visible'); cta.setAttribute('aria-hidden','true'); }
   }
-
   window.addEventListener('scroll', check, {passive:true});
-  check(); // run once on load in case page is already scrolled
+  check();
 })();
 </script>
 </body></html>`;
@@ -1482,27 +1475,20 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
+
 <script>
 /* ── Nav CTA: appears when hero scrolls out of view ── */
 (function(){
-  var cta    = document.getElementById('navCta');
-  var hero   = document.querySelector('.hero');
+  var cta  = document.getElementById('navCta');
+  var hero = document.querySelector('.hero, .page-hero');
   if(!cta || !hero) return;
-
   function check(){
-    var heroBottom = hero.getBoundingClientRect().bottom;
-    // heroBottom < 72 means hero has scrolled above the nav bar
-    if(heroBottom < 72){
-      cta.classList.add('visible');
-      cta.setAttribute('aria-hidden','false');
-    } else {
-      cta.classList.remove('visible');
-      cta.setAttribute('aria-hidden','true');
-    }
+    var bottom = hero.getBoundingClientRect().bottom;
+    if(bottom < 72){ cta.classList.add('visible'); cta.setAttribute('aria-hidden','false'); }
+    else            { cta.classList.remove('visible'); cta.setAttribute('aria-hidden','true'); }
   }
-
   window.addEventListener('scroll', check, {passive:true});
-  check(); // run once on load in case page is already scrolled
+  check();
 })();
 </script>
 </body>
