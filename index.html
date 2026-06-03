@@ -558,29 +558,44 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   .hero-inner{padding:52px 16px 32px;}
 }
 
-/* ══ ROTATING TEXT ══════════════════════════════════════ */
-.rotate-wrap{
+/* ══ ROTATING TEXT — fade, no clip, no translate ════════ */
+.rw-host{
+  /* inline-block so it sizes to contents */
   display:inline-block;
   position:relative;
-  overflow:hidden;
-  vertical-align:bottom;
-}
-.rotate-words{
-  display:flex;
-  flex-direction:column;
-  will-change:transform;
-  /* transition set by JS after first measurement */
-}
-.rw{
-  display:block;
-  white-space:nowrap;
+  /* italic color */
   color:var(--or);
   font-style:italic;
-  /* Hard-code line-height to match hero-h1 exactly.
-     This makes every slot identical height before JS measures. */
-  line-height:1.03;
-  padding:0;
-  margin:0;
+  /* vertically align with surrounding text */
+  vertical-align:baseline;
+}
+/* invisible spacer — holds width of current word
+   so the line doesn't jump width between rotations */
+.rw-static{
+  visibility:hidden;
+  white-space:nowrap;
+  display:inline-block;
+}
+/* live word — absolute, sits exactly over the spacer */
+.rw-live{
+  position:absolute;
+  left:0;
+  top:0;
+  white-space:nowrap;
+  display:block;
+  /* fade transition */
+  transition:opacity .45s ease, transform .45s ease;
+  opacity:1;
+  transform:translateY(0);
+}
+.rw-live.out{
+  opacity:0;
+  transform:translateY(-8px);
+}
+.rw-live.in{
+  opacity:0;
+  transform:translateY(8px);
+  transition:none;
 }
 </style>
 </head>
@@ -628,7 +643,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   <div class="hero-body">
     <div class="hero-inner">
 
-      <h1 class="hero-h1">Your tax position<br>should be as<br>strategic as <em><span class="rotate-wrap"><span class="rotate-words" id="rotateWords"><span class="rw">your investments.</span><span class="rw">your portfolio.</span><span class="rw">your wealth.</span><span class="rw">your future.</span></span></span></em></h1>
+      <h1 class="hero-h1">Your tax position<br>should be<br>strategic as <em class="rw-host"><span class="rw-static" aria-hidden="true">your investments.</span><span class="rw-live" id="rwLive" aria-live="polite">your investments.</span></em></h1>
 
       <p class="hero-sub">Led by an <strong>Ex-Big 4 CPA</strong> and <strong>Harvard trained tax attorney</strong> building proactive strategies for <strong>crypto investors</strong>, <strong>high-net-worth individuals</strong> and <strong>business owners</strong> that protect your wealth before the IRS sees it. Higher-income earners typically see <strong>$100K+ in savings annually</strong> working with us.</p>
 
@@ -1294,64 +1309,38 @@ document.addEventListener('click', function(e) {
 
 <script>
 (function(){
-  var wrap  = document.querySelector('.rotate-wrap');
-  var track = document.querySelector('.rotate-words');
-  var words = document.querySelectorAll('.rw');
-  if(!wrap || !track || !words.length) return;
+  var words  = ['your investments.','your portfolio.','your wealth.','your future.'];
+  var live   = document.getElementById('rwLive');
+  var spacer = document.querySelector('.rw-static');
+  if(!live || !spacer) return;
 
-  var current = 0;
-  var slotH   = 0;
+  var idx = 0;
 
-  function measure(){
-    // Force layout flush so we get real post-font metrics
-    var h = words[0].getBoundingClientRect().height;
-    // Fallback: parse computed line-height × font-size
-    if(!h || h < 4){
-      var cs  = getComputedStyle(words[0]);
-      var lh  = parseFloat(cs.lineHeight);
-      var fs  = parseFloat(cs.fontSize);
-      h = isNaN(lh) ? fs * 1.03 : lh;
-    }
-    slotH = Math.ceil(h);      // ceil avoids sub-pixel gaps
-    wrap.style.height  = slotH + 'px';
-    wrap.style.overflow = 'hidden';
-    // Jump to current position without animation
-    track.style.transition = 'none';
-    track.style.transform  = 'translateY(-' + (current * slotH) + 'px)';
-    // Re-enable transition after paint
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        track.style.transition = 'transform .55s cubic-bezier(.77,0,.18,1)';
-      });
-    });
+  function next(){
+    idx = (idx + 1) % words.length;
+    var word = words[idx];
+
+    // 1. Fade current word out
+    live.classList.add('out');
+
+    setTimeout(function(){
+      // 2. Swap text + spacer width
+      live.textContent   = word;
+      spacer.textContent = word;
+
+      // 3. Position new word below (invisible)
+      live.classList.remove('out');
+      live.classList.add('in');
+
+      // 4. Force reflow so transition fires
+      live.getBoundingClientRect();
+
+      // 5. Fade new word in
+      live.classList.remove('in');
+    }, 450); // matches transition duration
   }
 
-  function setup(){
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        measure();
-        // Interval starts AFTER measure is stable
-        setInterval(function(){
-          current = (current + 1) % words.length;
-          track.style.transform = 'translateY(-' + (current * slotH) + 'px)';
-        }, 2800);
-      });
-    });
-  }
-
-  // Wait for fonts so metrics are accurate
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(setup);
-  } else {
-    window.addEventListener('load', setup);
-  }
-
-  // Re-measure on resize (clamp changes font-size)
-  var resizeTimer;
-  window.addEventListener('resize', function(){
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(measure, 150);
-  });
+  setInterval(next, 2800);
 })();
 </script>
 
