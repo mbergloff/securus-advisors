@@ -1345,63 +1345,7 @@ document.addEventListener('click', function(e) {
     toggleMenu();
   }
 });
-</script>
-
-
-<script>
-(function(){
-  var words  = ['your investments.','your portfolio.','your wealth.','your future.'];
-  var live   = document.getElementById('rwLive');
-  var spacer = document.querySelector('.rw-static');
-  if(!live || !spacer) return;
-
-  var idx = 0;
-
-  function next(){
-    idx = (idx + 1) % words.length;
-    var word = words[idx];
-
-    // 1. Fade current word out
-    live.classList.add('out');
-
-    setTimeout(function(){
-      // 2. Swap text + spacer width
-      live.textContent   = word;
-      spacer.textContent = word;
-
-      // 3. Position new word below (invisible)
-      live.classList.remove('out');
-      live.classList.add('in');
-
-      // 4. Force reflow so transition fires
-      live.getBoundingClientRect();
-
-      // 5. Fade new word in
-      live.classList.remove('in');
-    }, 450); // matches transition duration
-  }
-
-  setInterval(next, 2800);
-})();
-</script>
-
-
-<script>
-/* ── Nav CTA: appears when hero scrolls out of view ── */
-(function(){
-  var cta  = document.getElementById('navCta');
-  var hero = document.querySelector('.hero, .page-hero');
-  if(!cta || !hero) return;
-  function check(){
-    var bottom = hero.getBoundingClientRect().bottom;
-    if(bottom < 72){ cta.classList.add('visible'); cta.setAttribute('aria-hidden','false'); }
-    else            { cta.classList.remove('visible'); cta.setAttribute('aria-hidden','true'); }
-  }
-  window.addEventListener('scroll', check, {passive:true});
-  check();
-})();
-</script>
-</body></html>`;
+;
   try {
     const res=await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Authorization':'Bearer '+RK,'Content-Type':'application/json'},body:JSON.stringify({from:'Securus Advisors <onboarding@resend.dev>',to:[email],bcc:['michael@securusadvisors.com'],subject:'Your Crypto Tax Report — '+f(d.totalSavingsEstimate||0)+' in Potential Savings',html})});
     if (res.ok){msg.textContent='✓ Report sent! Check your inbox (and spam folder just in case).';msg.style.color='#1A7A40';document.getElementById('res-form').style.display='none';}
@@ -1442,39 +1386,44 @@ async function doAnalyze() {
     if(btn) btn.disabled=false;
   }
 }
-</script>
 
+</script>
 <script>
-/* ── Mobile nav toggle ── */
-function toggleMenu() {
-  var nav = document.getElementById('nav-mobile');
-  var burger = document.getElementById('burger');
-  if (!nav) return;
-  var isOpen = nav.classList.contains('open');
-  nav.classList.toggle('open', !isOpen);
-  burger.setAttribute('aria-expanded', String(!isOpen));
-  // Animate burger → X
-  var spans = burger.querySelectorAll('span');
-  if (!isOpen) {
-    spans[0].style.cssText = 'transform:translateY(7px) rotate(45deg);transition:transform .22s ease';
-    spans[1].style.cssText = 'opacity:0;transition:opacity .15s ease';
-    spans[2].style.cssText = 'transform:translateY(-7px) rotate(-45deg);transition:transform .22s ease';
-  } else {
-    spans[0].style.cssText = 'transform:none;transition:transform .22s ease';
-    spans[1].style.cssText = 'opacity:1;transition:opacity .15s ease';
-    spans[2].style.cssText = 'transform:none;transition:transform .22s ease';
-  }
-}
-// Close menu on outside click
-document.addEventListener('click', function(e) {
-  var nav = document.getElementById('nav-mobile');
-  var burger = document.getElementById('burger');
-  if (nav && nav.classList.contains('open') && !nav.contains(e.target) && !burger.contains(e.target)) {
-    toggleMenu();
-  }
-});
-</script>
+(function(){
+  var words  = ['your investments.','your portfolio.','your wealth.','your future.'];
+  var live   = document.getElementById('rwLive');
+  var spacer = document.querySelector('.rw-static');
+  if(!live || !spacer) return;
 
+  var idx = 0;
+
+  function next(){
+    idx = (idx + 1) % words.length;
+    var word = words[idx];
+
+    // 1. Fade current word out
+    live.classList.add('out');
+
+    setTimeout(function(){
+      // 2. Swap text + spacer width
+      live.textContent   = word;
+      spacer.textContent = word;
+
+      // 3. Position new word below (invisible)
+      live.classList.remove('out');
+      live.classList.add('in');
+
+      // 4. Force reflow so transition fires
+      live.getBoundingClientRect();
+
+      // 5. Fade new word in
+      live.classList.remove('in');
+    }, 450); // matches transition duration
+  }
+
+  setInterval(next, 2800);
+})();
+</script>
 
 <script>
 /* ── Nav CTA: appears when hero scrolls out of view ── */
@@ -1491,5 +1440,6 @@ document.addEventListener('click', function(e) {
   check();
 })();
 </script>
+
 </body>
 </html>
