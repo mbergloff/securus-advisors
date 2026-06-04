@@ -633,6 +633,58 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .tb-item span{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.03em;}
 .tb-div{width:1px;height:20px;background:var(--fog);flex-shrink:0;}
 @media(max-width:768px){.trust-bar-inner{gap:4px;padding:0 24px;}.tb-item{padding:6px 12px;}.tb-item span{font-size:11px;}}
+
+/* ── Hero credential pill badge ── */
+.hero-pill-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(240,120,20,.08);border:1px solid rgba(240,120,20,.2);
+  border-radius:100px;padding:6px 16px;margin-bottom:20px;
+  font-size:12px;font-weight:700;color:var(--or);letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.hpb-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--or);flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(240,120,20,.2);
+}
+
+/* ── Hero stats row ── */
+.hero-stats{
+  display:flex;align-items:center;gap:0;
+  margin-top:36px;padding-top:28px;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.hs-item{flex:1;padding:0 8px;}
+.hs-item:first-child{padding-left:0;}
+.hs-num{
+  font-size:32px;font-weight:800;color:var(--ink);
+  line-height:1;letter-spacing:-.02em;font-family:var(--sans);
+  display:flex;align-items:baseline;gap:2px;
+}
+.hs-plus{font-size:22px;color:var(--or);font-weight:700;}
+.hs-label{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;font-weight:500;}
+.hs-div{width:1px;height:40px;background:var(--fog);flex-shrink:0;margin:0 16px;}
+
+/* ── Ghost CTA button ── */
+.hbtn-ghost{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:13px 24px;border-radius:100px;
+  font-size:14px;font-weight:600;
+  border:1.5px solid rgba(0,0,0,.15);
+  color:var(--ink);transition:border-color .2s,color .2s;
+  text-decoration:none;white-space:nowrap;
+}
+.hbtn-ghost svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s;}
+.hbtn-ghost:hover{border-color:var(--or);color:var(--or);}
+.hbtn-ghost:hover svg{transform:translateX(3px);}
+
+@media(max-width:768px){
+  .hero-stats{flex-wrap:wrap;gap:20px;}
+  .hs-item{flex:calc(50% - 20px);padding:0;}
+  .hs-div{display:none;}
+  .hs-num{font-size:26px;}
+  .hero-pill-badge{font-size:11px;padding:5px 12px;}
+}
 </style>
 </head>
 <body>
@@ -680,19 +732,48 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   <div class="hero-body">
     <div class="hero-inner">
 
+      <!-- Credential pill -->
+      <div class="hero-pill-badge">
+        <span class="hpb-dot"></span>
+        Ex-Big 4 &nbsp;·&nbsp; Harvard Tax LL.M. &nbsp;·&nbsp; NYU Tax LL.M.
+      </div>
+
       <h1 class="hero-h1">Your tax position<br>should be<br>as strategic as <em class="rw-host"><span class="rw-static" aria-hidden="true">your investments.</span><span class="rw-live" id="rwLive" aria-live="polite">your investments.</span></em></h1>
 
-      <p class="hero-sub"><strong>Ex-Big 4 CPAs</strong> and a <strong>Harvard-trained tax attorney</strong> who build year-round strategies — not just filings — for crypto investors, high-net-worth individuals, and business owners. Our clients typically recover <strong>$100K+ annually</strong> before they ever file.</p>
+      <p class="hero-sub">We build year-round tax strategies — not just filings — for crypto investors, high-net-worth individuals, and business owners. Our clients typically recover <strong>$100K+ in savings annually</strong> before they ever file.</p>
 
       <div class="hero-btns">
         <a href="https://calendly.com/michaelcpa" class="hbtn-solid">
           Schedule a Strategy Session
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
-        <a href="/securus-advisors/services/" class="hbtn-pill">
-          What Could You Save?
+        <a href="/securus-advisors/services/" class="hbtn-ghost">
+          See How It Works
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
+      </div>
+
+      <!-- By the Numbers — Creative Planning style -->
+      <div class="hero-stats">
+        <div class="hs-item">
+          <div class="hs-num">$100K<span class="hs-plus">+</span></div>
+          <div class="hs-label">Avg. annual savings<br>per client</div>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <div class="hs-num">15<span class="hs-plus">+</span></div>
+          <div class="hs-label">Years Big 4 &amp;<br>tax law experience</div>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <div class="hs-num">500<span class="hs-plus">+</span></div>
+          <div class="hs-label">Crypto returns<br>filed &amp; optimized</div>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <div class="hs-num">$0</div>
+          <div class="hs-label">IRS penalties for<br>our managed clients</div>
+        </div>
       </div>
 
     </div>
