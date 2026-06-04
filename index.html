@@ -178,11 +178,11 @@ img{display:block;max-width:100%;}
 .bd-sub{font-size:10px;color:var(--muted);margin-top:1px;}
 
 /* ═══ AS FEATURED IN — hero bottom, straight lines ═══ */
-.hero-press-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;flex-wrap:nowrap;gap:12px;}
-.hp-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888;white-space:nowrap;padding-right:24px;border-right:1.5px solid #e8e4df;flex-shrink:0;margin-right:8px;}
-.hp-logos{display:flex;flex:1;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:4px 0;min-width:0;}
-.hpl{font-size:13px;font-weight:800;color:#B8B0A6;letter-spacing:.03em;white-space:nowrap;padding:0 10px;}
-.hpl:hover{color:var(--muted);}
+
+
+
+
+
 /* ═══ PAGE SECTIONS ═══ */
 .sec{padding:96px 0;}
 .sec-inner{max-width:var(--max);margin:0 auto;padding:0 48px;}
@@ -309,10 +309,10 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   
   .orb-c-1{width:220px;height:220px;}
   
-  .hero-press-inner{padding:16px 20px;gap:10px;flex-wrap:wrap;}
-  .hp-lbl{display:none;}
-  .hp-logos{justify-content:center;gap:6px 20px;}
-  .hp-logos{gap:10px 14px;}
+  
+  
+  
+  
   .sec-inner,.numbers-inner,.ft,.cta-inner{padding-left:20px;padding-right:20px;}
   .sec{padding:64px 0;}
   .svc-grid,.testi-grid,.art-grid,.serve-grid{grid-template-columns:1fr;}
@@ -396,8 +396,8 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 .hero-cred-item svg{width:13px;height:13px;stroke:#f07814;flex-shrink:0;}
 
   .hero-sub{font-size:15px;}
-  .hpl{font-size:13px;}
-  .hp-logos{gap:5px 16px;}
+  
+  
 }
 
 /* ── Mobile hero: stack + bigger text + press at bottom ── */
@@ -405,10 +405,10 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   section.hero-canvas{position:absolute;top:0;left:0;right:0;bottom:0;}
   .hero-inner{padding:72px 24px 36px;align-items:flex-start;text-align:left;}
   .hero-sub{font-size:17px;line-height:1.7;max-width:100%;}
-  .hero-press-inner{padding:20px 24px;gap:10px;flex-wrap:wrap;justify-content:center;}
-  .hp-lbl{display:none;}
-  .hp-logos{justify-content:center;gap:8px 22px;flex-wrap:wrap;}
-  .hpl{font-size:14px !important;}
+  
+  
+  
+  
   }
 @media(max-width:480px){
   .hero-sub{font-size:16px;}
@@ -418,7 +418,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 }
 
 /* ── Explore Pill Button ── */
-/* ── Press strip updated ── */
+
 /* ── Mobile adjustments ── */
 @media(max-width:767px){
   
@@ -471,14 +471,7 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   align-items:flex-start;
   text-align:left;
 }
-.hero-press{
-  position:relative;
-  z-index:2;
-  flex:0 0 auto;
-  border-top:1px solid rgba(0,0,0,.07);
-  background:#fff;
-  padding:24px 0;
-}
+
 
 /* H1 */
 .hero-h1{
@@ -629,14 +622,17 @@ footer{background:#0F0C08;padding:60px 0 28px;}
 }
 
 /* ══ Press strip links ══════════════════════════════ */
-.hpl a{
-  color:inherit;
-  text-decoration:none;
-  transition:color .15s;
-}
-.hpl a:hover{
-  color:var(--or);
-}
+
+
+
+/* ── Trust bar (replaces press strip) ── */
+.trust-bar{border-top:1px solid rgba(0,0,0,.07);background:#fff;padding:18px 0;}
+.trust-bar-inner{max-width:var(--max);margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
+.tb-item{display:flex;align-items:center;gap:8px;padding:6px 24px;white-space:nowrap;}
+.tb-item svg{width:15px;height:15px;stroke:var(--or);stroke-width:2;fill:none;flex-shrink:0;}
+.tb-item span{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.03em;}
+.tb-div{width:1px;height:20px;background:var(--fog);flex-shrink:0;}
+@media(max-width:768px){.trust-bar-inner{gap:4px;padding:0 24px;}.tb-item{padding:6px 12px;}.tb-item span{font-size:11px;}}
 </style>
 </head>
 <body>
@@ -703,18 +699,31 @@ footer{background:#0F0C08;padding:60px 0 28px;}
   </div>
 
   <!-- AS FEATURED IN — true bottom via flex push -->
-  <div class="hero-press">
-    <div class="hero-press-inner">
-      <div class="hp-lbl">Published In</div>
-      <div class="hp-logos">
-        <div class="hpl"><a href="https://www.forbes.com" target="_blank" rel="noopener">Forbes</a></div>
-        <div class="hpl"><a href="https://pro.bloombergtax.com" target="_blank" rel="noopener">Bloomberg Tax</a></div>
-        <div class="hpl"><a href="https://www.coindesk.com" target="_blank" rel="noopener">CoinDesk</a></div>
-        <div class="hpl"><a href="https://cointelegraph.com" target="_blank" rel="noopener">Cointelegraph</a></div>
-        <div class="hpl"><a href="https://www.theblock.co" target="_blank" rel="noopener">The Block</a></div>
-        <div class="hpl"><a href="https://decrypt.co" target="_blank" rel="noopener">Decrypt</a></div>
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="tb-item">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>AICPA Member</span>
       </div>
+      <div class="tb-div"></div>
+      <div class="tb-item">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        <span>Ex-Big 4 CPA</span>
       </div>
+      <div class="tb-div"></div>
+      <div class="tb-item">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span>Harvard &amp; NYU Tax LL.M.</span>
+      </div>
+      <div class="tb-div"></div>
+      <div class="tb-item">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>$50K Savings Guarantee</span>
+      </div>
+      <div class="tb-div"></div>
+      <div class="tb-item">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>IRS Crypto Enforcement Specialists</span>
       </div>
     </div>
   </div>
