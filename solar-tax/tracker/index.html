@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hour Tracker | Securus Advisors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --or:#F07814;--or2:#D4640E;--or3:#F59340;
+  --ink:#181410;--ink2:#1C1814;
+  --white:#fff;--snow:#FAFAF8;--cloud:#F5F2ED;--fog:#E8E2D8;--muted:#78716A;
+  --max:1240px;--pill:999px;--card:12px;
+  --green:#16a34a;--red:#dc2626;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--snow);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+::selection{background:var(--or);color:#fff;}
+
+/* ═══ NAV ═══ */
+.nav{background:var(--white);border-bottom:1px solid var(--fog);position:sticky;top:0;z-index:900;}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.nav-logo img{height:28px;width:auto;display:block;flex-shrink:0;}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.nav-page-label{font-size:13px;color:var(--muted);border-left:1px solid var(--fog);padding-left:12px;font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-user-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);}
+.nav-avatar{width:30px;height:30px;border-radius:50%;background:var(--or);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-logout{font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--fog);border-radius:var(--pill);padding:6px 14px;cursor:pointer;background:none;font-family:'Inter',sans-serif;transition:all .15s;}
+.nav-logout:hover{color:var(--ink);border-color:var(--ink);}
+.nav-back{font-size:13px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:5px;transition:color .15s;}
+.nav-back:hover{color:var(--or);}
+.nav-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ═══ AUTH SCREEN ═══ */
+#auth-screen{min-height:calc(100vh - 72px);display:flex;align-items:center;justify-content:center;padding:32px 20px;}
+.auth-wrap{width:100%;max-width:400px;}
+.auth-header{text-align:center;margin-bottom:28px;}
+.auth-header .auth-icon{width:52px;height:52px;background:var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.auth-header .auth-icon svg{width:26px;height:26px;stroke:var(--or);fill:none;stroke-width:1.8;stroke-linecap:round;}
+.auth-header h1{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:5px;}
+.auth-header p{font-size:13px;color:var(--muted);}
+.auth-card{background:var(--white);border:1px solid var(--fog);border-radius:16px;padding:28px;box-shadow:0 2px 16px rgba(0,0,0,.05);}
+.auth-tabs{display:flex;background:var(--cloud);border-radius:10px;padding:3px;margin-bottom:22px;}
+.auth-tab{flex:1;padding:8px;border:none;background:none;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.auth-tab.active{background:var(--white);color:var(--ink);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--fog);border-radius:9px;font-size:14px;color:var(--ink);background:var(--white);font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--or);}
+.form-group select{appearance:none;cursor:pointer;}
+.form-group textarea{resize:vertical;min-height:72px;}
+.btn-primary{width:100%;padding:11px;background:var(--ink);color:#fff;border:none;border-radius:var(--pill);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:background .15s;margin-top:4px;}
+.btn-primary:hover{background:var(--or);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+.auth-error{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:14px;display:none;}
+
+/* ═══ APP SCREEN ═══ */
+#app-screen{display:none;}
+.main{max-width:var(--max);margin:0 auto;padding:36px 48px 60px;}
+
+/* ═══ PAGE HEADER ═══ */
+.page-head{margin-bottom:28px;}
+.page-head h1{font-size:28px;font-weight:900;letter-spacing:-.6px;margin-bottom:4px;}
+.page-head p{font-size:14px;color:var(--muted);}
+
+/* ═══ IRS NOTE ═══ */
+.irs-note{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--or);border-radius:0 var(--card) var(--card) 0;padding:12px 16px;font-size:13px;color:#78590a;margin-bottom:28px;line-height:1.6;}
+.irs-note strong{color:var(--ink);}
+
+/* ═══ STAT GRID ═══ */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:20px;}
+.stat-card .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:7px;}
+.stat-card .val{font-size:30px;font-weight:900;color:var(--ink);letter-spacing:-1px;line-height:1;}
+.stat-card .sub{font-size:12px;color:var(--muted);margin-top:3px;}
+.stat-card.accent{background:var(--ink);border-color:var(--ink);}
+.stat-card.accent .lbl{color:rgba(255,255,255,.45);}
+.stat-card.accent .val{color:var(--or);}
+.stat-card.accent .sub{color:rgba(255,255,255,.4);}
+
+/* ═══ PROGRESS ═══ */
+.progress-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:24px;margin-bottom:22px;}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.prog-top h2{font-size:16px;font-weight:800;letter-spacing:-.3px;}
+.prog-top .yr{font-size:12px;color:var(--muted);}
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:var(--pill);font-size:11px;font-weight:600;}
+.pill-active{background:#e0f2fe;color:#0369a1;}
+.pill-track{background:#dcfce7;color:#15803d;}
+.pill-risk{background:#fef3c7;color:#92400e;}
+.pill-done{background:#dcfce7;color:#15803d;}
+.bar-wrap{background:var(--cloud);border-radius:var(--pill);height:12px;overflow:hidden;margin-bottom:8px;}
+.bar-fill{height:100%;border-radius:var(--pill);background:linear-gradient(90deg,var(--or),var(--or3));transition:width .7s ease;}
+.bar-fill.done{background:linear-gradient(90deg,var(--green),#22c55e);}
+.bar-fill.risk{background:linear-gradient(90deg,var(--red),#f87171);}
+.bar-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);}
+.bar-labels strong{color:var(--ink);}
+
+/* ═══ TWO COL ═══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+.panel{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:22px;}
+.panel h3{font-size:13px;font-weight:800;letter-spacing:-.2px;margin-bottom:16px;}
+.act-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.act-row:last-child{margin-bottom:0;}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.act-name{flex:1;font-size:12px;color:var(--ink);}
+.act-bar-wrap{flex:1.5;background:var(--cloud);border-radius:var(--pill);height:5px;overflow:hidden;}
+.act-bar-fill{height:100%;border-radius:var(--pill);}
+.act-hrs{font-size:12px;font-weight:700;color:var(--ink);width:34px;text-align:right;}
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--fog);font-size:12px;line-height:1.5;}
+.checklist li:last-child{border-bottom:none;padding-bottom:0;}
+.checklist li:first-child{padding-top:0;}
+.check-ico{font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* ═══ EXPORT ═══ */
+.export-row{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;background:var(--white);border:1.5px solid var(--fog);border-radius:var(--pill);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;color:var(--ink);cursor:pointer;transition:all .15s;}
+.btn-export:hover{border-color:var(--or);color:var(--or);}
+.btn-export svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ═══ LOG CARD ═══ */
+.log-card{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:24px;}
+.log-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.log-head h2{font-size:16px;font-weight:800;letter-spacing:-.3px;}
+.btn-log{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--or);color:#fff;border:none;border-radius:var(--pill);font-size:13px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:background .15s;}
+.btn-log:hover{background:var(--or2);}
+.log-table{width:100%;border-collapse:collapse;}
+.log-table th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:0 12px 9px;border-bottom:2px solid var(--fog);}
+.log-table td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--fog);vertical-align:middle;}
+.log-table tr:last-child td{border-bottom:none;}
+.log-table tr:hover td{background:var(--snow);}
+.act-badge{display:inline-block;padding:3px 8px;border-radius:var(--pill);font-size:11px;font-weight:600;background:var(--cloud);color:var(--ink);}
+.hrs-chip{font-size:13px;font-weight:700;color:var(--ink);}
+.btn-del{padding:4px 10px;background:none;border:1px solid var(--fog);border-radius:6px;color:var(--muted);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
+.btn-del:hover{border-color:#fecaca;color:var(--red);}
+.empty{text-align:center;padding:48px 20px;color:var(--muted);}
+.empty .ico{font-size:38px;margin-bottom:10px;}
+.empty p{font-size:14px;margin-bottom:3px;}
+.empty small{font-size:12px;}
+
+/* ═══ MODAL ═══ */
+.overlay{position:fixed;inset:0;background:rgba(24,20,16,.5);display:none;align-items:center;justify-content:center;z-index:999;padding:20px;}
+.overlay.show{display:flex;}
+.modal{background:var(--white);border-radius:16px;padding:28px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:18px;font-weight:800;letter-spacing:-.3px;margin-bottom:20px;}
+.modal-actions{display:flex;gap:10px;margin-top:18px;}
+.btn-cancel{flex:1;padding:10px;background:var(--cloud);border:none;border-radius:var(--pill);font-size:14px;font-weight:500;font-family:'Inter',sans-serif;color:var(--muted);cursor:pointer;}
+.btn-save{flex:2;padding:10px;background:var(--ink);color:#fff;border:none;border-radius:var(--pill);font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:background .15s;}
+.btn-save:hover{background:var(--or);}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .two-col{grid-template-columns:1fr;}
+  .main{padding:24px 20px 48px;}
+  .nav-inner{padding:0 20px;}
+}
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .log-table th:nth-child(4),.log-table td:nth-child(4){display:none;}
+}
+@media print{
+  .nav,.btn-log,.btn-del,.export-row,.overlay,.modal{display:none!important;}
+  body{background:#fff;}
+  .main{padding:20px;}
+}
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <a href="/securus-advisors/">
+        <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
+      </a>
+      <span class="nav-page-label">Hour Tracker</span>
+    </div>
+    <div class="nav-right">
+      <a href="/securus-advisors/solar-tax/" class="nav-back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Solar Tax
+      </a>
+      <div class="nav-user-badge" id="user-badge" style="display:none;">
+        <div class="nav-avatar" id="user-initials">--</div>
+        <span id="user-email-display"></span>
+      </div>
+      <button class="nav-logout" id="logout-btn" onclick="handleLogout()" style="display:none;">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ AUTH SCREEN ═══ -->
+<div id="auth-screen">
+  <div class="auth-wrap">
+    <div class="auth-header">
+      <div class="auth-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h1>Material Participation Tracker</h1>
+      <p>Sign in to log and track your qualifying hours</p>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchTab('register')">Create Account</button>
+      </div>
+      <div id="auth-error" class="auth-error"></div>
+
+      <!-- LOGIN -->
+      <div id="login-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')handleLogin()"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleLogin()"/>
+        </div>
+        <button class="btn-primary" id="login-btn" onclick="handleLogin()">Sign In</button>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="register-form" style="display:none;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" placeholder="Jane Smith"/>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="reg-email" placeholder="you@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="reg-password" placeholder="At least 8 characters"/>
+        </div>
+        <button class="btn-primary" id="register-btn" onclick="handleRegister()">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP SCREEN ═══ -->
+<div id="app-screen">
+  <div class="main">
+
+    <div class="page-head">
+      <h1>Material Participation Tracker</h1>
+      <p>Tax Year <span id="hdr-year">2026</span> &nbsp;·&nbsp; Logged as <span id="hdr-email"></span></p>
+    </div>
+
+    <div class="irs-note">
+      <strong>IRS 101-Hour Test (Temp. Reg. §1.469-5T, Test 3) —</strong> You must participate more than 100 hours during the tax year, and your hours must not be less than any other individual's participation. Log every qualifying activity with the date, description, and time spent. The IRS may request contemporaneous records during an audit.
+    </div>
+
+    <!-- STATS -->
+    <div class="stat-grid">
+      <div class="stat-card accent">
+        <div class="lbl">Hours Logged</div>
+        <div class="val" id="stat-total">0</div>
+        <div class="sub">of <span id="stat-target">101</span>+ required</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Hours Remaining</div>
+        <div class="val" id="stat-remaining">101</div>
+        <div class="sub">to meet IRS threshold</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Tax Year</div>
+        <div class="val" id="stat-year">2026</div>
+        <div class="sub">current tracking period</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Log Entries</div>
+        <div class="val" id="stat-entries">0</div>
+        <div class="sub">individual records</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-card">
+      <div class="prog-top">
+        <div>
+          <h2>Progress to 101-Hour Threshold</h2>
+          <div class="yr" id="prog-year">Tax Year 2026</div>
+        </div>
+        <span class="status-pill pill-active" id="status-pill">Active</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="bar-fill" style="width:0%"></div>
+      </div>
+      <div class="bar-labels">
+        <span><strong id="pct-label">0%</strong> complete</span>
+        <span id="remaining-label">101 hours to go</span>
+      </div>
+    </div>
+
+    <!-- BREAKDOWN + CHECKLIST -->
+    <div class="two-col">
+      <div class="panel">
+        <h3>Hours by Activity Type</h3>
+        <div id="act-breakdown"><p style="font-size:12px;color:var(--muted);">No hours logged yet.</p></div>
+      </div>
+      <div class="panel">
+        <h3>IRS Material Participation Tests</h3>
+        <ul class="checklist">
+          <li><span class="check-ico" id="check-101">⬜</span><div><strong>101-hour test</strong> — &gt;100 hrs and not less than any other individual <em>(your primary test)</em></div></li>
+          <li><span class="check-ico" id="check-500">⬜</span><div><strong>500-hour test</strong> — alternative for sole operators</div></li>
+          <li><span class="check-ico">⬜</span><div><strong>Substantially all</strong> — you are the only meaningful participant</div></li>
+          <li><span class="check-ico">⬜</span><div><strong>5 of last 10 years</strong> — prior participation history</div></li>
+          <li><span class="check-ico">⬜</span><div><strong>Facts &amp; circumstances</strong> — regular, continuous, substantial</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EXPORT -->
+    <div class="export-row">
+      <button class="btn-export" onclick="exportCSV()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export CSV
+      </button>
+      <button class="btn-export" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF Report
+      </button>
+    </div>
+
+    <!-- LOG TABLE -->
+    <div class="log-card">
+      <div class="log-head">
+        <h2>Activity Log</h2>
+        <button class="btn-log" onclick="openModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Log Hours
+        </button>
+      </div>
+      <table class="log-table" id="log-table" style="display:none;">
+        <thead><tr><th>Date</th><th>Activity</th><th>Hours</th><th>Description</th><th></th></tr></thead>
+        <tbody id="log-tbody"></tbody>
+      </table>
+      <div id="empty-state" class="empty">
+        <div class="ico">📋</div>
+        <p>No hours logged yet</p>
+        <small>Click "Log Hours" to add your first activity</small>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="overlay" id="overlay" onclick="closeOutside(event)">
+  <div class="modal">
+    <h3>Log Activity Hours</h3>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="log-date"/>
+    </div>
+    <div class="form-group">
+      <label>Activity Type</label>
+      <select id="log-activity">
+        <option value="">Select activity...</option>
+        <option value="On-site Management">On-site Management</option>
+        <option value="Contractor Oversight">Contractor Oversight</option>
+        <option value="Financial Review">Financial Review</option>
+        <option value="Maintenance Coordination">Maintenance Coordination</option>
+        <option value="Regulatory & Compliance">Regulatory &amp; Compliance</option>
+        <option value="Administrative">Administrative</option>
+        <option value="Operations Review">Operations Review</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Hours Spent</label>
+      <input type="number" id="log-hours" min="0.25" max="24" step="0.25" placeholder="e.g. 2.5"/>
+    </div>
+    <div class="form-group">
+      <label>Description / Notes</label>
+      <textarea id="log-desc" placeholder="Specific activities performed..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" id="save-btn" onclick="saveLog()">Save Entry</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API  = 'https://api.base44.com/api/apps/6a07e39a974a7f134fb32e29/functions/materialParticipation';
+const AUTH = 'https://api.base44.com/api/apps/6a07e39a974a7f134fb32e29';
+const COLORS = ['#F07814','#181410','#3b82f6','#10b981','#8b5cf6','#f59e0b','#ef4444','#06b6d4'];
+
+let token = localStorage.getItem('sa_token') || null;
+let userEmail = localStorage.getItem('sa_email') || '';
+let allLogs = [], summary = {};
+
+window.onload = () => {
+  document.getElementById('log-date').value = today();
+  token ? showApp() : showAuth();
+};
+
+function today(){ return new Date().toISOString().split('T')[0]; }
+
+/* ── AUTH ── */
+function switchTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', i===(tab==='login'?0:1)));
+  document.getElementById('login-form').style.display = tab==='login'?'block':'none';
+  document.getElementById('register-form').style.display = tab==='register'?'block':'none';
+  clearErr();
+}
+function showErr(m){ const e=document.getElementById('auth-error'); e.textContent=m; e.style.display='block'; }
+function clearErr(){ document.getElementById('auth-error').style.display='none'; }
+function setBtn(id,txt,dis){ const b=document.getElementById(id); if(b){b.textContent=txt;b.disabled=dis;} }
+
+async function handleLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-password').value;
+  if(!email||!pass) return showErr('Please enter your email and password.');
+  setBtn('login-btn','Signing in…',true); clearErr();
+  try {
+    const r=await fetch(`${AUTH}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.message||d.error||'Invalid credentials');
+    token=d.token||d.access_token; userEmail=email;
+    localStorage.setItem('sa_token',token); localStorage.setItem('sa_email',email);
+    showApp();
+  } catch(e){ showErr(e.message); }
+  finally{ setBtn('login-btn','Sign In',false); }
+}
+
+async function handleRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-password').value;
+  if(!name||!email||!pass) return showErr('Please fill in all fields.');
+  if(pass.length<8) return showErr('Password must be at least 8 characters.');
+  setBtn('register-btn','Creating account…',true); clearErr();
+  try {
+    const r=await fetch(`${AUTH}/auth/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({full_name:name,email,password:pass})});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.message||d.error||'Registration failed');
+    token=d.token||d.access_token; userEmail=email;
+    localStorage.setItem('sa_token',token); localStorage.setItem('sa_email',email);
+    await apiFetch('/profile','POST',{full_name:name,email,tax_year:new Date().getFullYear(),target_hours:101,status:'Active'});
+    showApp();
+  } catch(e){ showErr(e.message); }
+  finally{ setBtn('register-btn','Create Account',false); }
+}
+
+function handleLogout(){
+  token=null; localStorage.removeItem('sa_token'); localStorage.removeItem('sa_email'); showAuth();
+}
+
+/* ── SCREENS ── */
+function showAuth(){
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('user-badge').style.display='none';
+  document.getElementById('logout-btn').style.display='none';
+}
+
+async function showApp(){
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+  document.getElementById('user-badge').style.display='flex';
+  document.getElementById('logout-btn').style.display='block';
+  const initials=(userEmail||'U').slice(0,2).toUpperCase();
+  document.getElementById('user-initials').textContent=initials;
+  document.getElementById('user-email-display').textContent=userEmail;
+  document.getElementById('hdr-email').textContent=userEmail;
+  await loadData();
+}
+
+async function loadData(){
+  try {
+    const [s,l]=await Promise.all([apiFetch('/summary','GET'),apiFetch('/logs','GET')]);
+    summary=s; allLogs=l.logs||[];
+    render();
+  } catch(e){ console.error(e); }
+}
+
+/* ── RENDER ── */
+function render(){
+  const {total_hours=0,target_hours=101,remaining=101,percentage=0,by_activity={},profile}=summary;
+  const yr=profile?.tax_year||new Date().getFullYear();
+
+  document.getElementById('stat-total').textContent=total_hours.toFixed(1);
+  document.getElementById('stat-target').textContent=target_hours;
+  document.getElementById('stat-remaining').textContent=remaining.toFixed(1);
+  document.getElementById('stat-entries').textContent=allLogs.length;
+  document.getElementById('stat-year').textContent=yr;
+  document.getElementById('hdr-year').textContent=yr;
+  document.getElementById('prog-year').textContent=`Tax Year ${yr}`;
+
+  const fill=document.getElementById('bar-fill');
+  fill.style.width=`${percentage}%`;
+  fill.className='bar-fill'+(percentage>=100?' done':total_hours<30?' risk':'');
+  document.getElementById('pct-label').textContent=`${percentage}%`;
+  document.getElementById('remaining-label').textContent=remaining>0?`${remaining.toFixed(1)} hours to go`:'✅ Threshold met!';
+
+  const pill=document.getElementById('status-pill');
+  if(percentage>=100){pill.className='status-pill pill-done';pill.textContent='✅ Complete';}
+  else if(total_hours>=50){pill.className='status-pill pill-track';pill.textContent='📈 On Track';}
+  else if(total_hours>0){pill.className='status-pill pill-risk';pill.textContent='⚠️ At Risk';}
+  else{pill.className='status-pill pill-active';pill.textContent='Active';}
+
+  document.getElementById('check-101').textContent=total_hours>100?'✅':'⬜';
+  document.getElementById('check-500').textContent=total_hours>=500?'✅':'⬜';
+
+  const bd=document.getElementById('act-breakdown');
+  const entries=Object.entries(by_activity).sort((a,b)=>b[1]-a[1]);
+  if(!entries.length){ bd.innerHTML='<p style="font-size:12px;color:var(--muted);">No hours logged yet.</p>'; }
+  else {
+    const maxV=Math.max(...entries.map(e=>e[1]));
+    bd.innerHTML=entries.map(([name,hrs],i)=>`
+      <div class="act-row">
+        <div class="act-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+        <div class="act-name">${name}</div>
+        <div class="act-bar-wrap"><div class="act-bar-fill" style="width:${Math.round(hrs/maxV*100)}%;background:${COLORS[i%COLORS.length]}"></div></div>
+        <div class="act-hrs">${hrs.toFixed(1)}h</div>
+      </div>`).join('');
+  }
+
+  const tbody=document.getElementById('log-tbody');
+  const table=document.getElementById('log-table');
+  const empty=document.getElementById('empty-state');
+  if(!allLogs.length){ table.style.display='none'; empty.style.display='block'; return; }
+  table.style.display='table'; empty.style.display='none';
+  tbody.innerHTML=allLogs.map(l=>`
+    <tr>
+      <td>${fmtDate(l.log_date)}</td>
+      <td><span class="act-badge">${l.activity_type||'Other'}</span></td>
+      <td><span class="hrs-chip">${Number(l.hours).toFixed(1)}h</span></td>
+      <td style="color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.description||'—'}</td>
+      <td><button class="btn-del" onclick="deleteLog('${l.id}')">Delete</button></td>
+    </tr>`).join('');
+}
+
+function fmtDate(d){ if(!d)return'—'; return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+/* ── MODAL ── */
+function openModal(){
+  document.getElementById('log-date').value=today();
+  document.getElementById('log-activity').value='';
+  document.getElementById('log-hours').value='';
+  document.getElementById('log-desc').value='';
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+function closeOutside(e){ if(e.target===document.getElementById('overlay'))closeModal(); }
+
+async function saveLog(){
+  const date=document.getElementById('log-date').value;
+  const act=document.getElementById('log-activity').value;
+  const hrs=parseFloat(document.getElementById('log-hours').value);
+  const desc=document.getElementById('log-desc').value.trim();
+  if(!date||!act||!hrs||hrs<=0) return alert('Please fill in date, activity type, and hours.');
+  setBtn('save-btn','Saving…',true);
+  try { await apiFetch('/logs','POST',{log_date:date,activity_type:act,hours:hrs,description:desc}); closeModal(); await loadData(); }
+  catch(e){ alert('Error: '+e.message); }
+  finally{ setBtn('save-btn','Save Entry',false); }
+}
+
+async function deleteLog(id){
+  if(!confirm('Delete this entry?')) return;
+  try { await apiFetch(`/logs/${id}`,'DELETE'); await loadData(); }
+  catch(e){ alert('Error: '+e.message); }
+}
+
+function exportCSV(){
+  if(!allLogs.length) return alert('No logs to export.');
+  const rows=[['Date','Activity Type','Hours','Description'],...allLogs.map(l=>[l.log_date,l.activity_type,l.hours,l.description||''])];
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`material_participation_${new Date().getFullYear()}.csv`});
+  a.click();
+}
+
+async function apiFetch(ep,method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json',...(token?{'Authorization':`Bearer ${token}`}:{})}};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(`${API}${ep}`,opts);
+  if(r.status===401){ handleLogout(); throw new Error('Session expired'); }
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||'Request failed');
+  return d;
+}
+</script>
+</body>
+</html>
