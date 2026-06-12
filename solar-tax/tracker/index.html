@@ -177,25 +177,32 @@ img{display:block;max-width:100%;}
 <body>
 
 <!-- ═══ NAV ═══ -->
-<nav class="nav">
+<nav class="nav" id="nav">
   <div class="nav-inner">
-    <div class="nav-logo">
-      <a href="/securus-advisors/">
-        <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
-      </a>
-      <span class="nav-page-label">Hour Tracker</span>
+    <a href="/securus-advisors/" class="nav-logo">
+      <img src="https://media.base44.com/images/public/6a07e39a974a7f134fb32e29/d4d1899dd_Asset23x.png" alt="Securus Advisors"/>
+    </a>
+    <div class="nav-links">
+      <a href="/securus-advisors/#about">About</a>
+      <a href="/securus-advisors/services/">Services</a>
+      <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
+      <a href="/securus-advisors/#contact">Contact</a>
     </div>
-    <div class="nav-right">
-      <a href="/securus-advisors/solar-tax/" class="nav-back">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        Solar Tax
-      </a>
-      <div class="nav-user-badge" id="user-badge" style="display:none;">
-        <div class="nav-avatar" id="user-initials">--</div>
-        <span id="user-email-display"></span>
-      </div>
-      <button class="nav-logout" id="logout-btn" onclick="handleLogout()" style="display:none;">Sign Out</button>
-    </div>
+    <a href="https://calendly.com/michaelcpa" class="nav-cta" id="navCta" aria-hidden="true">Schedule a Strategy Session</a>
+    <a href="https://portal.corvisors.com/login" class="nav-login">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Client Portal
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="/securus-advisors/#about" onclick="toggleMenu()">About</a>
+    <a href="/securus-advisors/services/" onclick="toggleMenu()">Services</a>
+    <a href="/securus-advisors/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
+    <a href="/securus-advisors/#contact" onclick="toggleMenu()">Contact</a>
+    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Strategy Session</a>
   </div>
 </nav>
 
