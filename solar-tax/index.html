@@ -51,35 +51,21 @@ img{display:block;max-width:100%;}
 .nav-cta.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
 
 /* ═══ PAGE HERO ═══ */
-.page-hero{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);padding:96px 48px 80px;text-align:center;position:relative;overflow:hidden;}
-/* Animated blobs — same as main hero */
-.hero-canvas{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;contain:strict;}
-.hblob-1{position:absolute;top:-15%;left:-10%;width:60%;height:130%;border-radius:50%;background:radial-gradient(ellipse 50% 55% at 50% 50%,rgba(240,130,30,.10) 0%,rgba(245,148,64,.06) 42%,transparent 65%);animation:orb1 18s ease-in-out infinite;will-change:transform;}
-.hblob-2{position:absolute;top:10%;right:-15%;width:50%;height:100%;border-radius:50%;background:radial-gradient(ellipse 45% 50% at 50% 50%,rgba(240,120,20,.07) 0%,rgba(250,150,50,.04) 38%,transparent 62%);animation:orb2 22s ease-in-out infinite 3s;will-change:transform;}
-@keyframes orb1{0%,100%{transform:translate(0,0) scale(1);}40%{transform:translate(30%,-6%) scale(1.06);}70%{transform:translate(55%,8%) scale(.97);}}
-@keyframes orb2{0%,100%{transform:translate(0,0) scale(1);}45%{transform:translate(-40%,10%) scale(1.08);}75%{transform:translate(-65%,-4%) scale(.95);}}
-@media(prefers-reduced-motion:reduce){.hblob-1,.hblob-2{animation:none;}}
-.page-hero-inner{position:relative;z-index:1;max-width:var(--max);margin:0 auto;}
-.breadcrumb{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:6px;}
-.breadcrumb a{color:rgba(255,255,255,.35);transition:color .15s;}
-.breadcrumb a:hover{color:var(--or);}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(240,120,20,.15);border:1px solid rgba(240,120,20,.25);border-radius:var(--pill);padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--or);margin-bottom:22px;}
-.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--or);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
-.page-hero h1{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;max-width:760px;margin:0 auto 18px;}
+.page-hero{background:var(--snow);border-bottom:1px solid var(--fog);padding:96px 24px 72px;text-align:center;}
+.page-hero-eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--or);margin-bottom:16px;}
+.page-hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:var(--ink);line-height:1.15;max-width:800px;margin:0 auto 20px;letter-spacing:-1px;}
 .page-hero h1 em{color:var(--or);font-style:normal;}
-.page-hero .hero-sub{font-size:17px;color:rgba(255,255,255,.6);line-height:1.75;max-width:580px;margin:0 auto 32px;}
-.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:48px;}
-.hbtn-solid{background:var(--or);color:#fff;padding:13px 26px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:background .15s;}
-.hbtn-solid:hover{background:var(--or2);}
-.hbtn-solid svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
-.hbtn-outline-w{border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:12px 22px;border-radius:var(--pill);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:all .15s;}
-.hbtn-outline-w:hover{border-color:rgba(255,255,255,.5);color:#fff;}
-/* Stat chips row — replaces the old stat column */
-.hero-chips{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
-.hchip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--card);padding:14px 22px;text-align:center;min-width:130px;}
-.hchip .n{font-size:26px;font-weight:900;color:var(--or);letter-spacing:-1px;line-height:1;}
-.hchip .l{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px;}
+.page-hero .hero-sub{font-size:1.1rem;color:var(--muted);max-width:640px;margin:0 auto 32px;line-height:1.7;}
+.page-hero .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+.pill-cta{cursor:pointer;display:inline-flex;align-items:center;gap:8px;background:var(--or);color:var(--white);border-radius:var(--pill);padding:14px 28px;font-weight:700;font-size:.95rem;transition:background .2s,transform .15s;}
+.pill-cta:hover{background:var(--or2);transform:translateY(-1px);}
+.pill-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);border:1.5px solid var(--fog);border-radius:var(--pill);padding:13px 24px;font-weight:600;font-size:.95rem;transition:all .15s;}
+.pill-ghost:hover{border-color:var(--or);color:var(--or);}
+/* Stat chips — inline row below CTA buttons */
+.hero-chips{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.hchip{background:var(--white);border:1px solid var(--fog);border-radius:var(--card);padding:12px 20px;text-align:center;min-width:120px;}
+.hchip .n{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-1px;line-height:1;}
+.hchip .l{font-size:11px;color:var(--muted);margin-top:3px;}
 
 /* ═══ CONTENT LAYOUT ═══ */
 .content-wrap{max-width:var(--max);margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 300px;gap:52px;align-items:start;}
@@ -153,9 +139,6 @@ footer{background:var(--ink);}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:960px){
-  .page-hero-inner{grid-template-columns:1fr;gap:28px;}
-  .hero-stats{flex-direction:row;flex-wrap:wrap;}
-  .hstat{flex:1;min-width:120px;}
   .content-wrap{grid-template-columns:1fr;padding:36px 24px;}
   .sidebar{position:static;}
   .tests-grid{grid-template-columns:1fr;}
@@ -195,7 +178,6 @@ footer{background:var(--ink);}
       <a href="/securus-advisors/#about">About</a>
       <a href="/securus-advisors/services/">Services</a>
       <a href="/securus-advisors/crypto-tax/">Crypto Tax</a>
-      <a href="/securus-advisors/solar-tax/" class="active">Solar Tax</a>
       <a href="/securus-advisors/#contact">Contact</a>
     </div>
     <a href="https://calendly.com/michaelcpa" class="nav-cta" id="navCta" aria-hidden="true">Schedule a Strategy Session</a>
@@ -211,43 +193,28 @@ footer{background:var(--ink);}
     <a href="/securus-advisors/#about" onclick="toggleMenu()">About</a>
     <a href="/securus-advisors/services/" onclick="toggleMenu()">Services</a>
     <a href="/securus-advisors/crypto-tax/" onclick="toggleMenu()">Crypto Tax</a>
-    <a href="/securus-advisors/solar-tax/" onclick="toggleMenu()">Solar Tax</a>
     <a href="/securus-advisors/#contact" onclick="toggleMenu()">Contact</a>
-    <a href="https://calendly.com/michaelcpa" class="nm-cta" onclick="toggleMenu()">Schedule a Strategy Session</a>
+    <a href="https://calendly.com/michaelcpa" class="nm-cta">Schedule a Strategy Session</a>
   </div>
 </nav>
 
 <!-- ═══ HERO ═══ -->
 <section class="page-hero" id="top">
-  <div class="hero-canvas">
-    <div class="hblob-1"></div>
-    <div class="hblob-2"></div>
+  <div class="page-hero-eyebrow">Solar Tax Strategy</div>
+  <h1>Depreciation Only Works If You<br><em>Materially Participate</em></h1>
+  <p class="hero-sub">Accelerated depreciation and the ITC are only half the equation. Without material participation, solar losses are trapped as passive deductions — worth nothing against your income. Here's exactly how to unlock them.</p>
+  <div class="hero-btns">
+    <a href="/securus-advisors/solar-tax/tracker/" class="pill-cta">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Track My Hours
+    </a>
+    <a href="https://calendly.com/michaelcpa" class="pill-ghost">Talk to a CPA →</a>
   </div>
-  <div class="page-hero-inner">
-    <div class="breadcrumb">
-      <a href="/securus-advisors/">Securus Advisors</a>
-      <span>›</span>
-      <span>Solar Tax Strategy</span>
-    </div>
-    <div class="hero-eyebrow">
-      <span class="dot"></span>
-      IRC §168 · §469 · §48 ITC
-    </div>
-    <h1>Solar Tax Strategy &amp;<br><em>Material Participation</em></h1>
-    <p class="hero-sub">Accelerated depreciation and the ITC are only half the equation. Without material participation, solar losses are trapped as passive deductions. Here's exactly how to unlock them — and document it so it holds in an audit.</p>
-    <div class="hero-btns">
-      <a href="/securus-advisors/solar-tax/tracker/" class="hbtn-solid">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Track My Hours
-      </a>
-      <a href="https://calendly.com/michaelcpa" class="hbtn-outline-w">Talk to a CPA →</a>
-    </div>
-    <div class="hero-chips">
-      <div class="hchip"><div class="n">101</div><div class="l">Hours — primary test</div></div>
-      <div class="hchip"><div class="n">§469</div><div class="l">Passive activity rules</div></div>
-      <div class="hchip"><div class="n">§168</div><div class="l">Bonus depreciation</div></div>
-      <div class="hchip"><div class="n">§48</div><div class="l">Investment tax credit</div></div>
-    </div>
+  <div class="hero-chips">
+    <div class="hchip"><div class="n">101</div><div class="l">Hours — primary test</div></div>
+    <div class="hchip"><div class="n">§469</div><div class="l">Passive activity rules</div></div>
+    <div class="hchip"><div class="n">§168</div><div class="l">Bonus depreciation</div></div>
+    <div class="hchip"><div class="n">§48</div><div class="l">Investment tax credit</div></div>
   </div>
 </section>
 
