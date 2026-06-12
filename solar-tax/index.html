@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <link rel="icon" type="image/png" href="/securus-advisors/favicon.png">
+  <link rel="apple-touch-icon" href="/securus-advisors/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Solar Tax Strategy & Material Participation | Securus Advisors</title>
   <meta name="description" content="How to deduct solar losses against ordinary income through material participation. IRS rules, the 101-hour test, and documentation requirements explained by Big 4 CPAs."/>
@@ -49,23 +51,35 @@ img{display:block;max-width:100%;}
 .nav-cta.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
 
 /* ═══ PAGE HERO ═══ */
-.page-hero{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);padding:72px 48px 64px;}
-.page-hero-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;}
-.breadcrumb{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-.breadcrumb a{color:rgba(255,255,255,.4);transition:color .15s;}
+.page-hero{background:linear-gradient(135deg,var(--ink) 0%,#2C2420 100%);padding:96px 48px 80px;text-align:center;position:relative;overflow:hidden;}
+/* Animated blobs — same as main hero */
+.hero-canvas{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;contain:strict;}
+.hblob-1{position:absolute;top:-15%;left:-10%;width:60%;height:130%;border-radius:50%;background:radial-gradient(ellipse 50% 55% at 50% 50%,rgba(240,130,30,.10) 0%,rgba(245,148,64,.06) 42%,transparent 65%);animation:orb1 18s ease-in-out infinite;will-change:transform;}
+.hblob-2{position:absolute;top:10%;right:-15%;width:50%;height:100%;border-radius:50%;background:radial-gradient(ellipse 45% 50% at 50% 50%,rgba(240,120,20,.07) 0%,rgba(250,150,50,.04) 38%,transparent 62%);animation:orb2 22s ease-in-out infinite 3s;will-change:transform;}
+@keyframes orb1{0%,100%{transform:translate(0,0) scale(1);}40%{transform:translate(30%,-6%) scale(1.06);}70%{transform:translate(55%,8%) scale(.97);}}
+@keyframes orb2{0%,100%{transform:translate(0,0) scale(1);}45%{transform:translate(-40%,10%) scale(1.08);}75%{transform:translate(-65%,-4%) scale(.95);}}
+@media(prefers-reduced-motion:reduce){.hblob-1,.hblob-2{animation:none;}}
+.page-hero-inner{position:relative;z-index:1;max-width:var(--max);margin:0 auto;}
+.breadcrumb{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.breadcrumb a{color:rgba(255,255,255,.35);transition:color .15s;}
 .breadcrumb a:hover{color:var(--or);}
-.page-hero h1{font-size:46px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:18px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(240,120,20,.15);border:1px solid rgba(240,120,20,.25);border-radius:var(--pill);padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--or);margin-bottom:22px;}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--or);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+.page-hero h1{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;max-width:760px;margin:0 auto 18px;}
 .page-hero h1 em{color:var(--or);font-style:normal;}
-.page-hero p{font-size:16px;color:rgba(255,255,255,.6);line-height:1.75;max-width:540px;margin-bottom:28px;}
-.hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.page-hero .hero-sub{font-size:17px;color:rgba(255,255,255,.6);line-height:1.75;max-width:580px;margin:0 auto 32px;}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:48px;}
 .hbtn-solid{background:var(--or);color:#fff;padding:13px 26px;border-radius:var(--pill);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:background .15s;}
 .hbtn-solid:hover{background:var(--or2);}
+.hbtn-solid svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
 .hbtn-outline-w{border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:12px 22px;border-radius:var(--pill);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:all .15s;}
 .hbtn-outline-w:hover{border-color:rgba(255,255,255,.5);color:#fff;}
-.hero-stats{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
-.hstat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--card);padding:16px 20px;text-align:center;min-width:148px;}
-.hstat .n{font-size:28px;font-weight:900;color:var(--or);letter-spacing:-1px;}
-.hstat .l{font-size:11px;color:rgba(255,255,255,.45);margin-top:3px;}
+/* Stat chips row — replaces the old stat column */
+.hero-chips{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.hchip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--card);padding:14px 22px;text-align:center;min-width:130px;}
+.hchip .n{font-size:26px;font-weight:900;color:var(--or);letter-spacing:-1px;line-height:1;}
+.hchip .l{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px;}
 
 /* ═══ CONTENT LAYOUT ═══ */
 .content-wrap{max-width:var(--max);margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 300px;gap:52px;align-items:start;}
@@ -205,27 +219,34 @@ footer{background:var(--ink);}
 
 <!-- ═══ HERO ═══ -->
 <section class="page-hero" id="top">
+  <div class="hero-canvas">
+    <div class="hblob-1"></div>
+    <div class="hblob-2"></div>
+  </div>
   <div class="page-hero-inner">
-    <div>
-      <div class="breadcrumb">
-        <a href="/securus-advisors/">Securus Advisors</a>
-        <span>›</span>
-        <span>Solar Tax Strategy</span>
-      </div>
-      <h1>Solar Tax Strategy<br>&amp; <em>Material Participation</em></h1>
-      <p>Accelerated depreciation and the ITC are only half the equation. If you don't materially participate, solar losses are trapped as passive deductions. Here's exactly how to unlock them.</p>
-      <div class="hero-btns">
-        <a href="/securus-advisors/solar-tax/tracker/" class="hbtn-solid">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Track My Hours
-        </a>
-        <a href="https://calendly.com/michaelcpa" class="hbtn-outline-w">Talk to a CPA →</a>
-      </div>
+    <div class="breadcrumb">
+      <a href="/securus-advisors/">Securus Advisors</a>
+      <span>›</span>
+      <span>Solar Tax Strategy</span>
     </div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="n">101</div><div class="l">Hours — primary test</div></div>
-      <div class="hstat"><div class="n">§469</div><div class="l">Passive activity rules</div></div>
-      <div class="hstat"><div class="n">§168</div><div class="l">Bonus depreciation</div></div>
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      IRC §168 · §469 · §48 ITC
+    </div>
+    <h1>Solar Tax Strategy &amp;<br><em>Material Participation</em></h1>
+    <p class="hero-sub">Accelerated depreciation and the ITC are only half the equation. Without material participation, solar losses are trapped as passive deductions. Here's exactly how to unlock them — and document it so it holds in an audit.</p>
+    <div class="hero-btns">
+      <a href="/securus-advisors/solar-tax/tracker/" class="hbtn-solid">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track My Hours
+      </a>
+      <a href="https://calendly.com/michaelcpa" class="hbtn-outline-w">Talk to a CPA →</a>
+    </div>
+    <div class="hero-chips">
+      <div class="hchip"><div class="n">101</div><div class="l">Hours — primary test</div></div>
+      <div class="hchip"><div class="n">§469</div><div class="l">Passive activity rules</div></div>
+      <div class="hchip"><div class="n">§168</div><div class="l">Bonus depreciation</div></div>
+      <div class="hchip"><div class="n">§48</div><div class="l">Investment tax credit</div></div>
     </div>
   </div>
 </section>
@@ -412,6 +433,7 @@ footer{background:var(--ink);}
         <a href="/securus-advisors/crypto-hack-tax/">Hack &amp; Theft Loss (IRC §165)</a>
         <a href="/securus-advisors/services/">DeFi &amp; Yield Tax</a>
         <a href="/securus-advisors/solar-tax/">Solar Tax Strategy</a>
+        <a href="/securus-advisors/services/">IRS Audit Defense</a>
       </div>
       <div class="ft-col">
         <div class="ft-ch">Company</div>
@@ -424,7 +446,7 @@ footer{background:var(--ink);}
         <div class="ft-ch">Get Started</div>
         <a href="https://calendly.com/michaelcpa">Schedule a Strategy Session</a>
         <a href="/securus-advisors/#contact">Free Tax Analysis</a>
-        <a href="/securus-advisors/solar-tax/tracker/">Hour Tracker</a>
+        <a href="/securus-advisors/crypto-tax/">Crypto Tax Strategy</a>
         <a href="mailto:info@securusadvisors.com">info@securusadvisors.com</a>
       </div>
     </div>
